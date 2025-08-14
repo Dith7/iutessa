@@ -18,7 +18,7 @@ iuttessa/
 ├── manage.py
 ├── requirements.txt
 ├── README.md
-├── votre_projet/                    # Configuration Django
+├── iuttessa/                    # Configuration Django
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
@@ -101,7 +101,7 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 
 # 2. Configuration
-cp votre_projet/settings.py.example votre_projet/settings.py
+cp iuttessa/settings.py.example iuttessa/settings.py
 # Éditer SECRET_KEY, DEBUG, ALLOWED_HOSTS
 
 # 3. Base de données
@@ -300,7 +300,7 @@ python manage.py tailwind build
 ### Debug
 ```bash
 # Mode debug
-python manage.py runserver --settings=votre_projet.settings_debug
+python manage.py runserver --settings=iuttessa.settings_debug
 
 # Shell Django
 python manage.py shell
