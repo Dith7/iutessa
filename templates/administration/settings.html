@@ -1,0 +1,177 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Paramètres</li>
+{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Paramètres</h1>
+    <p class="text-lg text-gray-600">Configuration du site universitaire</p>
+</div>
+
+<form method="post" class="space-y-8">
+    {% csrf_token %}
+    
+    <!-- Informations générales -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations générales</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nom du site</label>
+                <input type="text" name="site_name" value="Université" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <input type="text" name="site_description" value="Site universitaire moderne" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email de contact</label>
+                <input type="email" name="contact_email" value="contact@universite.fr" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                <input type="tel" name="phone" value="+33 1 23 45 67 89" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration d'affichage -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Affichage</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="show_contact_info" checked 
+                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Afficher les informations de contact</span>
+                </label>
+            </div>
+            
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="enable_comments" 
+                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Activer les commentaires</span>
+                </label>
+            </div>
+            
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="maintenance_mode" 
+                           class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Mode maintenance</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">SEO</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+                <textarea name="meta_description" rows="3" 
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Description pour les moteurs de recherche..."></textarea>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés</label>
+                <input type="text" name="meta_keywords" placeholder="université, formation, éducation" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Analytics</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Google Analytics ID</label>
+                <input type="text" name="google_analytics" placeholder="G-XXXXXXXXXX" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="enable_analytics" 
+                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Activer le suivi analytics</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-end space-x-4">
+        <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
+            Annuler
+        </button>
+        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">
+            <i class="fas fa-save mr-2"></i>Sauvegarder
+        </button>
+    </div>
+</form>
+
+<!-- Informations système -->
+<div class="mt-12 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-sm border border-gray-100 p-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations système</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center p-6 bg-white rounded-lg border border-gray-100">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-cube text-blue-600 text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-500">Total blocs</p>
+            <p class="text-2xl font-bold text-gray-900">{{ site_info.total_blocks }}</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white rounded-lg border border-gray-100">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-500">Blocs actifs</p>
+            <p class="text-2xl font-bold text-gray-900">{{ site_info.active_blocks }}</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white rounded-lg border border-gray-100">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-hdd text-purple-600 text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-500">Espace utilisé</p>
+            <p class="text-2xl font-bold text-gray-900">{{ site_info.media_size }} MB</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white rounded-lg border border-gray-100">
+            <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-clock text-amber-600 text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-500">Dernière MAJ</p>
+            <p class="text-sm font-bold text-gray-900">
+                {% if site_info.last_update %}
+                    {{ site_info.last_update.updated_at|date:"d/m/Y" }}
+                {% else %}
+                    Jamais
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

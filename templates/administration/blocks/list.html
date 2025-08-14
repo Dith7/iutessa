@@ -1,0 +1,244 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Gestion des blocs{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Blocs</li>
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-8">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900">Blocs de contenu</h1>
+        <p class="text-gray-600 mt-2">{{ blocks.paginator.count }} bloc{{ blocks.paginator.count|pluralize }}</p>
+    </div>
+    <a href="{% url 'administration:block_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus mr-2"></i>Nouveau bloc
+    </a>
+</div>
+
+<!-- Filtres -->
+<div class="bg-white rounded-lg shadow mb-6">
+    <div class="p-6">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <input type="text" name="search" value="{{ current_filters.search }}" 
+                       placeholder="Rechercher..." 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tous les types</option>
+                    {% for key, label in block_types %}
+                    <option value="{{ key }}" {% if current_filters.type == key %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tous les statuts</option>
+                    <option value="active" {% if current_filters.status == 'active' %}selected{% endif %}>Actif</option>
+                    <option value="inactive" {% if current_filters.status == 'inactive' %}selected{% endif %}>Inactif</option>
+                </select>
+            </div>
+            <div class="flex space-x-2">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+                <a href="{% url 'administration:blocks_list' %}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Liste des blocs -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blocks-grid">
+    {% for block in blocks %}
+    <div class="bg-white rounded-lg shadow hover:shadow-md transition-shadow" data-block-id="{{ block.id }}">
+        <!-- Preview image -->
+        {% if block.image %}
+        <div class="h-48 bg-gray-200 rounded-t-lg overflow-hidden">
+            <img src="{{ block.image.url }}" alt="{{ block.title }}" class="w-full h-full object-cover">
+        </div>
+        {% else %}
+        <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center">
+            <i class="fas fa-image text-gray-400 text-3xl"></i>
+        </div>
+        {% endif %}
+        
+        <div class="p-6">
+            <!-- Header -->
+            <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 truncate">{{ block.title }}</h3>
+                    <p class="text-sm text-gray-500">{{ block.get_block_type_display }}</p>
+                </div>
+                <div class="ml-2 flex items-center space-x-2">
+                    <!-- Status toggle -->
+                    <button onclick="toggleStatus({{ block.id }})" 
+                            class="status-toggle" data-status="{{ block.status }}">
+                        {% if block.status == 'active' %}
+                        <i class="fas fa-eye text-green-500"></i>
+                        {% else %}
+                        <i class="fas fa-eye-slash text-gray-400"></i>
+                        {% endif %}
+                    </button>
+                    
+                    <!-- Drag handle -->
+                    <div class="drag-handle cursor-move">
+                        <i class="fas fa-grip-vertical text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content preview -->
+            {% if block.subtitle %}
+            <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ block.subtitle }}</p>
+            {% endif %}
+            
+            <!-- Médias indicators -->
+            <div class="flex items-center space-x-3 mb-4">
+                {% if block.document %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                    <i class="fas fa-file mr-1"></i>Document
+                </span>
+                {% endif %}
+                {% if block.video_file or block.video_url %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-red-100 text-red-800">
+                    <i class="fas fa-video mr-1"></i>Vidéo
+                </span>
+                {% endif %}
+            </div>
+            
+            <!-- Metadata -->
+            <div class="text-xs text-gray-500 mb-4">
+                <div class="flex justify-between">
+                    <span>Ordre: {{ block.order }}</span>
+                    <span>{{ block.updated_at|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-2">
+                    <a href="{% url 'administration:block_detail' block.pk %}" 
+                       class="text-blue-600 hover:text-blue-800">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'administration:block_update' block.pk %}" 
+                       class="text-green-600 hover:text-green-800">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'administration:block_delete' block.pk %}" 
+                       class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+                
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                    {% if block.status == 'active' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ block.get_status_display }}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-center py-12">
+        <i class="fas fa-inbox text-gray-300 text-5xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun bloc trouvé</h3>
+        <p class="text-gray-500 mb-6">Commencez par créer votre premier bloc de contenu.</p>
+        <a href="{% url 'administration:block_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus mr-2"></i>Créer un bloc
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if blocks.has_other_pages %}
+<div class="mt-8 flex justify-center">
+    <nav class="flex items-center space-x-2">
+        {% if blocks.has_previous %}
+        <a href="?page={{ blocks.previous_page_number }}" class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            Précédent
+        </a>
+        {% endif %}
+        
+        <span class="px-3 py-2 text-sm text-gray-700">
+            Page {{ blocks.number }} sur {{ blocks.paginator.num_pages }}
+        </span>
+        
+        {% if blocks.has_next %}
+        <a href="?page={{ blocks.next_page_number }}" class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            Suivant
+        </a>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleStatus(blockId) {
+    fetch(`/administration/blocks/${blockId}/toggle-status/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+// Drag & drop reordering
+document.addEventListener('DOMContentLoaded', function() {
+    const grid = document.getElementById('blocks-grid');
+    if (!grid) return;
+    
+    // Simple drag & drop implementation
+    let draggedElement = null;
+    
+    grid.addEventListener('dragstart', function(e) {
+        if (e.target.closest('.drag-handle')) {
+            draggedElement = e.target.closest('[data-block-id]');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+    });
+    
+    grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    });
+    
+    grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const targetElement = e.target.closest('[data-block-id]');
+        
+        if (draggedElement && targetElement && draggedElement !== targetElement) {
+            // Réorganiser les éléments
+            const orders = Array.from(grid.children).map((el, index) => ({
+                id: el.dataset.blockId,
+                order: index
+            }));
+            
+            // Envoyer au serveur
+            fetch('/administration/blocks/reorder/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orders: orders })
+            });
+        }
+        
+        draggedElement = null;
+    });
+});
+</script>
+{% endblock %}

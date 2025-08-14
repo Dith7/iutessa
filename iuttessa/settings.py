@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     
     # Vos apps
     'pages',
+    'administration',
     # 'users',     # à ajouter plus tard
     # 'academique', # à ajouter plus tard
     # 'concours',   # à ajouter plus tard

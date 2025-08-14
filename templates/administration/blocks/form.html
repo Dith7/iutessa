@@ -1,0 +1,266 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li><a href="{% url 'administration:blocks_list' %}" class="text-blue-600 hover:text-blue-800">Blocs</a></li>
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">{{ title }}</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-8">
+        {% csrf_token %}
+        
+        <!-- Informations principales -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Informations principales</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.title.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.subtitle.label }}</label>
+                    {{ form.subtitle }}
+                    {% if form.subtitle.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.subtitle.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.block_type.label }}</label>
+                    {{ form.block_type }}
+                    {% if form.block_type.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.block_type.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.status.label }}</label>
+                    {{ form.status }}
+                    {% if form.status.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.status.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.order.label }}</label>
+                    {{ form.order }}
+                    {% if form.order.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.order.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Contenu</h2>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.content.label }}</label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.content.errors.0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Médias -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900">Médias</h2>
+                <p class="text-sm text-gray-500 mt-1">Ajoutez des images, documents ou vidéos à votre bloc</p>
+            </div>
+            
+            <!-- Onglets médias -->
+            <div x-data="{ activeTab: 'image' }" class="p-6">
+                <div class="border-b border-gray-200 mb-6">
+                    <nav class="-mb-px flex space-x-8">
+                        <button @click="activeTab = 'image'" 
+                                :class="activeTab === 'image' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                            <i class="fas fa-image mr-2"></i>Image
+                        </button>
+                        <button @click="activeTab = 'document'" 
+                                :class="activeTab === 'document' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                            <i class="fas fa-file mr-2"></i>Document
+                        </button>
+                        <button @click="activeTab = 'video'" 
+                                :class="activeTab === 'video' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                            <i class="fas fa-video mr-2"></i>Vidéo
+                        </button>
+                    </nav>
+                </div>
+                
+                <!-- Onglet Image -->
+                <div x-show="activeTab === 'image'" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.image.label }}</label>
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                        {% if block and block.image %}
+                        <div class="mt-4">
+                            <img src="{{ block.image.url }}" alt="Current image" class="h-32 w-auto rounded border">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Onglet Document -->
+                <div x-show="activeTab === 'document'" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.document.label }}</label>
+                        {{ form.document }}
+                        {% if form.document.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.document.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.document_title.label }}</label>
+                        {{ form.document_title }}
+                        {% if form.document_title.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.document_title.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Onglet Vidéo -->
+                <div x-show="activeTab === 'video'" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.video_type.label }}</label>
+                        {{ form.video_type }}
+                        {% if form.video_type.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.video_type.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="video-local" class="video-field">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.video_file.label }}</label>
+                        {{ form.video_file }}
+                        {% if form.video_file.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.video_file.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="video-url" class="video-field">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.video_url.label }}</label>
+                        {{ form.video_url }}
+                        {% if form.video_url.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.video_url.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="video-embed" class="video-field">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.video_embed_code.label }}</label>
+                        {{ form.video_embed_code }}
+                        {% if form.video_embed_code.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.video_embed_code.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.video_thumbnail.label }}</label>
+                        {{ form.video_thumbnail }}
+                        {% if form.video_thumbnail.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.video_thumbnail.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liens -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Lien optionnel</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.link_url.label }}</label>
+                    {{ form.link_url }}
+                    {% if form.link_url.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.link_url.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.link_text.label }}</label>
+                    {{ form.link_text }}
+                    {% if form.link_text.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.link_text.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-between items-center">
+            <a href="{% url 'administration:blocks_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i>Retour
+            </a>
+            
+            <div class="flex space-x-4">
+                {% if block and block.pk %}
+                <a href="{% url 'administration:block_detail' block.pk %}" target="_blank" class="btn btn-secondary">
+                    <i class="fas fa-eye mr-2"></i>Prévisualiser
+                </a>
+                {% endif %}
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-2"></i>Enregistrer
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Gestion des champs vidéo conditionnels
+document.addEventListener('DOMContentLoaded', function() {
+    const videoTypeSelect = document.getElementById('id_video_type');
+    const videoFields = {
+        'local': document.getElementById('video-local'),
+        'youtube': document.getElementById('video-url'),
+        'vimeo': document.getElementById('video-url'),
+        'embed': document.getElementById('video-embed')
+    };
+    
+    function toggleVideoFields() {
+        const selectedType = videoTypeSelect.value;
+        
+        // Masquer tous les champs
+        Object.values(videoFields).forEach(field => {
+            if (field) field.style.display = 'none';
+        });
+        
+        // Afficher le champ approprié
+        if (videoFields[selectedType]) {
+            videoFields[selectedType].style.display = 'block';
+        }
+    }
+    
+    if (videoTypeSelect) {
+        videoTypeSelect.addEventListener('change', toggleVideoFields);
+        toggleVideoFields(); // Exécuter au chargement
+    }
+});
+</script>
+{% endblock %}
