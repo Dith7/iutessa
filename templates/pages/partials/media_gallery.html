@@ -1,0 +1,19 @@
+<!-- pages/templates/pages/partials/media_gallery.html -->
+{% if block.image or block.document or block.video_file or block.video_url or block.video_embed_code %}
+<div class="media-gallery mb-8">
+    <!-- Image principale -->
+    {% if block.image %}
+        <div class="mb-6">
+            <img src="{{ block.image.url }}" 
+                 class="w-full h-64 lg:h-96 object-cover rounded-xl shadow-lg" 
+                 alt="{{ block.title }}">
+        </div>
+    {% endif %}
+    
+    <!-- Vidéo -->
+    {% include 'pages/partials/video.html' with block=block %}
+    
+    <!-- Document -->
+    {% include 'pages/partials/document.html' with block=block %}
+</div>
+{% endif %}

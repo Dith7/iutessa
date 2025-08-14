@@ -1,0 +1,37 @@
+<!-- pages/templates/pages/blocks/news.html -->
+<div class="py-16 lg:py-24 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            {% if block.subtitle %}
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            {% if block.image %}
+                <div class="text-center mb-12">
+                    <img src="{{ block.image.url }}" 
+                         class="w-full max-w-4xl mx-auto h-64 lg:h-96 object-cover rounded-2xl shadow-2xl" 
+                         alt="{{ block.title }}">
+                </div>
+            {% endif %}
+            
+            <div class="prose prose-lg prose-blue max-w-none">
+                {{ block.content|safe }}
+            </div>
+            
+            {% if block.link_url %}
+                <div class="text-center mt-12">
+                    <a href="{{ block.link_url }}" 
+                       class="inline-flex items-center border-2 border-blue-600 text-blue-600 font-semibold px-8 py-4 rounded-full hover:bg-blue-600 hover:text-white transform hover:scale-105 transition-all duration-300">
+                        {{ block.link_text|default:"Lire tous les communiqués" }}
+                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                        </svg>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static tailwind_tags %}
+
+{% block title %}Accueil - Université{% endblock %}
+
+{% block extra_css %}
+<style>
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .bg-hero-pattern {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="homepage">
+    {% for block in page_blocks %}
+        <section class="page-block block-{{ block.block_type }} animate-fade-in-up" 
+                 id="{% if block.block_type == 'hero' %}accueil{% elif block.block_type == 'about' %}about{% elif block.block_type == 'news' %}actualites{% elif block.block_type == 'gallery' %}campus{% elif block.block_type == 'contact' %}contact{% elif block.block_type == 'services' %}services{% else %}section-{{ block.id }}{% endif %}">
+            {% with template_name="pages/blocks/"|add:block.block_type|add:".html" %}
+                {% include template_name with block=block %}
+            {% endwith %}
+        </section>
+    {% empty %}
+        <div class="container mx-auto px-4 text-center py-20">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Bienvenue sur notre site</h2>
+            <p class="text-lg text-gray-600">Le contenu est en cours de configuration.</p>
+        </div>
+    {% endfor %}
+    
+    <!-- Section Formations temporaire -->
+    <section id="formations" class="py-16 lg:py-24 bg-blue-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Nos Formations</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Découvrez nos programmes d'excellence dans de nombreux domaines</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="text-4xl mb-4">🔬</div>
+                    <h3 class="text-xl font-bold mb-3">Sciences & Technologies</h3>
+                    <p class="text-gray-600 mb-4">Informatique, Ingénierie, Mathématiques appliquées</p>
+                    <a href="#" class="text-blue-600 font-medium hover:text-blue-700">En savoir plus →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="text-4xl mb-4">📚</div>
+                    <h3 class="text-xl font-bold mb-3">Sciences Humaines</h3>
+                    <p class="text-gray-600 mb-4">Psychologie, Sociologie, Langues et littérature</p>
+                    <a href="#" class="text-blue-600 font-medium hover:text-blue-700">En savoir plus →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="text-4xl mb-4">💼</div>
+                    <h3 class="text-xl font-bold mb-3">Commerce & Gestion</h3>
+                    <p class="text-gray-600 mb-4">Management, Finance, Marketing, Entrepreneuriat</p>
+                    <a href="#" class="text-blue-600 font-medium hover:text-blue-700">En savoir plus →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="text-4xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold mb-3">Médecine & Santé</h3>
+                    <p class="text-gray-600 mb-4">Médecine générale, Pharmacie, Sciences infirmières</p>
+                    <a href="#" class="text-blue-600 font-medium hover:text-blue-700">En savoir plus →</a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#contact" class="inline-flex items-center bg-blue-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    Demander des informations
+                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'pages/js/home.js' %}"></script>
+{% endblock %}
