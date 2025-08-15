@@ -126,7 +126,6 @@ dmypy.json
 media/
 staticfiles/
 static_root/
-/static/
 settings_local.py
 settings_prod.py
 
