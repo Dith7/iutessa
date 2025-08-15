@@ -14,6 +14,12 @@ SECRET_KEY = 'votre-clé-secrète-ici'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+AUTH_USER_MODEL = 'users.User'
+# URLs de redirection
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'users:dashboard'
+LOGOUT_REDIRECT_URL = 'pages:home'
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,7 +38,7 @@ INSTALLED_APPS = [
     # Vos apps
     'pages',
     'administration',
-    # 'users',     # à ajouter plus tard
+    'users',     
     # 'academique', # à ajouter plus tard
     # 'concours',   # à ajouter plus tard
 ]
@@ -64,6 +70,25 @@ TEMPLATES = [
         },
     },
 ]
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}
+
+# Sécurité
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Sessions
+SESSION_COOKIE_AGE = 86400  # 24 heures
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
 
 WSGI_APPLICATION = 'iuttessa.wsgi.application'
 

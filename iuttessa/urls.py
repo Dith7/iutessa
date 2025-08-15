@@ -9,6 +9,8 @@ urlpatterns = [
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path('administration/', include('administration.urls')),
     path('', include('pages.urls')),
+    path('users/', include('users.urls')),
+
 ]
 
 # Servir les fichiers media et static en développement

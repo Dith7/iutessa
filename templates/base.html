@@ -8,6 +8,9 @@
     
     {% tailwind_css %}
     
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <!-- Styles prose pour le contenu riche -->
     <link rel="stylesheet" href="https://unpkg.com/@tailwindcss/typography@0.4.x/dist/typography.min.css">
     
@@ -43,14 +46,53 @@
                     </a>
                 </div>
                 
-                <!-- Bouton Admin (si connecté) -->
-                {% if user.is_authenticated and user.is_staff %}
-                <div class="hidden md:block">
-                    <a href="/admin/" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                        Admin
-                    </a>
+                <!-- User Menu / Login -->
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-semibold">{{ user.username|first|upper }}</span>
+                                </div>
+                                <span class="font-medium">{{ user.full_name|default:user.username }}</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <div x-show="open" @click.away="open = false" x-cloak
+                                 class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2">
+                                
+                                {% if user.is_admin %}
+                                <a href="{% url 'administration:dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Administration
+                                </a>
+                                {% endif %}
+                                
+                                {% if user.is_etudiant %}
+                                <a href="{% url 'users:etudiant_dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>Mon espace
+                                </a>
+                                {% endif %}
+                                
+                                <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>Mon profil
+                                </a>
+                                
+                                <hr class="my-2">
+                                
+                                <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'users:login' %}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                            Connexion
+                        </a>
+                        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Inscription
+                        </a>
+                    {% endif %}
                 </div>
-                {% endif %}
                 
                 <!-- Menu Mobile Button -->
                 <div class="md:hidden">
@@ -80,10 +122,44 @@
                     <a href="{% url 'pages:home' %}#contact" class="text-gray-700 hover:text-blue-600 font-medium py-2 transition-colors">
                         Contact
                     </a>
-                    {% if user.is_authenticated and user.is_staff %}
-                    <a href="/admin/" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center">
-                        Admin
-                    </a>
+                    
+                    {% if user.is_authenticated %}
+                        <div class="border-t pt-2 mt-2">
+                            <div class="flex items-center space-x-2 py-2 text-gray-700">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs font-semibold">{{ user.username|first|upper }}</span>
+                                </div>
+                                <span class="font-medium">{{ user.full_name|default:user.username }}</span>
+                            </div>
+                            
+                            {% if user.is_admin %}
+                            <a href="{% url 'administration:dashboard' %}" class="text-gray-700 hover:text-blue-600 font-medium py-2 transition-colors block">
+                                Administration
+                            </a>
+                            {% endif %}
+                            
+                            {% if user.is_etudiant %}
+                            <a href="{% url 'users:etudiant_dashboard' %}" class="text-gray-700 hover:text-blue-600 font-medium py-2 transition-colors block">
+                                Mon espace
+                            </a>
+                            {% endif %}
+                            
+                            <a href="{% url 'users:profile' %}" class="text-gray-700 hover:text-blue-600 font-medium py-2 transition-colors block">
+                                Mon profil
+                            </a>
+                            <a href="{% url 'users:logout' %}" class="text-red-600 hover:text-red-700 font-medium py-2 transition-colors block">
+                                Déconnexion
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="border-t pt-2 mt-2 space-y-2">
+                            <a href="{% url 'users:login' %}" class="text-gray-700 hover:text-blue-600 font-medium py-2 transition-colors block">
+                                Connexion
+                            </a>
+                            <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center block">
+                                Inscription
+                            </a>
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -144,6 +220,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         // Menu mobile toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
@@ -165,6 +242,10 @@
             });
         });
     </script>
+    
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
     
     {% block extra_js %}{% endblock %}
 </body>

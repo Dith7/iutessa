@@ -1,12 +1,10 @@
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.files.storage import default_storage
 import json
@@ -16,20 +14,19 @@ from .forms import PageBlockForm, MediaUploadForm
 from datetime import timedelta
 from django.utils import timezone
 
-
-def is_admin_user(user):
-    """Vérifier si l'utilisateur est admin"""
-    return user.is_authenticated and user.is_staff
-
-
-# Décorateur pour toutes les vues admin
-admin_required = user_passes_test(is_admin_user, login_url='/admin/login/')
+# Importer les décorateurs du module users
+from users.decorators import admin_required, role_required
 
 
 @admin_required
 def dashboard_view(request):
     """Dashboard principal avec statistiques"""
-    # Statistiques générales
+    from django.contrib.auth import get_user_model
+    from django.conf import settings
+    
+    User = get_user_model()
+    
+    # Statistiques des blocs
     stats = {
         'total_blocks': PageBlock.objects.count(),
         'active_blocks': PageBlock.objects.filter(status='active').count(),
@@ -40,6 +37,15 @@ def dashboard_view(request):
             Q(video_file__isnull=False) | 
             Q(video_url__isnull=False)
         ).count(),
+    }
+    
+    # Statistiques des utilisateurs
+    user_stats = {
+        'total_users': User.objects.count(),
+        'admin_count': User.objects.filter(role='ADMIN').count(),
+        'etudiant_count': User.objects.filter(role='ETUDIANT').count(),
+        'visiteur_count': User.objects.filter(role='VISITEUR').count(),
+        'active_users': User.objects.filter(is_active=True).count(),
     }
     
     # Blocs par type
@@ -56,19 +62,29 @@ def dashboard_view(request):
         .order_by('-updated_at')[:5]
     )
     
+    # Derniers utilisateurs créés
+    recent_users = (
+        User.objects
+        .order_by('-date_joined')[:5]
+    )
+    
     # Taille média
     media_size = _calculate_media_size()
     
+    # Mode debug
+    debug = getattr(settings, 'DEBUG', False)
+    
     context = {
         'stats': stats,
+        'user_stats': user_stats,
         'blocks_by_type': blocks_by_type,
         'recent_blocks': recent_blocks,
+        'recent_users': recent_users,
         'media_size': media_size,
+        'debug': debug,
     }
     
     return render(request, 'administration/dashboard.html', context)
-
-
 @admin_required
 def blocks_list_view(request):
     """Liste des blocs avec recherche et filtres"""
@@ -103,7 +119,7 @@ def blocks_list_view(request):
     
     context = {
         'blocks': blocks,
-        'block_types': PageBlock.BLOCK_TYPES,
+        'block_types': PageBlock.BLOCK_TYPE_CHOICES,
         'current_filters': {
             'search': search,
             'type': block_type,
@@ -232,11 +248,15 @@ def blocks_reorder_view(request):
 @admin_required
 def media_library_view(request):
     """Bibliothèque des médias"""
-    # Images
-    images = PageBlock.objects.filter(image__isnull=False).order_by('-updated_at')
+    # Images - filtrer pour éviter les erreurs de fichiers manquants
+    images = PageBlock.objects.filter(
+        image__isnull=False
+    ).exclude(image__exact='').order_by('-updated_at')
     
     # Documents
-    documents = PageBlock.objects.filter(document__isnull=False).order_by('-updated_at')
+    documents = PageBlock.objects.filter(
+        document__isnull=False
+    ).exclude(document__exact='').order_by('-updated_at')
     
     # Vidéos
     videos = PageBlock.objects.filter(
@@ -291,13 +311,33 @@ def media_upload_view(request):
 @admin_required
 def settings_view(request):
     """Paramètres du site"""
+    from pages.models import SiteSettings
+    
     if request.method == 'POST':
         # Traitement des paramètres
+        site_settings = SiteSettings.get_settings()
+        
+        # Mise à jour des champs depuis le formulaire
+        site_settings.site_name = request.POST.get('site_name', site_settings.site_name)
+        site_settings.site_description = request.POST.get('site_description', site_settings.site_description)
+        site_settings.contact_email = request.POST.get('contact_email', site_settings.contact_email)
+        site_settings.contact_phone = request.POST.get('phone', site_settings.contact_phone)
+        site_settings.meta_description = request.POST.get('meta_description', site_settings.meta_description)
+        site_settings.meta_keywords = request.POST.get('meta_keywords', site_settings.meta_keywords)
+        site_settings.google_analytics_id = request.POST.get('google_analytics', site_settings.google_analytics_id)
+        
+        # Options booléennes
+        site_settings.show_contact_info = 'show_contact_info' in request.POST
+        site_settings.maintenance_mode = 'maintenance_mode' in request.POST
+        
+        site_settings.save()
+        
         messages.success(request, 'Paramètres sauvegardés avec succès.')
         return redirect('administration:settings')
     
     context = {
         'site_info': _get_site_info(),
+        'site_settings': SiteSettings.get_settings(),
     }
     
     return render(request, 'administration/settings.html', context)
@@ -322,6 +362,22 @@ def analytics_view(request):
     return render(request, 'administration/analytics.html', context)
 
 
+# Vue accessible aux étudiants et admins pour consulter leurs propres données
+@role_required('ADMIN', 'ETUDIANT')
+def user_analytics_view(request):
+    """Analytics pour les étudiants (leurs propres données)"""
+    if request.user.is_admin():
+        # Les admins voient tout
+        return redirect('administration:analytics')
+    
+    # Pour les étudiants : stats personnelles
+    context = {
+        'user_stats': _get_user_personal_stats(request.user),
+    }
+    
+    return render(request, 'administration/user_analytics.html', context)
+
+
 # Méthodes utilitaires privées
 
 def _calculate_media_size():
@@ -336,12 +392,23 @@ def _calculate_media_size():
     )
     
     for block in blocks_with_media:
-        if block.image and default_storage.exists(block.image.name):
-            total_size += block.image.size
-        if block.document and default_storage.exists(block.document.name):
-            total_size += block.document.size
-        if block.video_file and default_storage.exists(block.video_file.name):
-            total_size += block.video_file.size
+        try:
+            if block.image and default_storage.exists(block.image.name):
+                total_size += block.image.size
+        except:
+            pass
+        
+        try:
+            if block.document and default_storage.exists(block.document.name):
+                total_size += block.document.size
+        except:
+            pass
+        
+        try:
+            if block.video_file and default_storage.exists(block.video_file.name):
+                total_size += block.video_file.size
+        except:
+            pass
     
     # Convertir en MB
     return round(total_size / (1024 * 1024), 2)
@@ -373,4 +440,14 @@ def _get_analytics_data():
             'active': PageBlock.objects.filter(status='active').count(),
             'inactive': PageBlock.objects.filter(status='inactive').count(),
         }
+    }
+
+
+def _get_user_personal_stats(user):
+    """Stats personnelles pour un étudiant"""
+    # À implémenter selon les besoins du module académique
+    return {
+        'courses_enrolled': 0,
+        'assignments_completed': 0,
+        'average_grade': 0,
     }

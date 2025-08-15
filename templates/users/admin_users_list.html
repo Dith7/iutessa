@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Gestion des utilisateurs</h1>
+                        <p class="text-gray-600">Administration des comptes utilisateurs</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'administration:dashboard' %}" class="text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Statistiques -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Total utilisateurs</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_users }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-shield text-red-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Administrateurs</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ admin_count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-graduate text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Étudiants</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ etudiant_count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Visiteurs</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ visiteur_count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des utilisateurs -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <h2 class="text-xl font-bold text-gray-900">Liste des utilisateurs</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Utilisateur
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rôle
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Statut
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Inscription
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Dernière connexion
+                            </th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for user in users %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-sm font-semibold">{{ user.username|first|upper }}</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ user.full_name|default:user.username }}</div>
+                                        <div class="text-sm text-gray-500">{{ user.email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if user.role == 'ADMIN' %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        <i class="fas fa-user-shield mr-1"></i>{{ user.get_role_display }}
+                                    </span>
+                                {% elif user.role == 'ETUDIANT' %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <i class="fas fa-user-graduate mr-1"></i>{{ user.get_role_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        <i class="fas fa-user mr-1"></i>{{ user.get_role_display }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if user.is_active %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <i class="fas fa-check-circle mr-1"></i>Actif
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        <i class="fas fa-times-circle mr-1"></i>Inactif
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ user.date_joined|date:"d/m/Y" }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ user.last_login|date:"d/m/Y H:i"|default:"Jamais" }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center justify-end space-x-2">
+                                    <a href="/admin/users/user/{{ user.pk }}/change/" class="text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% if not user.is_superuser %}
+                                    <button onclick="toggleUserStatus({{ user.pk }})" class="text-yellow-600 hover:text-yellow-900">
+                                        {% if user.is_active %}
+                                            <i class="fas fa-pause"></i>
+                                        {% else %}
+                                            <i class="fas fa-play"></i>
+                                        {% endif %}
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                Aucun utilisateur trouvé
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+function toggleUserStatus(userId) {
+    if (confirm('Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?')) {
+        // Implémentation AJAX pour changer le statut
+        fetch(`/admin/users/user/${userId}/toggle-status/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}
