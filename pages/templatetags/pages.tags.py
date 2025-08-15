@@ -24,3 +24,24 @@ def render_block(context, block):
     
     context['block'] = block
     return context
+
+from django import template
+from academique.models import Filiere
+
+register = template.Library()
+
+@register.simple_tag
+def get_public_filieres():
+    """Récupère les filières actives pour affichage public"""
+    return Filiere.objects.filter(statut='active').order_by('nom')
+
+@register.simple_tag
+def get_filieres_count():
+    """Retourne le nombre total de filières actives"""
+    return Filiere.objects.filter(statut='active').count()
+
+@register.simple_tag
+def get_total_places():
+    """Retourne le nombre total de places disponibles"""
+    filieres = Filiere.objects.filter(statut='active')
+    return sum(f.places_disponibles for f in filieres)

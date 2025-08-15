@@ -186,7 +186,7 @@ class BlockFilterForm(forms.Form):
     
     block_type = forms.ChoiceField(
         required=False,
-        choices=[('', 'Tous les types')] + PageBlock.BLOCK_TYPES,
+        choices=[('', 'Tous les types')] + PageBlock.BLOCK_TYPE_CHOICES,
         widget=forms.Select(attrs={
             'class': 'px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
         })

@@ -1,0 +1,123 @@
+<!-- templates/academique/public/filieres_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Nos Filières{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-bold text-gray-900 mb-6">Nos Filières de Formation</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Découvrez nos programmes de formation d'excellence conçus pour votre réussite professionnelle
+            </p>
+            <div class="mt-8 bg-white rounded-xl p-6 shadow-lg inline-block">
+                <div class="flex items-center space-x-8">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-blue-600">{{ filieres.count }}</p>
+                        <p class="text-sm text-gray-500">Filières</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-green-600">{{ total_places }}</p>
+                        <p class="text-sm text-gray-500">Places disponibles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filières Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for filiere in filieres %}
+            <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">{{ filiere.code }}</span>
+                        </div>
+                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {{ filiere.duree_formation }}
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mt-4 mb-2">{{ filiere.nom }}</h3>
+                    <p class="text-blue-100 text-sm">{{ filiere.get_domaine_requis_display }}</p>
+                </div>
+
+                <!-- Content -->
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 line-clamp-3">{{ filiere.description|default:"Description non disponible" }}</p>
+                    
+                    <!-- Stats -->
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Places disponibles</span>
+                            <span class="font-semibold text-gray-900">{{ filiere.places_restantes }}/{{ filiere.places_disponibles }}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Frais d'inscription</span>
+                            <span class="font-bold text-green-600">{{ filiere.frais_inscription|floatformat:0 }} FCFA</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex space-x-3">
+                        <a href="{% url 'academique:filiere_detail_public' filiere.code %}" 
+                           class="flex-1 bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Voir détails
+                        </a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'academique:etudiant_inscription' %}" 
+                           class="flex-1 bg-green-600 text-white text-center py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
+                            S'inscrire
+                        </a>
+                        {% else %}
+                        <a href="{% url 'users:login' %}" 
+                           class="flex-1 bg-green-600 text-white text-center py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
+                            S'inscrire
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-16">
+                <i class="fas fa-graduation-cap text-gray-300 text-6xl mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Aucune filière disponible</h3>
+                <p class="text-gray-500">Les filières seront bientôt disponibles</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center mt-16">
+            <div class="bg-white rounded-2xl p-12 shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Prêt à commencer votre formation ?</h2>
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Rejoignez notre communauté d'étudiants et construisez votre avenir professionnel
+                </p>
+                <div class="flex justify-center space-x-4">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'academique:etudiant_inscription' %}" 
+                       class="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                        Commencer mon inscription
+                    </a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}" 
+                       class="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                        Se connecter
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'pages:home' %}#contact" 
+                       class="bg-gray-100 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-colors">
+                        Nous contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

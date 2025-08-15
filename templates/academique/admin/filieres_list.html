@@ -1,0 +1,236 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Gestion des Filières{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Académique</li>
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Filières</li>
+{% endblock %}
+
+{% block content %}
+<!-- Header avec statistiques -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Gestion des Filières</h1>
+            <p class="text-lg text-gray-600">Administration des programmes de formation</p>
+        </div>
+        <div class="flex space-x-4">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-blue-600">{{ total_filieres }}</p>
+                    <p class="text-sm text-gray-500">Total</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-green-600">{{ active_filieres }}</p>
+                    <p class="text-sm text-gray-500">Actives</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions et recherche -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+        <div class="flex-1 max-w-md">
+            <form method="get" class="relative">
+                <input type="text" name="search" value="{{ search }}" 
+                       placeholder="Rechercher une filière..." 
+                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </form>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'academique:admin_filiere_create' %}" 
+               class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>Nouvelle Filière
+            </a>
+            <button class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>Exporter
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des filières -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Filière
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Domaine
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Places
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Taux
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Frais
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Statut
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for filiere in filieres %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                                    <span class="text-blue-600 font-bold text-sm">{{ filiere.code }}</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900">{{ filiere.nom }}</p>
+                                    <p class="text-sm text-gray-500">{{ filiere.duree_formation }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            {% if filiere.domaine_requis == 'scientifique' %}bg-blue-100 text-blue-800
+                            {% elif filiere.domaine_requis == 'technique' %}bg-purple-100 text-purple-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ filiere.get_domaine_requis_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="text-sm">
+                            <p class="font-semibold text-gray-900">{{ filiere.places_occupees }}/{{ filiere.places_disponibles }}</p>
+                            <p class="text-gray-500">{{ filiere.places_restantes }} restantes</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full border-4 
+                                {% if filiere.taux_occupation > 90 %}border-red-200 text-red-600
+                                {% elif filiere.taux_occupation > 75 %}border-yellow-200 text-yellow-600
+                                {% else %}border-green-200 text-green-600{% endif %} 
+                                flex items-center justify-center">
+                                <span class="text-xs font-bold">{{ filiere.taux_occupation|floatformat:0 }}%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <p class="text-sm font-semibold text-gray-900">{{ filiere.frais_inscription|floatformat:0 }} FCFA</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            {% if filiere.statut == 'active' %}bg-green-100 text-green-800
+                            {% elif filiere.statut == 'inactive' %}bg-gray-100 text-gray-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ filiere.get_statut_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center space-x-2">
+                            <a href="{% url 'academique:admin_filiere_edit' filiere.pk %}" 
+                               class="text-blue-600 hover:text-blue-800 transition-colors" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="text-green-600 hover:text-green-800 transition-colors" title="Statistiques">
+                                <i class="fas fa-chart-bar"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-800 transition-colors" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="px-6 py-12 text-center">
+                        <div class="text-gray-500">
+                            <i class="fas fa-graduation-cap text-4xl mb-4"></i>
+                            <p class="text-lg font-medium">Aucune filière trouvée</p>
+                            <p class="text-sm">Commencez par créer votre première filière</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if filieres.has_other_pages %}
+    <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div class="flex items-center justify-between">
+            <div class="flex-1 flex justify-between sm:hidden">
+                {% if filieres.has_previous %}
+                <a href="?page={{ filieres.previous_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Précédent
+                </a>
+                {% endif %}
+                {% if filieres.has_next %}
+                <a href="?page={{ filieres.next_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                   class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Suivant
+                </a>
+                {% endif %}
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Affichage de
+                        <span class="font-medium">{{ filieres.start_index }}</span>
+                        à
+                        <span class="font-medium">{{ filieres.end_index }}</span>
+                        sur
+                        <span class="font-medium">{{ filieres.paginator.count }}</span>
+                        résultats
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        {% if filieres.has_previous %}
+                        <a href="?page={{ filieres.previous_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                           class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% for num in filieres.paginator.page_range %}
+                        {% if filieres.number == num %}
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                            {{ num }}
+                        </span>
+                        {% elif num > filieres.number|add:'-3' and num < filieres.number|add:'3' %}
+                        <a href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}" 
+                           class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            {{ num }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        {% if filieres.has_next %}
+                        <a href="?page={{ filieres.next_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                           class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

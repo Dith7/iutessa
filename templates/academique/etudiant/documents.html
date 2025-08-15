@@ -1,0 +1,90 @@
+<!-- templates/academique/etudiant/documents.html -->
+{% extends 'base.html' %}
+
+{% block title %}Mes Documents{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Gestion de mes Documents</h1>
+            <p class="text-lg text-gray-600">Téléchargez et gérez vos documents d'inscription</p>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Ajouter un document</h3>
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.type_document.label }}</label>
+                        {{ form.type_document }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.fichier.label }}</label>
+                        {{ form.fichier }}
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>Télécharger
+                </button>
+            </form>
+        </div>
+
+        <!-- Documents List -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Mes documents</h3>
+            <div class="space-y-4">
+                {% for document in documents %}
+                <div class="flex items-center justify-between p-6 border border-gray-200 rounded-lg">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">{{ document.get_type_document_display }}</h4>
+                            <p class="text-sm text-gray-500">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
+                            {% if document.commentaire %}
+                            <p class="text-sm text-gray-600 mt-1">{{ document.commentaire }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                            {% if document.valide %}bg-green-100 text-green-800
+                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            {% if document.valide %}
+                                <i class="fas fa-check mr-1"></i>Validé
+                            {% else %}
+                                <i class="fas fa-clock mr-1"></i>En attente
+                            {% endif %}
+                        </span>
+                        <button onclick="deleteDocument({{ document.id }})" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-12">
+                    <i class="fas fa-file-alt text-gray-300 text-6xl mb-4"></i>
+                    <p class="text-lg text-gray-500">Aucun document téléchargé</p>
+                    <p class="text-sm text-gray-400">Commencez par ajouter vos premiers documents</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteDocument(docId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+        fetch(`/academique/documents/${docId}/supprimer/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value}
+        }).then(() => location.reload());
+    }
+}
+</script>
+{% endblock %}
