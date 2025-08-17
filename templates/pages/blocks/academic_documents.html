@@ -1,0 +1,22 @@
+<!-- templates/pages/blocks/academic_documents.html -->
+<section class="py-16 lg:py-24 bg-blue-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto">
+            {{ block.content|safe }}
+            
+            {% if block.link_url %}
+            <div class="text-center mt-12">
+                <a href="{{ block.link_url }}" target="_blank" class="inline-flex items-center bg-blue-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    {{ block.link_text|default:"Télécharger la fiche" }}
+                    <i class="fas fa-download ml-2"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

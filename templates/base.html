@@ -1,3 +1,4 @@
+<!-- templates/base.html -->
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="fr">
@@ -88,9 +89,13 @@
                         Contact
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-iut-green-600 group-hover:w-full transition-all"></span>
                     </a>
+                    <a href="{% url 'pages:home' %}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Accueil</a>
+                    <a href="{% url 'academique:filieres_list_public' %}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Formations</a>
+                    <a href="{% url 'pages:home' %}#about" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">À propos</a>
+                    <a href="{% url 'pages:home' %}#contact" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Contact</a>
                 </div>
                 
-                <!-- User Menu / Login -->
+                <!-- User Menu -->
                 <div class="hidden md:flex items-center space-x-4">
                     {% if user.is_authenticated %}
                         <div class="relative" x-data="{ open: false }">
@@ -161,7 +166,7 @@
                     {% endif %}
                 </div>
                 
-                <!-- Menu Mobile Button -->
+                <!-- Mobile Menu Button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-gray-700 hover:text-iut-green-600 focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,10 +210,8 @@
                             </a>
                             {% endif %}
                             
-                            {% if user.is_etudiant %}
-                            <a href="{% url 'users:etudiant_dashboard' %}" class="text-gray-700 hover:text-iut-green-600 font-medium py-2 block">
-                                Mon espace
-                            </a>
+                            {% if user.role == 'ETUDIANT' %}
+                            <a href="{% url 'academique:etudiant_profile' %}" class="text-gray-700 hover:text-iut-green-600 font-medium py-2 block">Mon espace</a>
                             {% endif %}
                             
                             <a href="{% url 'users:profile' %}" class="text-gray-700 hover:text-iut-green-600 font-medium py-2 block">
@@ -233,7 +236,29 @@
         </div>
     </nav>
 
-    <!-- Contenu principal -->
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mx-auto px-4 py-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mb-4 p-4 rounded-lg border">
+            <div class="flex items-center">
+                {% if message.tags == 'success' %}
+                    <i class="fas fa-check-circle mr-3 text-green-600"></i>
+                {% elif message.tags == 'error' %}
+                    <i class="fas fa-exclamation-circle mr-3 text-red-600"></i>
+                {% elif message.tags == 'warning' %}
+                    <i class="fas fa-exclamation-triangle mr-3 text-yellow-600"></i>
+                {% else %}
+                    <i class="fas fa-info-circle mr-3 text-blue-600"></i>
+                {% endif %}
+                <span>{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
     <main class="min-h-screen">
         {% block content %}{% endblock %}
     </main>
@@ -265,10 +290,10 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4 text-iut-purple-400">Services</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#services" class="hover:text-iut-purple-400">Orientation</a></li>
-                        <li><a href="#services" class="hover:text-iut-purple-400">Vie étudiante</a></li>
-                        <li><a href="#campus" class="hover:text-iut-purple-400">Bibliothèque</a></li>
-                        <li><a href="#services" class="hover:text-iut-purple-400">International</a></li>
+                        <li><a href="#" class="hover:text-iut-purple-400">Orientation</a></li>
+                        <li><a href="#" class="hover:text-iut-purple-400">Vie étudiante</a></li>
+                        <li><a href="#" class="hover:text-iut-purple-400">Bibliothèque</a></li>
+                        <li><a href="#" class="hover:text-iut-purple-400">International</a></li>
                     </ul>
                 </div>
                 
@@ -305,24 +330,9 @@
     </footer>
     
     <script>
-        // Menu mobile toggle
         document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Smooth scrolling pour les ancres
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
         });
     </script>
     

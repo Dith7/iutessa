@@ -1,0 +1,251 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Gestion des Étudiants{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Académique</li>
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Étudiants</li>
+{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Gestion des Étudiants</h1>
+    <p class="text-lg text-gray-600">Administration des dossiers académiques</p>
+</div>
+
+<!-- Statistiques -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                <i class="fas fa-users text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Total</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats.total }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">En attente</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats.en_attente }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Validés</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats.valides }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <i class="fas fa-times-circle text-red-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Rejetés</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats.rejetes }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres et actions -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+    <form method="get" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                {{ form.filiere.label_tag }}
+                {{ form.filiere }}
+            </div>
+            <div>
+                {{ form.statut_inscription.label_tag }}
+                {{ form.statut_inscription }}
+            </div>
+            <div>
+                {{ form.statut_validation.label_tag }}
+                {{ form.statut_validation }}
+            </div>
+            <div>
+                {{ form.recherche.label_tag }}
+                {{ form.recherche }}
+            </div>
+        </div>
+        <div class="flex justify-between items-center">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-search mr-2"></i>Filtrer
+            </button>
+            <div class="flex space-x-3">
+                <a href="{% url 'academique:admin_import_etudiants' %}" 
+                   class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>Import Excel
+                </a>
+                <a href="{% url 'academique:export_etudiants_excel' %}" 
+                   class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Liste des étudiants -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Étudiant
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Filière
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Contact
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Inscription
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Validation
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Documents
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for etudiant in etudiants %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-blue-600 font-bold text-sm">{{ etudiant.nom|first }}{{ etudiant.prenoms|first }}</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900">{{ etudiant.nom_complet }}</p>
+                                <p class="text-sm text-gray-500">{{ etudiant.numero_matricule }}</p>
+                                <p class="text-xs text-gray-400">CNI: {{ etudiant.cni }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            {{ etudiant.filiere.code }}
+                        </span>
+                        <p class="text-sm text-gray-600 mt-1">{{ etudiant.filiere.nom }}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <p class="text-sm text-gray-900">{{ etudiant.telephone }}</p>
+                        <p class="text-sm text-gray-500">{{ etudiant.email_personnel }}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            {% if etudiant.statut_inscription == 'confirme' %}bg-green-100 text-green-800
+                            {% elif etudiant.statut_inscription == 'en_attente' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ etudiant.get_statut_inscription_display }}
+                        </span>
+                        <p class="text-xs text-gray-500 mt-1">{{ etudiant.date_inscription|date:"d/m/Y" }}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            {% if etudiant.statut_validation == 'valide' %}bg-green-100 text-green-800
+                            {% elif etudiant.statut_validation == 'en_attente' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ etudiant.get_statut_validation_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {% with docs_count=etudiant.documents.count docs_valides=etudiant.documents.filter.valide.True.count %}
+                        <div class="flex items-center justify-center">
+                            <div class="w-8 h-8 rounded-full border-2 
+                                {% if docs_valides == docs_count and docs_count > 0 %}border-green-500 text-green-600
+                                {% elif docs_valides > 0 %}border-yellow-500 text-yellow-600
+                                {% else %}border-red-500 text-red-600{% endif %} 
+                                flex items-center justify-center">
+                                <span class="text-xs font-bold">{{ docs_valides }}/{{ docs_count }}</span>
+                            </div>
+                        </div>
+                        {% endwith %}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex items-center justify-center space-x-2">
+                            <button class="text-blue-600 hover:text-blue-800 transition-colors" title="Voir détails">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            {% if etudiant.statut_validation == 'en_attente' %}
+                            <button class="text-green-600 hover:text-green-800 transition-colors" title="Valider">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-800 transition-colors" title="Rejeter">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="px-6 py-12 text-center">
+                        <div class="text-gray-500">
+                            <i class="fas fa-user-graduate text-4xl mb-4"></i>
+                            <p class="text-lg font-medium">Aucun étudiant trouvé</p>
+                            <p class="text-sm">Les étudiants apparaîtront ici après inscription</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if etudiants.has_other_pages %}
+    <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div class="flex items-center justify-between">
+            <p class="text-sm text-gray-700">
+                Affichage de {{ etudiants.start_index }} à {{ etudiants.end_index }} sur {{ etudiants.paginator.count }} résultats
+            </p>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                {% if etudiants.has_previous %}
+                <a href="?page={{ etudiants.previous_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {% endif %}
+                
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                    {{ etudiants.number }}
+                </span>
+                
+                {% if etudiants.has_next %}
+                <a href="?page={{ etudiants.next_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

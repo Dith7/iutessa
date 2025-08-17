@@ -1,0 +1,74 @@
+<!-- templates/pages/blocks/academic_filieres.html -->
+<section class="py-16 lg:py-24 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
+            {{ block.content|safe }}
+        </div>
+        
+        <!-- Filières dynamiques -->
+        {% load academique_tags %}
+        {% get_public_filieres as filieres %}
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for filiere in filieres|slice:":6" %}
+            <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">{{ filiere.code }}</span>
+                        </div>
+                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {{ filiere.duree_formation }}
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">{{ filiere.nom }}</h3>
+                    <p class="text-blue-100 text-sm">{{ filiere.get_domaine_requis_display }}</p>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-500">Places disponibles</span>
+                        <span class="font-semibold text-gray-900">{{ filiere.places_restantes }}/{{ filiere.places_disponibles }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
+                    </div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-sm text-gray-500">Frais</span>
+                        <span class="font-bold text-green-600">{{ filiere.frais_inscription|floatformat:0 }} FCFA</span>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <a href="{% url 'academique:filiere_detail_public' filiere.code %}" 
+                           class="flex-1 bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                            Détails
+                        </a>
+                        <a href="{% url 'academique:filieres_list_public' %}" 
+                           class="flex-1 bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                            S'inscrire
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-16">
+                <i class="fas fa-graduation-cap text-gray-300 text-6xl mb-4"></i>
+                <p class="text-lg text-gray-500">Les filières seront bientôt disponibles</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if block.link_url %}
+        <div class="text-center mt-12">
+            <a href="{{ block.link_url }}" class="inline-flex items-center bg-blue-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                {{ block.link_text|default:"Voir toutes les filières" }}
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+

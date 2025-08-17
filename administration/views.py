@@ -18,15 +18,19 @@ from django.utils import timezone
 from users.decorators import admin_required, role_required
 
 
+
 @admin_required
 def dashboard_view(request):
-    """Dashboard principal avec statistiques"""
+    """Dashboard principal avec statistiques et module académique"""
     from django.contrib.auth import get_user_model
     from django.conf import settings
+    from django.utils import timezone
+    from datetime import timedelta
+    from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
     
     User = get_user_model()
     
-    # Statistiques des blocs
+    # Statistiques des blocs (existantes)
     stats = {
         'total_blocks': PageBlock.objects.count(),
         'active_blocks': PageBlock.objects.filter(status='active').count(),
@@ -39,7 +43,7 @@ def dashboard_view(request):
         ).count(),
     }
     
-    # Statistiques des utilisateurs
+    # Statistiques des utilisateurs (existantes)
     user_stats = {
         'total_users': User.objects.count(),
         'admin_count': User.objects.filter(role='ADMIN').count(),
@@ -48,7 +52,44 @@ def dashboard_view(request):
         'active_users': User.objects.filter(is_active=True).count(),
     }
     
-    # Blocs par type
+    # NOUVELLES STATISTIQUES ACADÉMIQUES
+    academic_stats = {
+        'total_filieres': Filiere.objects.count(),
+        'filieres_actives': Filiere.objects.filter(statut='active').count(),
+        'total_etudiants': EtudiantAcademique.objects.count(),
+        'etudiants_en_attente': EtudiantAcademique.objects.filter(statut_validation='en_attente').count(),
+        'etudiants_valides': EtudiantAcademique.objects.filter(statut_validation='valide').count(),
+        'documents_en_attente': DocumentEtudiant.objects.filter(valide=False).count(),
+        'taux_validation': 0
+    }
+    
+    # Calcul du taux de validation
+    if academic_stats['total_etudiants'] > 0:
+        academic_stats['taux_validation'] = (
+            academic_stats['etudiants_valides'] / academic_stats['total_etudiants']
+        ) * 100
+    
+    # Top 5 filières par nombre d'étudiants
+    top_filieres = Filiere.objects.annotate(
+        nb_etudiants=Count('etudiants')
+    ).order_by('-nb_etudiants')[:5]
+    
+    # Évolution des inscriptions (7 derniers jours)
+    today = timezone.now().date()
+    week_ago = today - timedelta(days=7)
+    
+    inscriptions_semaine = []
+    for i in range(7):
+        date = week_ago + timedelta(days=i)
+        count = EtudiantAcademique.objects.filter(
+            date_inscription__date=date
+        ).count()
+        inscriptions_semaine.append({
+            'date': date.strftime('%d/%m'),
+            'count': count
+        })
+    
+    # Blocs par type (existants)
     blocks_by_type = (
         PageBlock.objects
         .values('block_type')
@@ -56,25 +97,33 @@ def dashboard_view(request):
         .order_by('-count')
     )
     
-    # Derniers blocs modifiés
+    # Derniers blocs modifiés (existants)
     recent_blocks = (
         PageBlock.objects
         .order_by('-updated_at')[:5]
     )
     
-    # Derniers utilisateurs créés
+    # Derniers utilisateurs créés (existants)
     recent_users = (
         User.objects
         .order_by('-date_joined')[:5]
     )
     
-    # Taille média
+    # NOUVEAUX : Derniers étudiants inscrits
+    recent_etudiants = (
+        EtudiantAcademique.objects
+        .select_related('filiere')
+        .order_by('-date_inscription')[:5]
+    )
+    
+    # Taille média (existante)
     media_size = _calculate_media_size()
     
-    # Mode debug
+    # Mode debug (existant)
     debug = getattr(settings, 'DEBUG', False)
     
     context = {
+        # Données existantes
         'stats': stats,
         'user_stats': user_stats,
         'blocks_by_type': blocks_by_type,
@@ -82,9 +131,34 @@ def dashboard_view(request):
         'recent_users': recent_users,
         'media_size': media_size,
         'debug': debug,
+        
+        # NOUVELLES DONNÉES ACADÉMIQUES
+        'academic_stats': academic_stats,
+        'top_filieres': top_filieres,
+        'inscriptions_semaine': inscriptions_semaine,
+        'recent_etudiants': recent_etudiants,
     }
     
     return render(request, 'administration/dashboard.html', context)
+
+
+def _calculate_media_size():
+    """Calcule la taille des médias en MB"""
+    import os
+    from django.conf import settings
+    
+    try:
+        media_root = settings.MEDIA_ROOT
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(media_root):
+            for filename in filenames:
+                filepath = os.path.join(dirpath, filename)
+                if os.path.exists(filepath):
+                    total_size += os.path.getsize(filepath)
+        return round(total_size / (1024 * 1024), 2)
+    except:
+        return 0
+
 @admin_required
 def blocks_list_view(request):
     """Liste des blocs avec recherche et filtres"""

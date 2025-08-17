@@ -1,0 +1,23 @@
+<!-- templates/pages/blocks/academic_frais.html -->
+<section class="py-16 lg:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
+        </div>
+        
+        <div class="max-w-5xl mx-auto">
+            {{ block.content|safe }}
+            
+            {% if block.link_url %}
+            <div class="text-center mt-12">
+                <a href="{{ block.link_url }}" class="inline-flex items-center bg-purple-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    {{ block.link_text|default:"Voir les détails des frais" }}
+                    <i class="fas fa-info-circle ml-2"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+

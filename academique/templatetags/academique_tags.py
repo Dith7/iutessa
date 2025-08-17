@@ -1,3 +1,28 @@
+# academique/templatetags/__init__.py
+# Fichier vide requis pour faire du dossier un package Python
+
+# academique/templatetags/academique_tags.py
+from django import template
+from academique.models import Filiere
+
+register = template.Library()
+
+@register.simple_tag
+def get_public_filieres():
+    """Récupère les filières actives pour affichage public"""
+    return Filiere.objects.filter(statut='active').order_by('nom')
+
+@register.simple_tag
+def get_filieres_count():
+    """Retourne le nombre total de filières actives"""
+    return Filiere.objects.filter(statut='active').count()
+
+@register.simple_tag
+def get_total_places():
+    """Retourne le nombre total de places disponibles"""
+    filieres = Filiere.objects.filter(statut='active')
+    return sum(f.places_disponibles for f in filieres)
+
 # pages/models.py - MODIFIÉ pour ajouter les nouveaux types de blocs
 from django.db import models
 from django.core.validators import FileExtensionValidator
@@ -76,7 +101,7 @@ class PageBlock(models.Model):
     
     block_type = models.CharField(
         max_length=50, 
-        choices=BLOCK_TYPE_CHOICES,
+        choices=BLOCK_TYPE_CHOICES, 
         default='custom',
         verbose_name="Type de bloc"
     )
@@ -228,47 +253,3 @@ class PageBlock(models.Model):
     def has_media(self):
         """Vérifie si le bloc a du contenu média"""
         return bool(self.image or self.document or self.video_file or self.video_url or self.video_embed_code)
-    
-# Ajouter à la fin de pages/models.py
-
-class SiteSettings(models.Model):
-    """Paramètres du site - Singleton"""
-    
-    # Informations générales
-    site_name = models.CharField(max_length=100, default="IUTESSA", verbose_name="Nom du site")
-    site_description = models.TextField(blank=True, verbose_name="Description du site")
-    contact_email = models.EmailField(default="info@iutessa.cm", verbose_name="Email de contact")
-    contact_phone = models.CharField(max_length=20, blank=True, verbose_name="Téléphone")
-    
-    # SEO
-    meta_description = models.TextField(blank=True, verbose_name="Meta description")
-    meta_keywords = models.CharField(max_length=255, blank=True, verbose_name="Mots-clés")
-    
-    # Analytics
-    google_analytics_id = models.CharField(max_length=50, blank=True, verbose_name="Google Analytics ID")
-    
-    # Options d'affichage
-    show_contact_info = models.BooleanField(default=True, verbose_name="Afficher contact")
-    maintenance_mode = models.BooleanField(default=False, verbose_name="Mode maintenance")
-    
-    # Métadonnées
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        verbose_name = "Paramètres du site"
-        verbose_name_plural = "Paramètres du site"
-    
-    def __str__(self):
-        return f"Paramètres - {self.site_name}"
-    
-    @classmethod
-    def get_settings(cls):
-        """Retourne l'instance unique des paramètres"""
-        obj, created = cls.objects.get_or_create(pk=1)
-        return obj
-    
-    def save(self, *args, **kwargs):
-        """Assure qu'il n'y a qu'une seule instance"""
-        self.pk = 1
-        super().save(*args, **kwargs)

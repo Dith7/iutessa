@@ -1,0 +1,176 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Import Étudiants{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Académique</li>
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Import Excel</li>
+{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-black mb-2">Import d'Étudiants</h1>
+    <p class="text-lg text-gray-700">Importer une liste d'étudiants via fichier Excel</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Formulaire d'import -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h3 class="text-2xl font-bold text-black mb-6">Nouveau fichier Excel</h3>
+        
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.fichier.label }}</label>
+                {{ form.fichier }}
+                {% if form.fichier.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.fichier.errors.0 }}</p>
+                {% endif %}
+                <p class="text-sm text-gray-600 mt-2">Formats acceptés : .xlsx, .xls (max 10MB)</p>
+            </div>
+            
+            <div class="bg-blue-50 rounded-lg p-4">
+                <h4 class="font-medium text-blue-900 mb-2">Format Excel requis :</h4>
+                <div class="text-sm text-blue-800 space-y-1">
+                    <p>• <strong>nom</strong> : Nom de famille</p>
+                    <p>• <strong>prenoms</strong> : Prénoms complets</p>
+                    <p>• <strong>cni</strong> : Numéro CNI</p>
+                    <p>• <strong>telephone</strong> : Numéro de téléphone</p>
+                    <p>• <strong>email</strong> : Adresse email</p>
+                    <p>• <strong>filiere_code</strong> : Code de la filière</p>
+                    <p>• <strong>date_naissance</strong> : Format DD/MM/YYYY</p>
+                    <p>• <strong>lieu_naissance</strong> : Lieu de naissance</p>
+                </div>
+            </div>
+            
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-upload mr-2"></i>Importer le fichier
+            </button>
+        </form>
+    </div>
+    
+    <!-- Historique des imports -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <h3 class="text-2xl font-bold text-black mb-6">Historique des imports</h3>
+        
+        {% if imports %}
+        <div class="space-y-4">
+            {% for import in imports %}
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="font-medium text-black">{{ import.date_import|date:"d/m/Y H:i" }}</p>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                        {% if import.nombre_erreurs == 0 %}bg-green-100 text-green-800
+                        {% elif import.nombre_succes > 0 %}bg-yellow-100 text-yellow-800
+                        {% else %}bg-red-100 text-red-800{% endif %}">
+                        {% if import.nombre_erreurs == 0 %}Succès
+                        {% elif import.nombre_succes > 0 %}Partiel
+                        {% else %}Échec{% endif %}
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-600">Total</p>
+                        <p class="font-bold text-black">{{ import.nombre_total }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Réussis</p>
+                        <p class="font-bold text-green-600">{{ import.nombre_succes }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Erreurs</p>
+                        <p class="font-bold text-red-600">{{ import.nombre_erreurs }}</p>
+                    </div>
+                </div>
+                
+                {% if import.rapport_erreurs %}
+                <details class="mt-3">
+                    <summary class="cursor-pointer text-sm text-blue-600 hover:text-blue-800">Voir les erreurs</summary>
+                    <div class="mt-2 p-3 bg-red-50 rounded border text-sm text-red-800">
+                        <pre>{{ import.rapport_erreurs }}</pre>
+                    </div>
+                </details>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <i class="fas fa-history text-gray-300 text-4xl mb-4"></i>
+            <p class="text-gray-500">Aucun import effectué</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Instructions détaillées -->
+<div class="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8">
+    <h3 class="text-2xl font-bold text-black mb-6">Instructions d'utilisation</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+            <h4 class="text-lg font-semibold text-black mb-4">1. Préparation du fichier</h4>
+            <ul class="space-y-2 text-gray-700">
+                <li>• Utilisez Excel (.xlsx) ou (.xls)</li>
+                <li>• La première ligne doit contenir les en-têtes</li>
+                <li>• Respectez exactement les noms de colonnes</li>
+                <li>• Vérifiez que les codes filières existent</li>
+                <li>• Utilisez le format DD/MM/YYYY pour les dates</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 class="text-lg font-semibold text-black mb-4">2. Codes filières disponibles</h4>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GI - Génie Informatique</span>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GM - Génie Mécanique</span>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GE - Génie Électrique</span>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GC - Génie Civil</span>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">AE - Agriculture et Élevage</span>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">CJ - Carrière Juridique</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-8 p-4 bg-yellow-100 rounded-lg">
+        <div class="flex items-start">
+            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3 mt-1"></i>
+            <div>
+                <h5 class="font-semibold text-yellow-800">Important</h5>
+                <p class="text-yellow-700 text-sm mt-1">
+                    Assurez-vous que tous les étudiants ont des CNI et emails uniques. 
+                    Les doublons seront automatiquement ignorés lors de l'import.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Validation du formulaire
+document.querySelector('form').addEventListener('submit', function(e) {
+    const fileInput = document.querySelector('input[type="file"]');
+    if (!fileInput.value) {
+        e.preventDefault();
+        alert('Veuillez sélectionner un fichier Excel');
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    if (file && !file.name.match(/\.(xlsx|xls)$/)) {
+        e.preventDefault();
+        alert('Veuillez sélectionner un fichier Excel (.xlsx ou .xls)');
+        return;
+    }
+    
+    // Confirmation
+    if (!confirm('Êtes-vous sûr de vouloir importer ce fichier ?')) {
+        e.preventDefault();
+    }
+});
+</script>
+{% endblock %}

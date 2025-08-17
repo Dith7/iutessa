@@ -1,12 +1,10 @@
-
-<!-- BASE TEMPLATE -->
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Administration{% endblock %} - Université</title>
+    <title>{% block title %}Administration{% endblock %} - IUTESSA</title>
     {% tailwind_css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,117 +14,118 @@
     <div class="flex h-full">
         <!-- Sidebar -->
         <aside class="w-72 bg-white/80 backdrop-blur-xl shadow-2xl border-r border-white/20">
-            <!-- Logo Section -->
+            <!-- Logo -->
             <div class="p-8 border-b border-gray-100">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
                         <i class="fas fa-graduation-cap text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-gray-900">Administration</h1>
-                        <p class="text-xs text-gray-500 font-medium">Université Portal</p>
+                        <h1 class="text-xl font-bold text-black">Administration</h1>
+                        <p class="text-xs text-gray-600 font-medium">IUTESSA Portal</p>
                     </div>
                 </div>
             </div>
             
             <!-- Navigation -->
             <nav class="p-6 space-y-2">
+                <!-- Principal -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Principal</p>
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Principal</p>
                     <a href="{% url 'administration:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                        <div class="nav-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <span>Dashboard</span>
-                        <div class="nav-indicator"></div>
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <span class="text-black">Dashboard</span>
                     </a>
                     
                     <a href="{% url 'administration:blocks_list' %}" class="nav-link {% if 'block' in request.resolver_match.url_name %}active{% endif %}">
-                        <div class="nav-icon">
-                            <i class="fas fa-th-large"></i>
-                        </div>
-                        <span>Blocs de contenu</span>
-                        <div class="nav-indicator"></div>
+                        <div class="nav-icon"><i class="fas fa-th-large"></i></div>
+                        <span class="text-black">Blocs de contenu</span>
                     </a>
                     
                     <a href="{% url 'administration:media_library' %}" class="nav-link {% if 'media' in request.resolver_match.url_name %}active{% endif %}">
-                        <div class="nav-icon">
-                            <i class="fas fa-images"></i>
-                        </div>
-                        <span>Médiathèque</span>
-                        <div class="nav-indicator"></div>
+                        <div class="nav-icon"><i class="fas fa-images"></i></div>
+                        <span class="text-black">Médiathèque</span>
                     </a>
                 </div>
                 
+                <!-- Académique -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Analytics</p>
-                    <a href="{% url 'administration:analytics' %}" class="nav-link {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}">
-                        <div class="nav-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <span>Analytics</span>
-                        <div class="nav-indicator"></div>
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Académique</p>
+                    <a href="{% url 'academique:admin_filieres_list' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <span class="text-black">Filières</span>
+                    </a>
+                    
+                    <a href="{% url 'academique:admin_etudiants_list' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <span class="text-black">Étudiants</span>
+                    </a>
+                    
+                    <a href="{% url 'academique:admin_documents_validation' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-file-check"></i></div>
+                        <span class="text-black">Documents</span>
+                    </a>
+                    
+                    <a href="{% url 'academique:admin_import_etudiants' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-upload"></i></div>
+                        <span class="text-black">Import Excel</span>
                     </a>
                 </div>
                 
+                <!-- Analytics -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Analytics</p>
+                    <a href="{% url 'administration:analytics' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                        <span class="text-black">Analytics</span>
+                    </a>
+                </div>
+                
+                <!-- Système -->
                 <div class="border-t border-gray-100 pt-6">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Système</p>
-                    <a href="{% url 'administration:settings' %}" class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
-                        <div class="nav-icon">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        <span>Paramètres</span>
-                        <div class="nav-indicator"></div>
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Système</p>
+                    <a href="{% url 'administration:settings' %}" class="nav-link">
+                        <div class="nav-icon"><i class="fas fa-cog"></i></div>
+                        <span class="text-black">Paramètres</span>
                     </a>
                     
                     <a href="{% url 'pages:home' %}" class="nav-link" target="_blank">
-                        <div class="nav-icon">
-                            <i class="fas fa-external-link-alt"></i>
-                        </div>
-                        <span>Voir le site</span>
-                        <div class="nav-indicator"></div>
+                        <div class="nav-icon"><i class="fas fa-external-link-alt"></i></div>
+                        <span class="text-black">Voir le site</span>
                     </a>
                     
                     <a href="/admin/" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <span>Django Admin</span>
-                        <div class="nav-indicator"></div>
+                        <div class="nav-icon"><i class="fas fa-tools"></i></div>
+                        <span class="text-black">Django Admin</span>
                     </a>
                 </div>
             </nav>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Main Content -->
         <div class="flex-1 flex flex-col min-h-0">
-            <!-- Top Header -->
+            <!-- Header -->
             <header class="bg-white/60 backdrop-blur-xl border-b border-white/20 shadow-sm">
                 <div class="flex items-center justify-between px-8 py-6">
                     <!-- Breadcrumbs -->
                     <div>
-                        {% block breadcrumbs %}
                         <nav class="flex items-center space-x-2 text-sm">
-                            <a href="{% url 'administration:dashboard' %}" class="text-gray-500 hover:text-blue-600 font-medium transition-colors">
-                                Administration
-                            </a>
+                            <a href="{% url 'administration:dashboard' %}" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Administration</a>
                             {% block breadcrumb_items %}{% endblock %}
                         </nav>
-                        {% endblock %}
                     </div>
                     
-                    <!-- Header Actions -->
+                    <!-- Quick Actions -->
                     <div class="flex items-center space-x-4">
-                        <a href="{% url 'administration:block_create' %}" class="btn-primary">
-                            <i class="fas fa-plus"></i>
-                            <span>Nouveau bloc</span>
+                        <a href="{% url 'administration:block_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>Nouveau bloc
                         </a>
                         
                         <!-- User Profile -->
                         <div class="flex items-center space-x-3 pl-4 border-l border-gray-200">
                             <div class="text-right">
-                                <p class="text-sm font-semibold text-gray-900">{{ user.username }}</p>
-                                <p class="text-xs text-gray-500">Administrateur</p>
+                                <p class="text-sm font-semibold text-black">{{ user.username }}</p>
+                                <p class="text-xs text-gray-600">Administrateur</p>
                             </div>
                             <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
                                 <span class="text-white text-sm font-bold">{{ user.username|first|upper }}</span>
@@ -140,18 +139,18 @@
             {% if messages %}
             <div class="px-8 py-4">
                 {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }} p-4 rounded-xl border shadow-sm mb-4">
                     <div class="flex items-center">
                         {% if message.tags == 'success' %}
-                            <i class="fas fa-check-circle mr-3"></i>
+                            <i class="fas fa-check-circle mr-3 text-green-600"></i>
                         {% elif message.tags == 'error' %}
-                            <i class="fas fa-exclamation-circle mr-3"></i>
+                            <i class="fas fa-exclamation-circle mr-3 text-red-600"></i>
                         {% elif message.tags == 'warning' %}
-                            <i class="fas fa-exclamation-triangle mr-3"></i>
+                            <i class="fas fa-exclamation-triangle mr-3 text-yellow-600"></i>
                         {% else %}
-                            <i class="fas fa-info-circle mr-3"></i>
+                            <i class="fas fa-info-circle mr-3 text-blue-600"></i>
                         {% endif %}
-                        <span>{{ message }}</span>
+                        <span class="text-black">{{ message }}</span>
                     </div>
                 </div>
                 {% endfor %}
@@ -172,56 +171,29 @@
 
     <style>
         .nav-link {
-            @apply relative flex items-center px-4 py-3 text-gray-600 rounded-xl transition-all duration-300 group hover:bg-blue-50 hover:text-blue-700;
+            @apply relative flex items-center px-4 py-3 text-gray-700 rounded-xl transition-all duration-300 group hover:bg-blue-50 hover:text-blue-700;
         }
         
         .nav-link.active {
             @apply bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg;
         }
         
-        .nav-link.active .nav-icon {
+        .nav-link.active span {
             @apply text-white;
         }
         
         .nav-icon {
-            @apply w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-all duration-300 mr-3 group-hover:bg-blue-100 group-hover:text-blue-600;
+            @apply w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-all duration-300 mr-3 group-hover:bg-blue-100 group-hover:text-blue-600;
         }
         
         .nav-link.active .nav-icon {
             @apply bg-white/20 text-white;
         }
         
-        .nav-indicator {
-            @apply absolute right-2 w-2 h-2 bg-blue-500 rounded-full opacity-0 transition-opacity duration-300;
-        }
-        
-        .nav-link.active .nav-indicator {
-            @apply opacity-100 bg-white;
-        }
-        
-        .btn-primary {
-            @apply inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300;
-        }
-        
-        .alert {
-            @apply p-4 rounded-xl border shadow-sm;
-        }
-        
-        .alert-success {
-            @apply bg-emerald-50 text-emerald-800 border-emerald-200;
-        }
-        
-        .alert-error {
-            @apply bg-red-50 text-red-800 border-red-200;
-        }
-        
-        .alert-warning {
-            @apply bg-amber-50 text-amber-800 border-amber-200;
-        }
-        
-        .alert-info {
-            @apply bg-blue-50 text-blue-800 border-blue-200;
-        }
+        .alert-success { @apply bg-emerald-50 text-emerald-800 border-emerald-200; }
+        .alert-error { @apply bg-red-50 text-red-800 border-red-200; }
+        .alert-warning { @apply bg-amber-50 text-amber-800 border-amber-200; }
+        .alert-info { @apply bg-blue-50 text-blue-800 border-blue-200; }
     </style>
 </body>
 </html>
