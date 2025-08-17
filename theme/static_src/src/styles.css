@@ -15,26 +15,48 @@
 @import '@fontsource/montserrat/500.css';
 @import '@fontsource/montserrat/600.css';
 @import '@fontsource/montserrat/700.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 @tailwind utilities;
 
+body {
+  font-family: 'Montserrat', 'Poppins' sans-serif;
+}
+
+ 
+@tailwind utilities;
+
+
+
 @layer base {
-    body {
+   body {
         font-family: 'Montserrat', system-ui, sans-serif;
     }
 }
 
-@layer utilities {
-    .bg-gradient-iut {
-        @apply bg-gradient-to-r from-iut-green-600 to-iut-purple-700;
-    }
-    
-    .text-gradient-iut {
-        @apply bg-gradient-to-r from-iut-green-600 to-iut-purple-700 bg-clip-text text-transparent;
-    }
+/* Custom gradient backgrounds */
+.bg-gradient-iut {
+  background: linear-gradient(135deg, #16a34a 0%, #7c3aed 100%);
 }
 
+.text-gradient-iut {
+  background: linear-gradient(135deg, #16a34a 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 
+@layer utilities {
+  
+} */
+
+
+
 /* Custom scrollbar */
+/* 
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -46,4 +68,4 @@
 
 ::-webkit-scrollbar-thumb {
     @apply bg-gradient-to-b from-iut-green-600 to-iut-purple-700 rounded-full;
-}
+}  */
