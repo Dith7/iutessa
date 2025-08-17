@@ -9,3 +9,41 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
+
+@import '@fontsource/montserrat/300.css';
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/500.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+
+@tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'Montserrat', system-ui, sans-serif;
+    }
+}
+
+@layer utilities {
+    .bg-gradient-iut {
+        @apply bg-gradient-to-r from-iut-green-600 to-iut-purple-700;
+    }
+    
+    .text-gradient-iut {
+        @apply bg-gradient-to-r from-iut-green-600 to-iut-purple-700 bg-clip-text text-transparent;
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-iut-green-600 to-iut-purple-700 rounded-full;
+}
