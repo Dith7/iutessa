@@ -1,0 +1,39 @@
+<!-- templates/notifications/emails/document_valide.html -->
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Document Validé - IUT-ESSA{% endblock %}
+{% block subtitle %}Validation des Documents{% endblock %}
+
+{% block content %}
+<div class="greeting">
+    Bonjour {{ notification.destinataire.first_name }},
+</div>
+
+<div class="message">
+    Nous avons le plaisir de vous informer que votre document a été validé avec succès 🎉.
+</div>
+
+<div class="success-box">
+    <strong>✅ Document validé :</strong><br>
+    {{ notification.message }}
+</div>
+
+<div class="message">
+    <strong>Que faire maintenant ?</strong>
+    <ul>
+        <li>Aucun autre document n’est requis pour ce type</li>
+        <li>Vous pouvez consulter vos documents validés dans votre espace étudiant</li>
+        <li>Continuez à suivre l’avancement de votre dossier académique</li>
+    </ul>
+</div>
+
+<div style="text-align: center;">
+    <a href="{{ site_url }}{{ notification.url_action }}" class="button">
+        Consulter mes documents
+    </a>
+</div>
+
+<div class="message" style="font-size: 14px; color: #718096;">
+    Si vous avez des questions, n'hésitez pas à contacter l'administration académique.
+</div>
+{% endblock %}

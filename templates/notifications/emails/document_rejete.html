@@ -1,0 +1,43 @@
+<!-- templates/notifications/emails/document_rejete.html -->
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Document Rejeté - IUT-ESSA{% endblock %}
+{% block subtitle %}Validation des Documents{% endblock %}
+
+{% block content %}
+<div class="greeting">
+    Bonjour {{ notification.destinataire.first_name }},
+</div>
+
+<div class="message">
+    Nous vous informons qu'un de vos documents a été rejeté lors de la validation.
+</div>
+
+<div class="error-box">
+    <strong>⚠️ Action requise</strong><br>
+    {{ notification.message }}
+</div>
+
+<div class="message">
+    <strong>Que faire maintenant ?</strong>
+    <ol>
+        <li>Vérifiez la raison du rejet indiquée ci-dessus</li>
+        <li>Préparez un nouveau document conforme aux exigences</li>
+        <li>Soumettez-le à nouveau via votre espace étudiant</li>
+    </ol>
+</div>
+
+<div class="warning-box">
+    <strong>Important :</strong> Votre dossier ne pourra être validé qu'une fois tous les documents approuvés.
+</div>
+
+<div style="text-align: center;">
+    <a href="{{ site_url }}/academique/documents/" class="button">
+        Soumettre un nouveau document
+    </a>
+</div>
+
+<div class="message" style="font-size: 14px; color: #718096;">
+    Si vous avez des questions, n'hésitez pas à contacter l'administration académique.
+</div>
+{% endblock %}

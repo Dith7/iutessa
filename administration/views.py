@@ -13,6 +13,7 @@ from pages.models import PageBlock
 from .forms import PageBlockForm, MediaUploadForm
 from datetime import timedelta
 from django.utils import timezone
+from notifications.services import NotificationService  # AJOUT IMPORT NOTIFICATION
 
 # Importer les décorateurs du module users
 from users.decorators import admin_required, role_required
@@ -68,6 +69,18 @@ def dashboard_view(request):
         academic_stats['taux_validation'] = (
             academic_stats['etudiants_valides'] / academic_stats['total_etudiants']
         ) * 100
+    
+    # NOTIFICATION: Rappel si trop de documents en attente
+    if academic_stats['documents_en_attente'] > 10 and not request.session.get('docs_reminder_sent'):
+        NotificationService.create_notification(
+            destinataire=request.user,
+            type_notification='rappel',
+            titre='Documents en attente de validation',
+            message=f'{academic_stats["documents_en_attente"]} documents sont en attente de validation',
+            priorite='haute',
+            url_action='/academique/administration/documents/'
+        )
+        request.session['docs_reminder_sent'] = True
     
     # Top 5 filières par nombre d'étudiants
     top_filieres = Filiere.objects.annotate(

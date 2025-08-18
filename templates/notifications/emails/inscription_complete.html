@@ -1,0 +1,50 @@
+<!-- templates/notifications/emails/inscription_complete.html -->
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Inscription Complétée - IUT-ESSA{% endblock %}
+{% block subtitle %}Inscription Académique{% endblock %}
+
+{% block content %}
+<div class="greeting">
+    Bonjour {{ notification.destinataire.first_name }},
+</div>
+
+<div class="message">
+    Félicitations ! Votre inscription académique a été enregistrée avec succès.
+</div>
+
+<div class="info-box">
+    <strong>✅ Inscription confirmée</strong><br>
+    Votre dossier a été créé et votre matricule étudiant vous a été attribué.
+</div>
+
+<table class="details-table">
+    <tr>
+        <td>Matricule :</td>
+        <td><strong>{{ notification.destinataire.etudiant_academique.numero_matricule }}</strong></td>
+    </tr>
+    <tr>
+        <td>Filière :</td>
+        <td>{{ notification.destinataire.etudiant_academique.filiere.nom }}</td>
+    </tr>
+    <tr>
+        <td>Date d'inscription :</td>
+        <td>{{ notification.destinataire.etudiant_academique.date_inscription|date:"d/m/Y" }}</td>
+    </tr>
+</table>
+
+<div class="message">
+    <strong>Prochaines étapes :</strong>
+    <ul>
+        <li>Téléchargez et soumettez tous les documents requis</li>
+        <li>Attendez la validation de votre dossier par l'administration</li>
+        <li>Consultez régulièrement vos notifications pour les mises à jour</li>
+    </ul>
+</div>
+
+<div style="text-align: center;">
+    <a href="{{ site_url }}{{ notification.url_action }}" class="button">
+        Accéder à mon profil
+    </a>
+</div>
+{% endblock %}

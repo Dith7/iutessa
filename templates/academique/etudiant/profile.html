@@ -1,30 +1,89 @@
-<!-- templates/academique/etudiant/profile.html -->
 {% extends 'base.html' %}
 
 {% block title %}Mon Profil Académique{% endblock %}
 
-{% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-    <div class="container mx-auto px-4 max-w-6xl">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Mon Profil Académique</h1>
-            <p class="text-lg text-gray-600">Suivi de votre dossier d'inscription</p>
-        </div>
+{% block extra_css %}
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+    }
+    
+    .bg-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+    }
+    
+    .bg-gradient-soft {
+        background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+    
+    .card-hover {
+        transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
 
-        <!-- Status Banner -->
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user-graduate text-blue-600 text-2xl"></i>
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-iut rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user-graduate text-white text-lg sm:text-xl"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900">{{ etudiant.nom_complet }}</h2>
-                        <p class="text-gray-600">{{ etudiant.numero_matricule }} • {{ etudiant.filiere.nom }}</p>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Profil Académique</h1>
+                        <p class="text-sm text-gray-600 hidden sm:block">{{ etudiant.numero_matricule }}</p>
                     </div>
                 </div>
-                <div class="text-right">
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'users:etudiant_dashboard' %}" class="text-gray-500 hover:text-green-600 transition-colors">
+                        <i class="fas fa-home text-lg"></i>
+                    </a>
+                    <a href="{% url 'users:logout' %}" class="text-gray-500 hover:text-red-500 transition-colors">
+                        <i class="fas fa-sign-out-alt text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Status Banner -->
+    <div class="bg-gradient-iut">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-3xl"></i>
+                    </div>
+                    <div class="text-white">
+                        <h2 class="text-3xl font-bold">{{ etudiant.nom_complet }}</h2>
+                        <p class="text-white/90">{{ etudiant.filiere.nom }}</p>
+                    </div>
+                </div>
+                <div>
                     <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium
                         {% if etudiant.statut_validation == 'valide' %}bg-green-100 text-green-800
                         {% elif etudiant.statut_validation == 'en_attente' %}bg-yellow-100 text-yellow-800
@@ -34,60 +93,106 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Informations Personnelles -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Informations Personnelles</h3>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Informations Personnelles -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-id-card text-green-600"></i>
+                        </div>
+                        Informations Personnelles
+                    </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-sm font-medium text-gray-500">CNI</label>
-                            <p class="text-gray-900 font-medium">{{ etudiant.cni }}</p>
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Téléphone</label>
-                            <p class="text-gray-900 font-medium">{{ etudiant.telephone }}</p>
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Email</label>
-                            <p class="text-gray-900 font-medium">{{ etudiant.email_personnel }}</p>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.cni }}</p>
                         </div>
                         <div>
                             <label class="text-sm font-medium text-gray-500">Date de naissance</label>
-                            <p class="text-gray-900 font-medium">{{ etudiant.date_naissance|date:"d/m/Y" }}</p>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.date_naissance|date:"d/m/Y" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-500">Lieu de naissance</label>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.lieu_naissance }}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-500">Nationalité</label>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.get_nationalite_display }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-phone text-purple-600"></i>
+                        </div>
+                        Contact
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-sm font-medium text-gray-500">Téléphone</label>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.telephone }}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-500">Email</label>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.email_personnel }}</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm font-medium text-gray-500">Adresse</label>
+                            <p class="text-gray-900 font-medium mt-1">{{ etudiant.adresse }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Documents -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-bold text-gray-900">Mes Documents</h3>
-                        <a href="{% url 'academique:etudiant_documents' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-upload mr-2"></i>Gérer
+                        <h3 class="text-xl font-bold text-gray-900 flex items-center">
+                            <div class="w-10 h-10 bg-gradient-soft rounded-lg flex items-center justify-center mr-3 border border-green-200">
+                                <i class="fas fa-folder-open text-green-700"></i>
+                            </div>
+                            Mes Documents
+                        </h3>
+                        <a href="{% url 'academique:etudiant_documents' %}" class="px-4 py-2 btn-gradient text-white rounded-lg font-medium text-sm">
+                            <i class="fas fa-cog mr-2"></i>Gérer
                         </a>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         {% for document in documents %}
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between p-4 bg-gradient-soft rounded-lg border border-gray-200">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-file text-blue-600"></i>
+                                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200">
+                                    <i class="fas fa-file text-green-600"></i>
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">{{ document.get_type_document_display }}</p>
                                     <p class="text-sm text-gray-500">{{ document.date_upload|date:"d/m/Y" }}</p>
                                 </div>
                             </div>
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                                {% if document.valide %}bg-green-100 text-green-800
-                                {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                {% if document.valide %}bg-green-100 text-green-800 border border-green-200
+                                {% else %}bg-yellow-100 text-yellow-800 border border-yellow-200{% endif %}">
                                 {% if document.valide %}Validé{% else %}En attente{% endif %}
                             </span>
                         </div>
                         {% empty %}
-                        <p class="text-gray-500 text-center py-8">Aucun document téléchargé</p>
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-gradient-soft rounded-full flex items-center justify-center mx-auto mb-3 border border-gray-200">
+                                <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500">Aucun document téléchargé</p>
+                            <a href="{% url 'academique:etudiant_documents' %}" class="text-green-600 hover:text-green-700 text-sm mt-2 inline-block">
+                                Ajouter des documents →
+                            </a>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -96,33 +201,60 @@
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Progression -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
                     <h4 class="font-bold text-gray-900 mb-4">Progression du dossier</h4>
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-600">Complétion</span>
-                            <span class="text-sm font-bold text-gray-900">{{ progression }}%</span>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Complétion</span>
+                                <span class="font-bold text-gray-900">{{ progression }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-iut h-2 rounded-full" style="width: {{ progression }}%"></div>
+                            </div>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ progression }}%"></div>
+                        <div class="pt-2 space-y-2">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-600">Informations personnelles</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                {% if documents|length > 0 %}
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                {% else %}
+                                <i class="fas fa-circle text-gray-300 mr-2"></i>
+                                {% endif %}
+                                <span class="text-gray-600">Documents</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                {% if etudiant.statut_validation == 'valide' %}
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                {% else %}
+                                <i class="fas fa-circle text-gray-300 mr-2"></i>
+                                {% endif %}
+                                <span class="text-gray-600">Validation</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Actions -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h4 class="font-bold text-gray-900 mb-4">Actions</h4>
+                <div class="bg-gradient-iut rounded-xl p-6 text-white">
+                    <h4 class="font-bold mb-4">Actions rapides</h4>
                     <div class="space-y-3">
-                        <a href="{% url 'academique:etudiant_fiche_pdf' %}" class="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <a href="{% url 'academique:etudiant_fiche_pdf' %}" class="block w-full bg-white/20 backdrop-blur text-white text-center py-2.5 rounded-lg hover:bg-white/30 transition-colors font-medium">
                             <i class="fas fa-download mr-2"></i>Télécharger fiche
                         </a>
-                        <a href="{% url 'academique:etudiant_documents' %}" class="block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <a href="{% url 'academique:etudiant_documents' %}" class="block w-full bg-white/20 backdrop-blur text-white text-center py-2.5 rounded-lg hover:bg-white/30 transition-colors font-medium">
                             <i class="fas fa-upload mr-2"></i>Mes documents
+                        </a>
+                        <a href="{% url 'users:profile' %}" class="block w-full bg-white/20 backdrop-blur text-white text-center py-2.5 rounded-lg hover:bg-white/30 transition-colors font-medium">
+                            <i class="fas fa-user-cog mr-2"></i>Modifier profil
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </div>
 {% endblock %}

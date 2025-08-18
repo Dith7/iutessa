@@ -134,7 +134,7 @@
                     <h2 class="text-xl font-bold text-gray-900 mb-6">Actions rapides</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <a href="#" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors action-card">
+                        <a href="{% url 'academique:etudiant_inscription' %}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors action-card">
                             <div class="w-10 h-10 bg-gradient-iut rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
                                 <i class="fas fa-file-alt text-white"></i>
                             </div>
@@ -144,33 +144,33 @@
                             </div>
                         </a>
                         
-                        <a href="#" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors action-card">
+                        <a href="{% url 'academique:etudiant_fiche_pdf' %}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors action-card">
                             <div class="w-10 h-10 bg-gradient-iut rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
                                 <i class="fas fa-download text-white"></i>
                             </div>
                             <div>
                                 <h3 class="font-semibold text-gray-900">Télécharger documents</h3>
-                                <p class="text-sm text-gray-600">Certificats et attestations</p>
+                                <p class="text-sm text-gray-600">Fiche d'inscription PDF</p>
                             </div>
                         </a>
                         
-                        <a href="#" class="flex items-center p-4 bg-gradient-soft rounded-lg hover:bg-gray-50 transition-colors action-card border border-gray-200">
+                        <a href="{% url 'academique:etudiant_documents' %}" class="flex items-center p-4 bg-gradient-soft rounded-lg hover:bg-gray-50 transition-colors action-card border border-gray-200">
                             <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                                <i class="fas fa-calendar-alt text-white"></i>
+                                <i class="fas fa-folder-open text-white"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Planning</h3>
-                                <p class="text-sm text-gray-600">Consulter votre emploi du temps</p>
+                                <h3 class="font-semibold text-gray-900">Mes documents</h3>
+                                <p class="text-sm text-gray-600">Gérer vos documents</p>
                             </div>
                         </a>
                         
-                        <a href="#" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors action-card">
+                        <a href="{% url 'academique:etudiant_profile' %}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors action-card">
                             <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                                <i class="fas fa-chart-line text-white"></i>
+                                <i class="fas fa-user text-white"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Notes</h3>
-                                <p class="text-sm text-gray-600">Consulter vos résultats</p>
+                                <h3 class="font-semibold text-gray-900">Mon profil académique</h3>
+                                <p class="text-sm text-gray-600">Consulter vos informations</p>
                             </div>
                         </a>
                     </div>

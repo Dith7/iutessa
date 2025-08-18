@@ -18,6 +18,7 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import openpyxl
+from notifications.services import NotificationService  # AJOUT IMPORT NOTIFICATION
 
 User = get_user_model()
 
@@ -58,6 +59,20 @@ def admin_filiere_create(request):
         form = FiliereForm(request.POST)
         if form.is_valid():
             filiere = form.save()
+            
+            # NOTIFICATION: Nouvelle filière créée
+            admins = User.objects.filter(role='ADMIN').exclude(id=request.user.id)
+            for admin in admins:
+                NotificationService.create_notification(
+                    destinataire=admin,
+                    expediteur=request.user,
+                    type_notification='info',
+                    titre='Nouvelle filière créée',
+                    message=f'La filière {filiere.nom} ({filiere.code}) a été créée',
+                    priorite='normale',
+                    url_action='/academique/administration/filieres/'
+                )
+            
             messages.success(request, f'Filière "{filiere.nom}" créée avec succès.')
             return redirect('academique:admin_filieres_list')
     else:
@@ -155,6 +170,16 @@ def admin_import_etudiants(request):
                 result = _process_excel_import(import_obj)
                 if result['success']:
                     messages.success(request, f'Import réussi: {result["success"]} étudiants importés.')
+                    
+                    # NOTIFICATION: Import réussi pour les admins
+                    NotificationService.create_notification(
+                        destinataire=request.user,
+                        type_notification='info',
+                        titre='Import terminé avec succès',
+                        message=f'{result["success"]} étudiants ont été importés',
+                        priorite='normale'
+                    )
+                    
                 if result['errors']:
                     messages.warning(request, f'{result["errors"]} erreurs lors de l\'import.')
                     
@@ -202,19 +227,44 @@ def admin_documents_validation(request):
 
 @admin_required
 def admin_validate_document(request, doc_id):
-    """Validation/rejet d'un document"""
+    """
+    Validation/rejet d'un document.
+    En cas de rejet, le document est supprimé et l'étudiant est notifié.
+    """
     document = get_object_or_404(DocumentEtudiant, id=doc_id)
     
     if request.method == 'POST':
         form = ValidationDocumentForm(request.POST, instance=document)
         if form.is_valid():
-            doc = form.save(commit=False)
-            doc.valide_par = request.user if doc.valide else None
-            doc.save()
             
-            action = "validé" if doc.valide else "rejeté"
-            messages.success(request, f'Document {action} avec succès.')
+            is_validated = form.cleaned_data.get('valide')
             
+            if is_validated:
+                # Si le document est validé
+                doc = form.save(commit=False)
+                doc.valide_par = request.user
+                doc.save()
+                
+                # NOTIFICATION: Document validé
+                NotificationService.notify_document_validated(doc, request.user)
+                
+                messages.success(request, f'Document "{document.get_type_document_display()}" validé avec succès.')
+            else:
+                # Si le document est rejeté
+                commentaire_rejet = form.cleaned_data.get('commentaire')
+                
+                # NOTIFICATION: Document rejeté
+                NotificationService.notify_document_rejected(
+                    document, 
+                    request.user, 
+                    commentaire_rejet
+                )
+                
+                # Supprimer le document et son fichier associé
+                document.delete()
+                
+                messages.error(request, f'Document rejeté et supprimé pour {document.etudiant.nom_complet}. Un email de notification a été envoyé.')
+
             return redirect('academique:admin_documents_validation')
     else:
         form = ValidationDocumentForm(instance=document)
@@ -224,6 +274,44 @@ def admin_validate_document(request, doc_id):
         'document': document
     })
 
+
+@admin_required
+def admin_validate_inscription(request, etudiant_id):
+    """Validation complète d'une inscription avec notifications"""
+    etudiant = get_object_or_404(EtudiantAcademique, id=etudiant_id)
+    
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        
+        if action == 'valider':
+            etudiant.statut_validation = 'valide'
+            etudiant.date_validation = timezone.now()
+            etudiant.save()
+            
+            # NOTIFICATION: Inscription validée
+            NotificationService.notify_inscription_validated(etudiant, request.user)
+            
+            messages.success(request, f'Inscription de {etudiant.nom_complet} validée.')
+            
+        elif action == 'rejeter':
+            raison = request.POST.get('raison', '')
+            etudiant.statut_validation = 'rejete'
+            etudiant.save()
+            
+            # NOTIFICATION: Inscription rejetée
+            NotificationService.create_notification(
+                destinataire=etudiant.user,
+                expediteur=request.user,
+                type_notification='inscription_rejetee',
+                titre='Inscription rejetée',
+                message=f'Votre inscription a été rejetée. Raison: {raison}',
+                priorite='haute',
+                url_action='/academique/inscription/'
+            )
+            
+            messages.warning(request, f'Inscription de {etudiant.nom_complet} rejetée.')
+    
+    return redirect('academique:admin_etudiants_list')
 
 @admin_required  
 def export_etudiants_excel(request):
@@ -270,34 +358,64 @@ def export_etudiants_excel(request):
 
 @role_required('ETUDIANT')
 def etudiant_inscription(request):
-    """Formulaire d'inscription étudiant"""
+    """
+    Formulaire d'inscription étudiant.
+    Pré-remplit avec les données importées si elles existent.
+    """
     try:
-        etudiant = request.user.etudiant_academique
-        # Si déjà inscrit, rediriger vers le profil
-        return redirect('academique:etudiant_profile')
+        # Tente de récupérer l'objet EtudiantAcademique existant
+        etudiant_instance = request.user.etudiant_academique
+        form_existait = True
     except EtudiantAcademique.DoesNotExist:
-        pass
-    
+        # L'objet n'existe pas, nous en créons une nouvelle instance
+        etudiant_instance = None
+        form_existait = False
+
     if request.method == 'POST':
-        form = EtudiantInscriptionForm(request.POST)
+        # Si une instance existe, on la passe au formulaire
+        form = EtudiantInscriptionForm(request.POST, instance=etudiant_instance)
+        
+        # On passe également la valeur de la filière si elle est désactivée
+        # Si le champ 'filiere' est 'disabled', sa valeur n'est pas dans request.POST
+        if form_existait:
+            filiere_id = etudiant_instance.filiere_id
+        else:
+            # Si c'est une nouvelle inscription, l'étudiant doit sélectionner la filière
+            filiere_id = request.POST.get('filiere')
+            
         if form.is_valid():
             etudiant = form.save(commit=False)
             etudiant.user = request.user
             etudiant.nom = request.user.last_name
             etudiant.prenoms = request.user.first_name
+            etudiant.filiere_id = filiere_id # Assigner la filière
+            
             etudiant.save()
             
-            messages.success(request, 'Inscription académique enregistrée avec succès!')
+            # NOTIFICATION: Inscription complétée
+            if not form_existait:
+                NotificationService.notify_inscription_complete(etudiant)
+            
+            messages.success(request, 'Votre inscription a été mise à jour avec succès!')
             return redirect('academique:etudiant_profile')
-    else:
-        # Pré-remplir avec les données utilisateur
-        initial_data = {
-            'nom': request.user.last_name,
-            'prenoms': request.user.first_name,
-        }
-        form = EtudiantInscriptionForm(initial=initial_data)
+        else:
+            # Si le formulaire n'est pas valide, on affiche les erreurs
+            messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
     
+    else: # Méthode GET
+        # Pré-remplir avec les données de l'instance si elle existe, sinon avec les infos de l'utilisateur
+        if etudiant_instance:
+            form = EtudiantInscriptionForm(instance=etudiant_instance)
+        else:
+            initial_data = {
+                'nom': request.user.last_name,
+                'prenoms': request.user.first_name,
+            }
+            form = EtudiantInscriptionForm(initial=initial_data)
+            
     return render(request, 'academique/etudiant/inscription.html', {'form': form})
+
+
 
 
 @role_required('ETUDIANT')
@@ -314,6 +432,11 @@ def etudiant_profile(request):
         type_doc for type_doc in documents_requis 
         if not documents.filter(type_document=type_doc).exists()
     ]
+    
+    # NOTIFICATION: Rappel documents manquants (si nécessaire)
+    if documents_manquants and not request.session.get('rappel_documents_sent'):
+        NotificationService.notify_documents_missing(etudiant, documents_manquants)
+        request.session['rappel_documents_sent'] = True
     
     context = {
         'etudiant': etudiant,
@@ -355,6 +478,17 @@ def etudiant_documents(request):
                 document = form.save(commit=False)
                 document.etudiant = etudiant
                 document.save()
+                
+                # NOTIFICATION: Document uploadé
+                NotificationService.create_notification(
+                    destinataire=etudiant.user,
+                    type_notification='document_upload',
+                    titre='Document téléchargé',
+                    message=f'Votre {document.get_type_document_display()} a été téléchargé avec succès et est en attente de validation.',
+                    priorite='normale',
+                    url_action='/academique/documents/'
+                )
+                
                 messages.success(request, 'Document ajouté avec succès.')
             
             return redirect('academique:etudiant_documents')
@@ -481,6 +615,7 @@ def _process_excel_import(import_obj):
         success_count = 0
         error_count = 0
         errors = []
+        users_imported = []  # Pour les notifications
         
         for index, row in df.iterrows():
             try:
@@ -499,8 +634,9 @@ def _process_excel_import(import_obj):
                 if created:
                     user.set_password('password123')  # Mot de passe temporaire
                     user.save()
+                    users_imported.append(user)  # Pour notification
                 
-                # Créer l'étudiant académique
+                # Créer l'étudiant académique avec TOUS les champs requis
                 filiere = Filiere.objects.get(code=row['filiere_code'])
                 
                 etudiant, created = EtudiantAcademique.objects.get_or_create(
@@ -509,20 +645,44 @@ def _process_excel_import(import_obj):
                         'filiere': filiere,
                         'nom': row['nom'],
                         'prenoms': row['prenoms'],
-                        'cni': row['cni'],
-                        'telephone': row['telephone'],
+                        'cni': str(row['cni']),  # Convertir en string si nécessaire
+                        'telephone': str(row['telephone']),  # Convertir en string
                         'email_personnel': row['email'],
-                        'date_naissance': row['date_naissance'],
+                        'date_naissance': pd.to_datetime(row['date_naissance']).date(),
                         'lieu_naissance': row['lieu_naissance'],
+                        'nationalite': row.get('nationalite', 'camerounaise').lower(),
+                        'region_origine': row['region_origine'],
+                        'adresse': row['adresse'],
+                        'nom_pere': row['nom_pere'],
+                        'nom_mere': row['nom_mere'],
+                        'diplome_obtenu': row['diplome_obtenu'],
+                        'annee_obtention': int(row['annee_obtention']),  # CHAMP MANQUANT - AJOUTÉ ICI
                     }
                 )
                 
+                # Ajouter les numéros de téléphone des parents s'ils existent
+                if 'telephone_pere' in row and row['telephone_pere']:
+                    etudiant.telephone_pere = str(row['telephone_pere'])
+                if 'telephone_mere' in row and row['telephone_mere']:
+                    etudiant.telephone_mere = str(row['telephone_mere'])
+                    etudiant.save()
+                
                 if created:
                     success_count += 1
+                    # Mettre à jour le nombre de places occupées dans la filière
+                    filiere.places_occupees += 1
+                    filiere.save()
                 
+            except Filiere.DoesNotExist:
+                error_count += 1
+                errors.append(f"Ligne {index + 2}: Filière avec code '{row['filiere_code']}' non trouvée")
             except Exception as e:
                 error_count += 1
                 errors.append(f"Ligne {index + 2}: {str(e)}")
+        
+        # NOTIFICATION: Envoyer notifications aux étudiants importés
+        if users_imported:
+            NotificationService.notify_import_success(users_imported, import_obj.importe_par)
         
         # Mettre à jour l'objet import
         import_obj.nombre_total = len(df)
@@ -541,8 +701,7 @@ def _process_excel_import(import_obj):
         import_obj.rapport_erreurs = str(e)
         import_obj.save()
         raise e
-
-
+    
 def _calculate_completion_progress(etudiant):
     """Calcule le pourcentage de completion du profil"""
     total_fields = 10  # Nombre de champs importants

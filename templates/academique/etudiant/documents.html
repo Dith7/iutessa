@@ -1,80 +1,172 @@
-<!-- templates/academique/etudiant/documents.html -->
 {% extends 'base.html' %}
 
 {% block title %}Mes Documents{% endblock %}
 
+{% block extra_css %}
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+    }
+    
+    .bg-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+    }
+    
+    .bg-gradient-soft {
+        background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+    
+    .card-hover {
+        transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-    <div class="container mx-auto px-4 max-w-4xl">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Gestion de mes Documents</h1>
-            <p class="text-lg text-gray-600">Téléchargez et gérez vos documents d'inscription</p>
-        </div>
-
-        <!-- Upload Form -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Ajouter un document</h3>
-            <form method="post" enctype="multipart/form-data" class="space-y-6">
-                {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.type_document.label }}</label>
-                        {{ form.type_document }}
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-iut rounded-xl flex items-center justify-center">
+                        <i class="fas fa-folder-open text-white text-lg sm:text-xl"></i>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">{{ form.fichier.label }}</label>
-                        {{ form.fichier }}
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Mes Documents</h1>
+                        <p class="text-sm text-gray-600 hidden sm:block">Gérez vos documents d'inscription</p>
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-upload mr-2"></i>Télécharger
-                </button>
-            </form>
-        </div>
-
-        <!-- Documents List -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Mes documents</h3>
-            <div class="space-y-4">
-                {% for document in documents %}
-                <div class="flex items-center justify-between p-6 border border-gray-200 rounded-lg">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file text-blue-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">{{ document.get_type_document_display }}</h4>
-                            <p class="text-sm text-gray-500">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
-                            {% if document.commentaire %}
-                            <p class="text-sm text-gray-600 mt-1">{{ document.commentaire }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                            {% if document.valide %}bg-green-100 text-green-800
-                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
-                            {% if document.valide %}
-                                <i class="fas fa-check mr-1"></i>Validé
-                            {% else %}
-                                <i class="fas fa-clock mr-1"></i>En attente
-                            {% endif %}
-                        </span>
-                        <button onclick="deleteDocument({{ document.id }})" class="text-red-600 hover:text-red-800">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'academique:etudiant_profile' %}" class="text-gray-500 hover:text-green-600 transition-colors">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
                 </div>
-                {% empty %}
-                <div class="text-center py-12">
-                    <i class="fas fa-file-alt text-gray-300 text-6xl mb-4"></i>
-                    <p class="text-lg text-gray-500">Aucun document téléchargé</p>
-                    <p class="text-sm text-gray-400">Commencez par ajouter vos premiers documents</p>
-                </div>
-                {% endfor %}
             </div>
         </div>
-    </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Ajouter un document</h3>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Type de document</label>
+                                {{ form.type_document }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Fichier</label>
+                                {{ form.fichier }}
+                            </div>
+                        </div>
+                        <button type="submit" class="px-6 py-2.5 btn-gradient text-white rounded-lg font-medium">
+                            <i class="fas fa-upload mr-2"></i>Télécharger
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Documents téléchargés</h3>
+                    <div class="space-y-4">
+                        {% for document in documents %}
+                        <div class="flex items-center justify-between p-4 bg-gradient-soft rounded-lg border border-gray-200 card-hover">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">{{ document.get_type_document_display }}</h4>
+                                    <p class="text-sm text-gray-500">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
+                                    {% if document.commentaire %}
+                                    <p class="text-sm text-gray-600 mt-1">{{ document.commentaire }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                                    {% if document.valide %}bg-green-100 text-green-800 border border-green-200
+                                    {% else %}bg-yellow-100 text-yellow-800 border border-yellow-200{% endif %}">
+                                    {% if document.valide %}
+                                        <i class="fas fa-check mr-1"></i>Validé
+                                    {% else %}
+                                        <i class="fas fa-clock mr-1"></i>En attente
+                                    {% endif %}
+                                </span>
+                                <button onclick="deleteDocument({{ document.id }})" class="text-red-500 hover:text-red-700 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-12">
+                            <div class="w-20 h-20 bg-gradient-soft rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                                <i class="fas fa-file-alt text-gray-400 text-3xl"></i>
+                            </div>
+                            <p class="text-lg text-gray-500">Aucun document téléchargé</p>
+                            <p class="text-sm text-gray-400">Commencez par ajouter vos premiers documents</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Statut des documents</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Documents requis</span>
+                            <span class="text-sm font-bold text-gray-900">7</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Documents soumis</span>
+                            <span class="text-sm font-bold text-green-600">{{ documents|length }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Documents validés</span>
+                            <span class="text-sm font-bold text-purple-600">{{ documents|length }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-iut rounded-xl p-6 text-white">
+                    <h3 class="text-lg font-bold mb-4">Actions rapides</h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'academique:etudiant_profile' %}" class="block w-full bg-white/20 backdrop-blur text-white text-center py-2 rounded-lg hover:bg-white/30 transition-colors">
+                            <i class="fas fa-user mr-2"></i>Mon profil
+                        </a>
+                        <a href="{% url 'academique:etudiant_fiche_pdf' %}" class="block w-full bg-white/20 backdrop-blur text-white text-center py-2 rounded-lg hover:bg-white/30 transition-colors">
+                            <i class="fas fa-download mr-2"></i>Télécharger fiche
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
 
 <script>

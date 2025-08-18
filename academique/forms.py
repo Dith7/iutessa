@@ -70,7 +70,14 @@ class FiliereForm(forms.ModelForm):
 
 class EtudiantInscriptionForm(forms.ModelForm):
     """Formulaire d'inscription pour les étudiants"""
-    
+    filiere = forms.ModelChoiceField(
+        queryset=Filiere.objects.filter(statut='active').order_by('nom'),
+        label="Filière d'inscription",
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'required': 'required'
+        })
+    )
     adresse = forms.CharField(
         widget=forms.Textarea(attrs={
             'class': 'form-control',
@@ -81,7 +88,8 @@ class EtudiantInscriptionForm(forms.ModelForm):
     
     class Meta:
         model = EtudiantAcademique
-        fields = [
+        fields = [ 
+            'filiere',
             'nom', 'prenoms', 'date_naissance', 'lieu_naissance',
             'nationalite', 'region_origine', 'cni', 'telephone',
             'email_personnel', 'adresse', 'nom_pere', 'telephone_pere',
@@ -100,6 +108,7 @@ class EtudiantInscriptionForm(forms.ModelForm):
                 'class': 'form-control',
                 'type': 'date'
             }),
+            
             'lieu_naissance': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ville, Pays'

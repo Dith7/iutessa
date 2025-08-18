@@ -1,0 +1,60 @@
+<!-- templates/notifications/emails/inscription_validee.html -->
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Inscription Validée - IUT-ESSA{% endblock %}
+{% block subtitle %}Validation Académique{% endblock %}
+
+{% block content %}
+<div class="greeting">
+    Bonjour {{ notification.destinataire.first_name }},
+</div>
+
+<div class="message">
+    Excellente nouvelle ! Votre inscription académique a été validée par l'administration.
+</div>
+
+<div class="info-box" style="background-color: #f0fdf4; border-color: #16a34a;">
+    <strong>🎉 Félicitations !</strong><br>
+    Vous êtes maintenant officiellement inscrit(e) à l'IUT-ESSA.
+</div>
+
+<table class="details-table">
+    <tr>
+        <td>Statut :</td>
+        <td><span style="color: #16a34a; font-weight: bold;">✓ Validé</span></td>
+    </tr>
+    <tr>
+        <td>Matricule :</td>
+        <td><strong>{{ notification.destinataire.etudiant_academique.numero_matricule }}</strong></td>
+    </tr>
+    <tr>
+        <td>Filière :</td>
+        <td>{{ notification.destinataire.etudiant_academique.filiere.nom }}</td>
+    </tr>
+    <tr>
+        <td>Année académique :</td>
+        <td>2024-2025</td>
+    </tr>
+</table>
+
+<div class="message">
+    <strong>Vous pouvez maintenant :</strong>
+    <ul>
+        <li>Télécharger votre fiche d'inscription officielle</li>
+        <li>Accéder à tous les services étudiants</li>
+        <li>Consulter votre planning de cours</li>
+        <li>Participer aux activités académiques</li>
+    </ul>
+</div>
+
+<div style="text-align: center;">
+    <a href="{{ site_url }}/academique/fiche-inscription.pdf" class="button">
+        Télécharger ma fiche d'inscription
+    </a>
+</div>
+
+<div class="message" style="margin-top: 30px; padding: 20px; background-color: #f9fafb; border-radius: 8px;">
+    <strong>Bienvenue dans la communauté IUT-ESSA !</strong><br>
+    Nous vous souhaitons une excellente année académique pleine de succès.
+</div>
+{% endblock %}
