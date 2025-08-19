@@ -3,11 +3,13 @@
 <div class="media-gallery mb-8">
     <!-- Image principale -->
     {% if block.image %}
-        <div class="mb-6">
-            <img src="{{ block.image.url }}" 
-                 class="w-full h-64 lg:h-96 object-cover rounded-xl shadow-lg" 
+    <div class="mb-6">
+        <div class="relative rounded-3xl overflow-hidden shadow-xl border border-green-100">
+            <img src="{{ block.image.url }}"
+                 class="w-full h-64 lg:h-96 object-cover"
                  alt="{{ block.title }}">
         </div>
+    </div>
     {% endif %}
     
     <!-- Vidéo -->

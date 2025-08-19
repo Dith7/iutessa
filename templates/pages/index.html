@@ -1,5 +1,24 @@
+<!-- pages/index.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Iuttessa</h1>
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-16">
+    <div class="text-center">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-12 max-w-2xl mx-auto">
+            <div class="mb-8">
+                <img src="{% static 'images/logo-iutessa.png' %}" alt="IUTESSA" class="h-24 w-24 mx-auto mb-6 drop-shadow-xl">
+            </div>
+            <h1 class="text-6xl font-bold text-gradient-iut mb-6">IUTESSA</h1>
+            <p class="text-xl text-gray-600 mb-8">Institut Universitaire de Technologie et des Sciences du Sahel</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'academique:filieres_list_public' %}" class="btn-gradient text-white px-8 py-4 rounded-xl font-semibold">
+                    Découvrir nos formations
+                </a>
+                <a href="{% url 'pages:home' %}#contact" class="bg-gray-100 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-smooth">
+                    Nous contacter
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

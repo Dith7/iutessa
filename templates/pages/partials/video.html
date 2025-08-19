@@ -2,37 +2,35 @@
 {% if block.video_file or block.video_url or block.video_embed_code %}
 <div class="mb-8">
     {% if block.video_file %}
-        <!-- Vidéo locale -->
-        <div class="relative rounded-xl overflow-hidden shadow-lg">
-            <video 
-                class="w-full h-auto max-h-80" 
-                controls 
-                preload="metadata"
-                {% if block.video_thumbnail %}poster="{{ block.video_thumbnail.url }}"{% endif %}>
-                <source src="{{ block.video_file.url }}" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture vidéo.
-            </video>
-        </div>
-        
+    <!-- Vidéo locale -->
+    <div class="relative rounded-3xl overflow-hidden shadow-xl border border-green-100 bg-white/90 backdrop-blur-xl">
+        <video
+            class="w-full h-auto max-h-80"
+            controls
+            preload="metadata"
+            {% if block.video_thumbnail %}poster="{{ block.video_thumbnail.url }}"{% endif %}>
+            <source src="{{ block.video_file.url }}" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+    </div>
     {% elif block.video_url %}
-        <!-- Vidéo YouTube/Vimeo -->
-        <div class="relative rounded-xl overflow-hidden shadow-lg">
-            <div class="aspect-w-16 aspect-h-9">
-                <iframe 
-                    src="{{ block.get_video_embed_url }}"
-                    class="w-full h-80"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
+    <!-- Vidéo YouTube/Vimeo -->
+    <div class="relative rounded-3xl overflow-hidden shadow-xl border border-green-100 bg-white/90 backdrop-blur-xl">
+        <div class="aspect-w-16 aspect-h-9">
+            <iframe
+                src="{{ block.get_video_embed_url }}"
+                class="w-full h-80"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
         </div>
-        
+    </div>
     {% elif block.video_embed_code %}
-        <!-- Code d'intégration personnalisé -->
-        <div class="relative rounded-xl overflow-hidden shadow-lg">
-            {{ block.video_embed_code|safe }}
-        </div>
+    <!-- Code d'intégration personnalisé -->
+    <div class="relative rounded-3xl overflow-hidden shadow-xl border border-green-100 bg-white/90 backdrop-blur-xl p-4">
+        {{ block.video_embed_code|safe }}
+    </div>
     {% endif %}
 </div>
 {% endif %}
