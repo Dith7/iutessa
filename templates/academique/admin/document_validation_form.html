@@ -6,37 +6,37 @@
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">Académique</li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'academique:admin_documents_validation' %}" class="text-blue-600 hover:text-blue-800">Documents</a></li>
+<li><a href="{% url 'academique:admin_documents_validation' %}" class="text-green-600 hover:text-green-800">Documents</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">Validation</li>
 {% endblock %}
 
 {% block content %}
 <div class="mb-8">
-    <h1 class="text-4xl font-bold text-black mb-2">Validation de Document</h1>
-    <p class="text-lg text-gray-700">Vérifier et valider le document étudiant</p>
+    <h1 class="text-4xl font-bold text-gradient-iut mb-2">Validation de Document</h1>
+    <p class="text-lg text-gray-600">Vérifier et valider le document étudiant</p>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Informations document -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <h3 class="text-2xl font-bold text-black mb-6">Informations du document</h3>
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Informations du document</h3>
         
         <div class="space-y-4">
             <div>
                 <label class="text-sm font-medium text-gray-600">Type de document</label>
-                <p class="text-lg font-semibold text-black">{{ document.get_type_document_display }}</p>
+                <p class="text-lg font-semibold text-gray-900">{{ document.get_type_document_display }}</p>
             </div>
             
             <div>
                 <label class="text-sm font-medium text-gray-600">Étudiant</label>
-                <p class="text-lg font-semibold text-black">{{ document.etudiant.nom_complet }}</p>
+                <p class="text-lg font-semibold text-gray-900">{{ document.etudiant.nom_complet }}</p>
                 <p class="text-sm text-gray-600">{{ document.etudiant.numero_matricule }} - {{ document.etudiant.filiere.nom }}</p>
             </div>
             
             <div>
                 <label class="text-sm font-medium text-gray-600">Date de soumission</label>
-                <p class="text-lg font-semibold text-black">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
+                <p class="text-lg font-semibold text-gray-900">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
             </div>
             
             <div>
@@ -49,11 +49,11 @@
         
         <!-- Aperçu du document -->
         <div class="mt-8">
-            <h4 class="text-lg font-bold text-black mb-4">Aperçu du document</h4>
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <h4 class="text-lg font-bold text-gray-900 mb-4">Aperçu du document</h4>
+            <div class="border-2 border-dashed border-green-200 rounded-xl p-6 text-center bg-gradient-soft">
                 <i class="fas fa-file-pdf text-red-600 text-4xl mb-4"></i>
-                <p class="text-black font-medium">{{ document.get_type_document_display }}</p>
-                <a href="{{ document.fichier.url }}" target="_blank" class="inline-flex items-center mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <p class="text-gray-900 font-medium">{{ document.get_type_document_display }}</p>
+                <a href="{{ document.fichier.url }}" target="_blank" class="inline-flex items-center mt-4 btn-gradient text-white px-4 py-2 rounded-lg font-medium">
                     <i class="fas fa-external-link-alt mr-2"></i>Ouvrir le document
                 </a>
             </div>
@@ -61,8 +61,8 @@
     </div>
     
     <!-- Formulaire de validation -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <h3 class="text-2xl font-bold text-black mb-6">Décision de validation</h3>
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Décision de validation</h3>
         
         <form method="post" class="space-y-6">
             {% csrf_token %}
@@ -70,7 +70,7 @@
             <div>
                 <label class="flex items-center space-x-3 cursor-pointer">
                     {{ form.valide }}
-                    <span class="text-lg font-medium text-black">Valider ce document</span>
+                    <span class="text-lg font-medium text-gray-900">Valider ce document</span>
                 </label>
                 <p class="text-sm text-gray-600 mt-2">Cochez cette case si le document est conforme et valide</p>
             </div>
@@ -82,10 +82,10 @@
             </div>
             
             <div class="flex space-x-4 pt-4">
-                <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-smooth font-medium flex items-center">
                     <i class="fas fa-check mr-2"></i>Enregistrer la décision
                 </button>
-                <a href="{% url 'academique:admin_documents_validation' %}" class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors">
+                <a href="{% url 'academique:admin_documents_validation' %}" class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-smooth font-medium">
                     Annuler
                 </a>
             </div>
@@ -94,13 +94,13 @@
 </div>
 
 <!-- Actions rapides -->
-<div class="mt-12 bg-blue-50 rounded-xl p-6">
-    <h4 class="text-lg font-bold text-black mb-4">Actions rapides</h4>
+<div class="mt-12 bg-gradient-soft backdrop-blur-xl rounded-3xl p-6 border border-green-100">
+    <h4 class="text-lg font-bold text-gray-900 mb-4">Actions rapides</h4>
     <div class="flex space-x-4">
-        <button onclick="validateQuick(true)" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+        <button onclick="validateQuick(true)" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-smooth font-medium">
             <i class="fas fa-thumbs-up mr-2"></i>Validation rapide
         </button>
-        <button onclick="validateQuick(false)" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+        <button onclick="validateQuick(false)" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-smooth font-medium">
             <i class="fas fa-thumbs-down mr-2"></i>Rejet rapide
         </button>
     </div>

@@ -4,11 +4,11 @@
 {% block title %}{{ filiere.nom }}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+<div class="min-h-screen bg-gray-50 py-16">
     <div class="container mx-auto px-4 max-w-6xl">
         <!-- Header -->
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-12">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 overflow-hidden mb-12">
+            <div class="bg-gradient-iut p-12">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="flex items-center space-x-4 mb-4">
@@ -17,26 +17,26 @@
                             </div>
                             <div>
                                 <h1 class="text-4xl font-bold text-white">{{ filiere.nom }}</h1>
-                                <p class="text-blue-100 text-lg">{{ filiere.get_domaine_requis_display }}</p>
+                                <p class="text-green-100 text-lg">{{ filiere.get_domaine_requis_display }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="text-right text-white">
                         <p class="text-3xl font-bold">{{ filiere.frais_inscription|floatformat:0 }}</p>
-                        <p class="text-blue-100">FCFA</p>
+                        <p class="text-green-100">FCFA</p>
                     </div>
                 </div>
             </div>
 
             <!-- Quick Stats -->
-            <div class="p-8 bg-gray-50 border-b">
+            <div class="p-8 bg-gradient-soft border-b border-green-100">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="text-center">
                         <p class="text-2xl font-bold text-gray-900">{{ filiere.duree_formation }}</p>
                         <p class="text-gray-600">Durée</p>
                     </div>
                     <div class="text-center">
-                        <p class="text-2xl font-bold text-blue-600">{{ filiere.places_disponibles }}</p>
+                        <p class="text-2xl font-bold text-gradient-iut">{{ filiere.places_disponibles }}</p>
                         <p class="text-gray-600">Places totales</p>
                     </div>
                     <div class="text-center">
@@ -55,7 +55,7 @@
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-8">
                 <!-- Description -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Description de la filière</h2>
                     <div class="prose max-w-none">
                         <p class="text-gray-700 leading-relaxed">{{ filiere.description|default:"Description détaillée de la filière à venir." }}</p>
@@ -63,14 +63,14 @@
                 </div>
 
                 <!-- Prérequis -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Prérequis d'admission</h2>
                     <div class="space-y-4">
-                        <div class="bg-blue-50 p-6 rounded-xl">
-                            <h3 class="font-semibold text-blue-900 mb-2">Diplôme requis</h3>
-                            <p class="text-blue-800">{{ filiere.diplome_requis }}</p>
+                        <div class="bg-gradient-soft p-6 rounded-xl border border-green-100">
+                            <h3 class="font-semibold text-green-900 mb-2">Diplôme requis</h3>
+                            <p class="text-green-800">{{ filiere.diplome_requis }}</p>
                         </div>
-                        <div class="bg-green-50 p-6 rounded-xl">
+                        <div class="bg-gradient-soft p-6 rounded-xl border border-green-100">
                             <h3 class="font-semibold text-green-900 mb-2">Domaine d'études</h3>
                             <p class="text-green-800">{{ filiere.get_domaine_requis_display }}</p>
                         </div>
@@ -78,22 +78,22 @@
                 </div>
 
                 <!-- Débouchés -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Débouchés professionnels</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <i class="fas fa-briefcase text-blue-600 mb-2"></i>
+                        <div class="bg-gradient-soft p-4 rounded-xl border border-green-100">
+                            <i class="fas fa-briefcase text-green-600 mb-2"></i>
                             <h4 class="font-semibold">Secteur privé</h4>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="bg-gradient-soft p-4 rounded-xl border border-green-100">
                             <i class="fas fa-university text-green-600 mb-2"></i>
                             <h4 class="font-semibold">Fonction publique</h4>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="bg-gradient-soft p-4 rounded-xl border border-green-100">
                             <i class="fas fa-rocket text-purple-600 mb-2"></i>
                             <h4 class="font-semibold">Entrepreneuriat</h4>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="bg-gradient-soft p-4 rounded-xl border border-green-100">
                             <i class="fas fa-globe text-orange-600 mb-2"></i>
                             <h4 class="font-semibold">International</h4>
                         </div>
@@ -104,7 +104,7 @@
             <!-- Sidebar -->
             <div class="space-y-8">
                 <!-- Inscription -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">S'inscrire maintenant</h3>
                     
                     <!-- Disponibilité -->
@@ -114,7 +114,7 @@
                             <span class="text-sm font-bold">{{ filiere.places_restantes }}/{{ filiere.places_disponibles }}</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
+                            <div class="bg-gradient-iut h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
                         </div>
                     </div>
 
@@ -122,17 +122,17 @@
                     <div class="space-y-4">
                         {% if user.is_authenticated %}
                         <a href="{% url 'academique:etudiant_inscription' %}" 
-                           class="block w-full bg-blue-600 text-white text-center py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                           class="block w-full btn-gradient text-white text-center py-4 rounded-xl font-semibold">
                             <i class="fas fa-graduation-cap mr-2"></i>S'inscrire à cette filière
                         </a>
                         {% else %}
                         <a href="{% url 'users:login' %}" 
-                           class="block w-full bg-blue-600 text-white text-center py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                           class="block w-full btn-gradient text-white text-center py-4 rounded-xl font-semibold">
                             <i class="fas fa-sign-in-alt mr-2"></i>Se connecter pour s'inscrire
                         </a>
                         {% endif %}
                         <a href="{% url 'pages:home' %}#contact" 
-                           class="block w-full bg-gray-100 text-gray-700 text-center py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors">
+                           class="block w-full bg-gray-100 text-gray-700 text-center py-3 rounded-xl font-medium hover:bg-gray-200 transition-smooth">
                             <i class="fas fa-question-circle mr-2"></i>Poser une question
                         </a>
                     </div>
@@ -146,29 +146,29 @@
                 </div>
 
                 <!-- Contact -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Besoin d'aide ?</h3>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-phone text-blue-600"></i>
-                            <span class="text-gray-700">+237 6XX XXX XXX</span>
+                            <i class="fas fa-phone text-green-600"></i>
+                            <span class="text-gray-700">+237 651 32 45 54</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-envelope text-blue-600"></i>
-                            <span class="text-gray-700">info@universite.cm</span>
+                            <i class="fas fa-envelope text-green-600"></i>
+                            <span class="text-gray-700">info@iutessa.cm</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-map-marker-alt text-blue-600"></i>
-                            <span class="text-gray-700">Campus Universitaire</span>
+                            <i class="fas fa-map-marker-alt text-green-600"></i>
+                            <span class="text-gray-700">Mokolo, Extrême-Nord</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Navigation -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Autres filières</h3>
                     <a href="{% url 'academique:filieres_list_public' %}" 
-                       class="block w-full bg-gray-100 text-gray-700 text-center py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors">
+                       class="block w-full bg-gray-100 text-gray-700 text-center py-3 rounded-xl font-medium hover:bg-gray-200 transition-smooth">
                         <i class="fas fa-arrow-left mr-2"></i>Voir toutes les filières
                     </a>
                 </div>

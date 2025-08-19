@@ -6,14 +6,14 @@
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">Académique</li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'academique:admin_filieres_list' %}" class="text-blue-600 hover:text-blue-800">Filières</a></li>
+<li><a href="{% url 'academique:admin_filieres_list' %}" class="text-green-600 hover:text-green-800">Filières</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">{{ action|title }}</li>
 {% endblock %}
 
 {% block content %}
 <div class="mb-8">
-    <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ title }}</h1>
+    <h1 class="text-4xl font-bold text-gradient-iut mb-2">{{ title }}</h1>
     <p class="text-lg text-gray-600">
         {% if action == 'create' %}
         Ajouter une nouvelle filière de formation
@@ -30,9 +30,9 @@
             {% csrf_token %}
             
             <!-- Informations générales -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                    <i class="fas fa-info-circle text-green-600 mr-3"></i>
                     Informations générales
                 </h3>
                 
@@ -65,7 +65,7 @@
             </div>
             
             <!-- Configuration des places -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                     <i class="fas fa-users text-green-600 mr-3"></i>
                     Configuration des places
@@ -96,7 +96,7 @@
             </div>
             
             <!-- Prérequis académiques -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                     <i class="fas fa-graduation-cap text-purple-600 mr-3"></i>
                     Prérequis académiques
@@ -122,7 +122,7 @@
             </div>
             
             <!-- Configuration avancée -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                     <i class="fas fa-cogs text-gray-600 mr-3"></i>
                     Configuration avancée
@@ -150,11 +150,11 @@
             <!-- Actions -->
             <div class="flex justify-end space-x-4">
                 <a href="{% url 'academique:admin_filieres_list' %}" 
-                   class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                   class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                     Annuler
                 </a>
                 <button type="submit" 
-                        class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center">
+                        class="btn-gradient px-6 py-3 text-white rounded-lg font-medium flex items-center">
                     <i class="fas fa-save mr-2"></i>
                     {% if action == 'create' %}Créer la filière{% else %}Sauvegarder{% endif %}
                 </button>
@@ -164,30 +164,30 @@
     
     <!-- Panneau d'aide -->
     <div class="lg:col-span-1">
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-6 border border-blue-200">
-            <h4 class="text-lg font-bold text-blue-900 mb-4 flex items-center">
+        <div class="bg-gradient-soft backdrop-blur-xl rounded-3xl p-6 border border-green-100">
+            <h4 class="text-lg font-bold text-green-900 mb-4 flex items-center">
                 <i class="fas fa-lightbulb mr-2"></i>
                 Conseils
             </h4>
             
-            <div class="space-y-4 text-sm text-blue-800">
+            <div class="space-y-4 text-sm text-green-800">
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+                    <i class="fas fa-check-circle text-green-600 mt-1"></i>
                     <p>Le code de la filière doit être unique et concis (2-4 caractères).</p>
                 </div>
                 
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+                    <i class="fas fa-check-circle text-green-600 mt-1"></i>
                     <p>Définissez clairement les prérequis pour éviter les candidatures inadéquates.</p>
                 </div>
                 
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+                    <i class="fas fa-check-circle text-green-600 mt-1"></i>
                     <p>Le nombre de places disponibles peut être modifié ultérieurement.</p>
                 </div>
                 
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+                    <i class="fas fa-check-circle text-green-600 mt-1"></i>
                     <p>Une filière inactive n'apparaît pas dans les inscriptions publiques.</p>
                 </div>
             </div>
@@ -195,7 +195,7 @@
         
         {% if action == 'edit' %}
         <!-- Statistiques de la filière -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-6 mt-6">
             <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-chart-bar mr-2"></i>
                 Statistiques
@@ -208,7 +208,7 @@
                 </div>
                 
                 <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-blue-600 h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
+                    <div class="bg-gradient-iut h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
                 </div>
                 
                 <div class="flex justify-between items-center">

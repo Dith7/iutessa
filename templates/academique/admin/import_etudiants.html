@@ -11,14 +11,14 @@
 
 {% block content %}
 <div class="mb-8">
-    <h1 class="text-4xl font-bold text-black mb-2">Import d'Étudiants</h1>
-    <p class="text-lg text-gray-700">Importer une liste d'étudiants via fichier Excel</p>
+    <h1 class="text-4xl font-bold text-gradient-iut mb-2">Import d'Étudiants</h1>
+    <p class="text-lg text-gray-600">Importer une liste d'étudiants via fichier Excel</p>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Formulaire d'import -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <h3 class="text-2xl font-bold text-black mb-6">Nouveau fichier Excel</h3>
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Nouveau fichier Excel</h3>
         
         <form method="post" enctype="multipart/form-data" class="space-y-6">
             {% csrf_token %}
@@ -32,9 +32,9 @@
                 <p class="text-sm text-gray-600 mt-2">Formats acceptés : .xlsx, .xls (max 10MB)</p>
             </div>
             
-            <div class="bg-blue-50 rounded-lg p-4">
-                <h4 class="font-medium text-blue-900 mb-2">Format Excel requis :</h4>
-                <div class="text-sm text-blue-800 space-y-1">
+            <div class="bg-gradient-soft rounded-xl p-4 border border-green-100">
+                <h4 class="font-medium text-green-900 mb-2">Format Excel requis :</h4>
+                <div class="text-sm text-green-800 space-y-1">
                     <p>• <strong>nom</strong> : Nom de famille</p>
                     <p>• <strong>prenoms</strong> : Prénoms complets</p>
                     <p>• <strong>cni</strong> : Numéro CNI</p>
@@ -46,22 +46,22 @@
                 </div>
             </div>
             
-            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <button type="submit" class="w-full btn-gradient text-white py-3 rounded-lg font-medium">
                 <i class="fas fa-upload mr-2"></i>Importer le fichier
             </button>
         </form>
     </div>
     
     <!-- Historique des imports -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <h3 class="text-2xl font-bold text-black mb-6">Historique des imports</h3>
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Historique des imports</h3>
         
         {% if imports %}
         <div class="space-y-4">
             {% for import in imports %}
-            <div class="border border-gray-200 rounded-lg p-4">
+            <div class="border border-green-100 rounded-xl p-4 bg-gradient-soft">
                 <div class="flex items-center justify-between mb-2">
-                    <p class="font-medium text-black">{{ import.date_import|date:"d/m/Y H:i" }}</p>
+                    <p class="font-medium text-gray-900">{{ import.date_import|date:"d/m/Y H:i" }}</p>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                         {% if import.nombre_erreurs == 0 %}bg-green-100 text-green-800
                         {% elif import.nombre_succes > 0 %}bg-yellow-100 text-yellow-800
@@ -75,7 +75,7 @@
                 <div class="grid grid-cols-3 gap-4 text-sm">
                     <div>
                         <p class="text-gray-600">Total</p>
-                        <p class="font-bold text-black">{{ import.nombre_total }}</p>
+                        <p class="font-bold text-gray-900">{{ import.nombre_total }}</p>
                     </div>
                     <div>
                         <p class="text-gray-600">Réussis</p>
@@ -89,7 +89,7 @@
                 
                 {% if import.rapport_erreurs %}
                 <details class="mt-3">
-                    <summary class="cursor-pointer text-sm text-blue-600 hover:text-blue-800">Voir les erreurs</summary>
+                    <summary class="cursor-pointer text-sm text-green-600 hover:text-green-800">Voir les erreurs</summary>
                     <div class="mt-2 p-3 bg-red-50 rounded border text-sm text-red-800">
                         <pre>{{ import.rapport_erreurs }}</pre>
                     </div>
@@ -108,12 +108,12 @@
 </div>
 
 <!-- Instructions détaillées -->
-<div class="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8">
-    <h3 class="text-2xl font-bold text-black mb-6">Instructions d'utilisation</h3>
+<div class="mt-12 bg-gradient-soft backdrop-blur-xl rounded-3xl p-8 border border-green-100">
+    <h3 class="text-2xl font-bold text-gray-900 mb-6">Instructions d'utilisation</h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-            <h4 class="text-lg font-semibold text-black mb-4">1. Préparation du fichier</h4>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">1. Préparation du fichier</h4>
             <ul class="space-y-2 text-gray-700">
                 <li>• Utilisez Excel (.xlsx) ou (.xls)</li>
                 <li>• La première ligne doit contenir les en-têtes</li>
@@ -124,19 +124,19 @@
         </div>
         
         <div>
-            <h4 class="text-lg font-semibold text-black mb-4">2. Codes filières disponibles</h4>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">2. Codes filières disponibles</h4>
             <div class="grid grid-cols-2 gap-2 text-sm">
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GI - Génie Informatique</span>
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GM - Génie Mécanique</span>
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GE - Génie Électrique</span>
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">GC - Génie Civil</span>
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">AE - Agriculture et Élevage</span>
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">CJ - Carrière Juridique</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GI - Génie Informatique</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GM - Génie Mécanique</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GE - Génie Électrique</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GC - Génie Civil</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">AE - Agriculture et Élevage</span>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">CJ - Carrière Juridique</span>
             </div>
         </div>
     </div>
     
-    <div class="mt-8 p-4 bg-yellow-100 rounded-lg">
+    <div class="mt-8 p-4 bg-yellow-100 rounded-xl border border-yellow-200">
         <div class="flex items-start">
             <i class="fas fa-exclamation-triangle text-yellow-600 mr-3 mt-1"></i>
             <div>

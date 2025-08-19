@@ -3,12 +3,12 @@
 {% block title %}Inscription Académique{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+<div class="min-h-screen bg-gray-50 py-12">
     <div class="container mx-auto px-4">
         
         <!-- En-tête -->
         <div class="text-center mb-12">
-            <h1 class="text-5xl font-bold text-gray-900 mb-4">Inscription Académique</h1>
+            <h1 class="text-5xl font-bold text-gradient-iut mb-4">Inscription Académique</h1>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
                 Complétez votre dossier d'inscription pour finaliser votre admission
             </p>
@@ -19,10 +19,10 @@
                 {% csrf_token %}
                 
                 <!-- Étapes de progression -->
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-green-100">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                            <div class="w-8 h-8 bg-gradient-iut rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
                             <span class="ml-3 text-sm font-medium text-gray-900">Informations personnelles</span>
                         </div>
                         <div class="flex items-center">
@@ -37,9 +37,9 @@
                 </div>
 
                 <!-- Identité -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <i class="fas fa-user text-blue-600 mr-3"></i>
+                        <i class="fas fa-user text-green-600 mr-3"></i>
                         Identité
                     </h3>
                     
@@ -103,7 +103,7 @@
                 </div>
 
                 <!-- Contact -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <i class="fas fa-phone text-green-600 mr-3"></i>
                         Contact
@@ -137,7 +137,7 @@
                 </div>
 
                 <!-- Parents/Tuteurs -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <i class="fas fa-users text-purple-600 mr-3"></i>
                         Parents / Tuteurs
@@ -179,7 +179,7 @@
                 </div>
 
                 <!-- Formation antérieure -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <i class="fas fa-graduation-cap text-indigo-600 mr-3"></i>
                         Formation antérieure
@@ -207,11 +207,11 @@
                 <!-- Actions -->
                 <div class="flex justify-center space-x-6">
                     <a href="{% url 'users:etudiant_dashboard' %}" 
-                       class="px-8 py-4 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                       class="px-8 py-4 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                         Annuler
                     </a>
                     <button type="submit" 
-                            class="px-8 py-4 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center shadow-lg">
+                            class="btn-gradient px-8 py-4 text-white rounded-xl font-medium flex items-center shadow-lg">
                         <i class="fas fa-save mr-3"></i>
                         Enregistrer mon inscription
                     </button>

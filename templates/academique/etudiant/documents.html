@@ -4,15 +4,15 @@
 {% block title %}Mes Documents{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+<div class="min-h-screen bg-gray-50 py-12">
     <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Gestion de mes Documents</h1>
+            <h1 class="text-4xl font-bold text-gradient-iut mb-4">Gestion de mes Documents</h1>
             <p class="text-lg text-gray-600">Téléchargez et gérez vos documents d'inscription</p>
         </div>
 
         <!-- Upload Form -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8 mb-8">
             <h3 class="text-xl font-bold text-gray-900 mb-6">Ajouter un document</h3>
             <form method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
@@ -26,25 +26,25 @@
                         {{ form.fichier }}
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <button type="submit" class="btn-gradient text-white px-6 py-3 rounded-lg font-medium">
                     <i class="fas fa-upload mr-2"></i>Télécharger
                 </button>
             </form>
         </div>
 
         <!-- Documents List -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
             <h3 class="text-xl font-bold text-gray-900 mb-6">Mes documents</h3>
             <div class="space-y-4">
                 {% for document in documents %}
-                <div class="flex items-center justify-between p-6 border border-gray-200 rounded-lg">
+                <div class="flex items-center justify-between p-6 border border-green-100 rounded-xl bg-gradient-soft">
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file text-blue-600 text-xl"></i>
+                        <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-file text-white text-xl"></i>
                         </div>
                         <div>
                             <h4 class="font-semibold text-gray-900">{{ document.get_type_document_display }}</h4>
-                            <p class="text-sm text-gray-500">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
+                            <p class="text-sm text-gray-600">{{ document.date_upload|date:"d/m/Y à H:i" }}</p>
                             {% if document.commentaire %}
                             <p class="text-sm text-gray-600 mt-1">{{ document.commentaire }}</p>
                             {% endif %}
@@ -60,7 +60,7 @@
                                 <i class="fas fa-clock mr-1"></i>En attente
                             {% endif %}
                         </span>
-                        <button onclick="deleteDocument({{ document.id }})" class="text-red-600 hover:text-red-800">
+                        <button onclick="deleteDocument({{ document.id }})" class="text-red-600 hover:text-red-800 transition-smooth">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
