@@ -10,25 +10,25 @@
 {% block content %}
 <div class="flex justify-between items-center mb-8">
     <div>
-        <h1 class="text-3xl font-bold text-gray-900">Blocs de contenu</h1>
+        <h1 class="text-3xl font-bold text-gradient-iut">Blocs de contenu</h1>
         <p class="text-gray-600 mt-2">{{ blocks.paginator.count }} bloc{{ blocks.paginator.count|pluralize }}</p>
     </div>
-    <a href="{% url 'administration:block_create' %}" class="btn btn-primary">
+    <a href="{% url 'administration:block_create' %}" class="btn-gradient text-white px-6 py-3 rounded-lg font-medium">
         <i class="fas fa-plus mr-2"></i>Nouveau bloc
     </a>
 </div>
 
 <!-- Filtres -->
-<div class="bg-white rounded-lg shadow mb-6">
+<div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 mb-6">
     <div class="p-6">
         <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <input type="text" name="search" value="{{ current_filters.search }}" 
                        placeholder="Rechercher..." 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
             <div>
-                <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <select name="type" class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none">
                     <option value="">Tous les types</option>
                     {% for key, label in block_types %}
                     <option value="{{ key }}" {% if current_filters.type == key %}selected{% endif %}>{{ label }}</option>
@@ -36,15 +36,15 @@
                 </select>
             </div>
             <div>
-                <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <select name="status" class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none">
                     <option value="">Tous les statuts</option>
                     <option value="active" {% if current_filters.status == 'active' %}selected{% endif %}>Actif</option>
                     <option value="inactive" {% if current_filters.status == 'inactive' %}selected{% endif %}>Inactif</option>
                 </select>
             </div>
             <div class="flex space-x-2">
-                <button type="submit" class="btn btn-primary">Filtrer</button>
-                <a href="{% url 'administration:blocks_list' %}" class="btn btn-secondary">Reset</a>
+                <button type="submit" class="btn-gradient text-white px-4 py-3 rounded-lg font-medium">Filtrer</button>
+                <a href="{% url 'administration:blocks_list' %}" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">Reset</a>
             </div>
         </form>
     </div>
@@ -53,14 +53,14 @@
 <!-- Liste des blocs -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blocks-grid">
     {% for block in blocks %}
-    <div class="bg-white rounded-lg shadow hover:shadow-md transition-shadow" data-block-id="{{ block.id }}">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1" data-block-id="{{ block.id }}">
         <!-- Preview image -->
         {% if block.image %}
-        <div class="h-48 bg-gray-200 rounded-t-lg overflow-hidden">
+        <div class="h-48 bg-gray-200 rounded-t-3xl overflow-hidden">
             <img src="{{ block.image.url }}" alt="{{ block.title }}" class="w-full h-full object-cover">
         </div>
         {% else %}
-        <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-t-lg flex items-center justify-center">
+        <div class="h-48 bg-gradient-soft rounded-t-3xl flex items-center justify-center">
             <i class="fas fa-image text-gray-400 text-3xl"></i>
         </div>
         {% endif %}
@@ -70,22 +70,22 @@
             <div class="flex items-start justify-between mb-3">
                 <div class="flex-1">
                     <h3 class="text-lg font-semibold text-gray-900 truncate">{{ block.title }}</h3>
-                    <p class="text-sm text-gray-500">{{ block.get_block_type_display }}</p>
+                    <p class="text-sm text-gray-600">{{ block.get_block_type_display }}</p>
                 </div>
                 <div class="ml-2 flex items-center space-x-2">
                     <!-- Status toggle -->
                     <button onclick="toggleStatus({{ block.id }})" 
-                            class="status-toggle" data-status="{{ block.status }}">
+                            class="status-toggle transition-smooth" data-status="{{ block.status }}">
                         {% if block.status == 'active' %}
-                        <i class="fas fa-eye text-green-500"></i>
+                        <i class="fas fa-eye text-green-500 hover:text-green-600"></i>
                         {% else %}
-                        <i class="fas fa-eye-slash text-gray-400"></i>
+                        <i class="fas fa-eye-slash text-gray-400 hover:text-gray-600"></i>
                         {% endif %}
                     </button>
                     
                     <!-- Drag handle -->
                     <div class="drag-handle cursor-move">
-                        <i class="fas fa-grip-vertical text-gray-400"></i>
+                        <i class="fas fa-grip-vertical text-gray-400 hover:text-gray-600"></i>
                     </div>
                 </div>
             </div>
@@ -121,15 +121,15 @@
             <div class="flex justify-between items-center">
                 <div class="flex space-x-2">
                     <a href="{% url 'administration:block_detail' block.pk %}" 
-                       class="text-blue-600 hover:text-blue-800">
+                       class="text-green-600 hover:text-green-800 transition-smooth">
                         <i class="fas fa-eye"></i>
                     </a>
                     <a href="{% url 'administration:block_update' block.pk %}" 
-                       class="text-green-600 hover:text-green-800">
+                       class="text-blue-600 hover:text-blue-800 transition-smooth">
                         <i class="fas fa-edit"></i>
                     </a>
                     <a href="{% url 'administration:block_delete' block.pk %}" 
-                       class="text-red-600 hover:text-red-800">
+                       class="text-red-600 hover:text-red-800 transition-smooth">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>
@@ -146,7 +146,7 @@
         <i class="fas fa-inbox text-gray-300 text-5xl mb-4"></i>
         <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun bloc trouvé</h3>
         <p class="text-gray-500 mb-6">Commencez par créer votre premier bloc de contenu.</p>
-        <a href="{% url 'administration:block_create' %}" class="btn btn-primary">
+        <a href="{% url 'administration:block_create' %}" class="btn-gradient text-white px-6 py-3 rounded-lg font-medium">
             <i class="fas fa-plus mr-2"></i>Créer un bloc
         </a>
     </div>
@@ -158,17 +158,17 @@
 <div class="mt-8 flex justify-center">
     <nav class="flex items-center space-x-2">
         {% if blocks.has_previous %}
-        <a href="?page={{ blocks.previous_page_number }}" class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+        <a href="?page={{ blocks.previous_page_number }}" class="px-4 py-2 text-sm bg-white/90 backdrop-blur-xl border border-green-100 rounded-lg hover:bg-gradient-soft transition-smooth">
             Précédent
         </a>
         {% endif %}
         
-        <span class="px-3 py-2 text-sm text-gray-700">
+        <span class="px-4 py-2 text-sm text-gray-700 font-medium">
             Page {{ blocks.number }} sur {{ blocks.paginator.num_pages }}
         </span>
         
         {% if blocks.has_next %}
-        <a href="?page={{ blocks.next_page_number }}" class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+        <a href="?page={{ blocks.next_page_number }}" class="px-4 py-2 text-sm bg-white/90 backdrop-blur-xl border border-green-100 rounded-lg hover:bg-gradient-soft transition-smooth">
             Suivant
         </a>
         {% endif %}

@@ -4,16 +4,16 @@
 
 {% block breadcrumb_items %}
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'administration:blocks_list' %}" class="text-blue-600 hover:text-blue-800">Blocs</a></li>
+<li><a href="{% url 'administration:blocks_list' %}" class="text-green-600 hover:text-green-800">Blocs</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'administration:block_detail' block.pk %}" class="text-blue-600 hover:text-blue-800">{{ block.title }}</a></li>
+<li><a href="{% url 'administration:block_detail' block.pk %}" class="text-green-600 hover:text-green-800">{{ block.title }}</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">Supprimer</li>
 {% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto">
-    <div class="bg-white rounded-lg shadow p-8">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-red-100 p-8">
         <div class="flex items-center mb-6">
             <div class="flex-shrink-0">
                 <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
@@ -31,19 +31,19 @@
                 Êtes-vous sûr de vouloir supprimer le bloc <strong>"{{ block.title }}"</strong> ?
             </p>
             
-            <div class="bg-gray-50 rounded border p-4">
+            <div class="bg-gradient-soft rounded-xl border border-green-100 p-4">
                 <div class="flex items-start">
                     {% if block.image %}
-                    <img src="{{ block.image.url }}" alt="{{ block.title }}" class="w-16 h-16 object-cover rounded mr-4">
+                    <img src="{{ block.image.url }}" alt="{{ block.title }}" class="w-16 h-16 object-cover rounded-lg mr-4 shadow-lg">
                     {% else %}
-                    <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center mr-4">
+                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center mr-4 shadow-lg">
                         <i class="fas fa-image text-gray-400"></i>
                     </div>
                     {% endif %}
                     
                     <div>
                         <h3 class="font-semibold text-gray-900">{{ block.title }}</h3>
-                        <p class="text-sm text-gray-500">{{ block.get_block_type_display }}</p>
+                        <p class="text-sm text-gray-600">{{ block.get_block_type_display }}</p>
                         {% if block.subtitle %}
                         <p class="text-sm text-gray-600 mt-1">{{ block.subtitle }}</p>
                         {% endif %}
@@ -60,7 +60,7 @@
             </div>
 
             {% if block.image or block.document or block.video_file %}
-            <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+            <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
                 <div class="flex">
                     <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
                     <div>
@@ -88,11 +88,11 @@
         <form method="post" class="flex justify-between items-center">
             {% csrf_token %}
             
-            <a href="{% url 'administration:block_detail' block.pk %}" class="btn btn-secondary">
+            <a href="{% url 'administration:block_detail' block.pk %}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                 <i class="fas fa-arrow-left mr-2"></i>Annuler
             </a>
             
-            <button type="submit" class="btn btn-danger">
+            <button type="submit" class="px-6 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-smooth">
                 <i class="fas fa-trash mr-2"></i>Supprimer définitivement
             </button>
         </form>

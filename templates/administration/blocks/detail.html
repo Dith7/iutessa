@@ -4,7 +4,7 @@
 
 {% block breadcrumb_items %}
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'administration:blocks_list' %}" class="text-blue-600 hover:text-blue-800">Blocs</a></li>
+<li><a href="{% url 'administration:blocks_list' %}" class="text-green-600 hover:text-green-800">Blocs</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">{{ block.title }}</li>
 {% endblock %}
@@ -14,23 +14,23 @@
     <!-- Header -->
     <div class="flex justify-between items-start mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">{{ block.title }}</h1>
+            <h1 class="text-3xl font-bold text-gradient-iut">{{ block.title }}</h1>
             <div class="flex items-center space-x-4 mt-2">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
                     {% if block.status == 'active' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
                     {{ block.get_status_display }}
                 </span>
-                <span class="text-sm text-gray-500">{{ block.get_block_type_display }}</span>
-                <span class="text-sm text-gray-500">Ordre: {{ block.order }}</span>
+                <span class="text-sm text-gray-600">{{ block.get_block_type_display }}</span>
+                <span class="text-sm text-gray-600">Ordre: {{ block.order }}</span>
             </div>
         </div>
         
         <div class="flex space-x-3">
-            <a href="{{ preview_url }}" target="_blank" class="btn btn-secondary">
+            <a href="{{ preview_url }}" target="_blank" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                 <i class="fas fa-eye mr-2"></i>Prévisualiser
             </a>
             {% if block and block.pk %}
-            <a href="{% url 'administration:block_update' block.pk %}" class="btn btn-primary">
+            <a href="{% url 'administration:block_update' block.pk %}" class="btn-gradient px-4 py-2 text-white rounded-lg font-medium">
                 <i class="fas fa-edit mr-2"></i>Modifier
             </a>
             {% endif %}
@@ -41,19 +41,19 @@
         <!-- Contenu principal -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Informations de base -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Informations</h2>
                 
                 {% if block.subtitle %}
                 <div class="mb-4">
-                    <dt class="text-sm font-medium text-gray-500">Sous-titre</dt>
+                    <dt class="text-sm font-medium text-gray-600">Sous-titre</dt>
                     <dd class="text-lg text-gray-900">{{ block.subtitle }}</dd>
                 </div>
                 {% endif %}
                 
                 {% if block.content %}
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 mb-2">Contenu</dt>
+                    <dt class="text-sm font-medium text-gray-600 mb-2">Contenu</dt>
                     <dd class="prose max-w-none">{{ block.content|safe }}</dd>
                 </div>
                 {% endif %}
@@ -61,22 +61,22 @@
 
             <!-- Médias -->
             {% if block.image or block.document or block.video_file or block.video_url %}
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Médias</h2>
                 
                 {% if block.image and block.image.url %}
                 <div class="mb-6">
-                    <h3 class="text-sm font-medium text-gray-500 mb-2">Image</h3>
-                    <img src="{{ block.image.url }}" alt="{{ block.title }}" class="max-w-full h-64 object-cover rounded border">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Image</h3>
+                    <img src="{{ block.image.url }}" alt="{{ block.title }}" class="max-w-full h-64 object-cover rounded-xl border shadow-lg">
                 </div>
                 {% endif %}
                 
                 {% if block.document and block.document.url %}
                 <div class="mb-6">
-                    <h3 class="text-sm font-medium text-gray-500 mb-2">Document</h3>
-                    <div class="flex items-center p-4 bg-gray-50 rounded border">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Document</h3>
+                    <div class="flex items-center p-4 bg-gradient-soft rounded-xl border border-green-100">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-file text-blue-500 text-2xl"></i>
+                            <i class="fas fa-file text-green-500 text-2xl"></i>
                         </div>
                         <div class="ml-4 flex-1">
                             <p class="text-sm font-medium text-gray-900">
@@ -86,7 +86,7 @@
                                     Document sans nom
                                 {% endif %}
                             </p>
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm text-gray-600">
                                 {% if block.document.size %}
                                     {{ block.document.size|filesizeformat }}
                                 {% else %}
@@ -94,7 +94,7 @@
                                 {% endif %}
                             </p>
                         </div>
-                        <a href="{{ block.document.url }}" target="_blank" class="btn btn-secondary btn-sm">
+                        <a href="{{ block.document.url }}" target="_blank" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                             <i class="fas fa-download mr-1"></i>Télécharger
                         </a>
                     </div>
@@ -103,14 +103,14 @@
                 
                 {% if block.video_file or block.video_url %}
                 <div class="mb-6">
-                    <h3 class="text-sm font-medium text-gray-500 mb-2">Vidéo</h3>
-                    <div class="bg-gray-50 rounded border p-4">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Vidéo</h3>
+                    <div class="bg-gradient-soft rounded-xl border border-green-100 p-4">
                         {% if block.video_file %}
                         <div class="flex items-center">
                             <i class="fas fa-video text-red-500 text-2xl mr-4"></i>
                             <div>
                                 <p class="text-sm font-medium text-gray-900">Vidéo locale</p>
-                                <p class="text-sm text-gray-500">{{ block.video_file.name }}</p>
+                                <p class="text-sm text-gray-600">{{ block.video_file.name }}</p>
                             </div>
                         </div>
                         {% elif block.video_url %}
@@ -118,7 +118,7 @@
                             <i class="fab fa-youtube text-red-500 text-2xl mr-4"></i>
                             <div>
                                 <p class="text-sm font-medium text-gray-900">Vidéo externe</p>
-                                <p class="text-sm text-gray-500">{{ block.video_url }}</p>
+                                <p class="text-sm text-gray-600">{{ block.video_url }}</p>
                             </div>
                         </div>
                         {% endif %}
@@ -130,13 +130,13 @@
 
             <!-- Lien -->
             {% if block.link_url %}
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Lien</h2>
                 <div class="flex items-center">
-                    <i class="fas fa-external-link-alt text-blue-500 mr-3"></i>
+                    <i class="fas fa-external-link-alt text-green-500 mr-3"></i>
                     <div>
                         <p class="text-sm font-medium text-gray-900">{{ block.link_text|default:"Lien externe" }}</p>
-                        <a href="{{ block.link_url }}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800">
+                        <a href="{{ block.link_url }}" target="_blank" class="text-sm text-green-600 hover:text-green-800 transition-smooth">
                             {{ block.link_url }}
                         </a>
                     </div>
@@ -148,15 +148,15 @@
         <!-- Sidebar -->
         <div class="space-y-6">
             <!-- Actions rapides -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                 <div class="space-y-3">
                     {% if block and block.pk %}
-                    <a href="{% url 'administration:block_update' block.pk %}" class="w-full btn btn-primary">
+                    <a href="{% url 'administration:block_update' block.pk %}" class="w-full btn-gradient text-white px-4 py-3 rounded-lg font-medium text-center block">
                         <i class="fas fa-edit mr-2"></i>Modifier
                     </a>
                     
-                    <button onclick="toggleStatus()" class="w-full btn btn-secondary">
+                    <button onclick="toggleStatus()" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                         {% if block.status == 'active' %}
                         <i class="fas fa-eye-slash mr-2"></i>Désactiver
                         {% else %}
@@ -164,7 +164,7 @@
                         {% endif %}
                     </button>
                     
-                    <a href="{% url 'administration:block_delete' block.pk %}" class="w-full btn btn-danger">
+                    <a href="{% url 'administration:block_delete' block.pk %}" class="w-full px-4 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-smooth text-center block">
                         <i class="fas fa-trash mr-2"></i>Supprimer
                     </a>
                     {% endif %}
@@ -172,40 +172,40 @@
             </div>
 
             <!-- Métadonnées -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Métadonnées</h3>
                 <dl class="space-y-3">
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Type</dt>
+                        <dt class="text-sm font-medium text-gray-600">Type</dt>
                         <dd class="text-sm text-gray-900">{{ block.get_block_type_display }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                        <dt class="text-sm font-medium text-gray-600">Statut</dt>
                         <dd class="text-sm text-gray-900">{{ block.get_status_display }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Ordre</dt>
+                        <dt class="text-sm font-medium text-gray-600">Ordre</dt>
                         <dd class="text-sm text-gray-900">{{ block.order }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Créé le</dt>
+                        <dt class="text-sm font-medium text-gray-600">Créé le</dt>
                         <dd class="text-sm text-gray-900">{{ block.created_at|date:"d/m/Y à H:i" }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Modifié le</dt>
+                        <dt class="text-sm font-medium text-gray-600">Modifié le</dt>
                         <dd class="text-sm text-gray-900">{{ block.updated_at|date:"d/m/Y à H:i" }}</dd>
                     </div>
                 </dl>
             </div>
 
             <!-- Preview iframe -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Aperçu</h3>
-                <div class="border rounded overflow-hidden">
+                <div class="border rounded-xl overflow-hidden">
                     <iframe src="{{ preview_url }}" class="w-full h-64" frameborder="0"></iframe>
                 </div>
                 <div class="mt-3">
-                    <a href="{{ preview_url }}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800">
+                    <a href="{{ preview_url }}" target="_blank" class="text-sm text-green-600 hover:text-green-800 transition-smooth">
                         <i class="fas fa-external-link-alt mr-1"></i>Ouvrir en grand
                     </a>
                 </div>

@@ -4,7 +4,7 @@
 
 {% block breadcrumb_items %}
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
-<li><a href="{% url 'administration:blocks_list' %}" class="text-blue-600 hover:text-blue-800">Blocs</a></li>
+<li><a href="{% url 'administration:blocks_list' %}" class="text-green-600 hover:text-green-800">Blocs</a></li>
 <li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
 <li class="text-gray-500">{{ title }}</li>
 {% endblock %}
@@ -12,14 +12,14 @@
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">{{ title }}</h1>
+        <h1 class="text-3xl font-bold text-gradient-iut">{{ title }}</h1>
     </div>
 
     <form method="post" enctype="multipart/form-data" class="space-y-8">
         {% csrf_token %}
         
         <!-- Informations principales -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Informations principales</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -66,7 +66,7 @@
         </div>
 
         <!-- Contenu -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Contenu</h2>
             
             <div>
@@ -79,29 +79,29 @@
         </div>
 
         <!-- Médias -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b border-gray-200">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100">
+            <div class="p-6 border-b border-green-100 bg-gradient-soft rounded-t-3xl">
                 <h2 class="text-lg font-semibold text-gray-900">Médias</h2>
-                <p class="text-sm text-gray-500 mt-1">Ajoutez des images, documents ou vidéos à votre bloc</p>
+                <p class="text-sm text-gray-600 mt-1">Ajoutez des images, documents ou vidéos à votre bloc</p>
             </div>
             
             <!-- Onglets médias -->
-            <div x-data="{ activeTab: 'image' }" class="p-6">
-                <div class="border-b border-gray-200 mb-6">
+            <div x-data="{ activeTab: 'image' }" class="p-8">
+                <div class="border-b border-green-100 mb-6">
                     <nav class="-mb-px flex space-x-8">
                         <button @click="activeTab = 'image'" 
-                                :class="activeTab === 'image' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
-                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                                :class="activeTab === 'image' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-smooth">
                             <i class="fas fa-image mr-2"></i>Image
                         </button>
                         <button @click="activeTab = 'document'" 
-                                :class="activeTab === 'document' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
-                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                                :class="activeTab === 'document' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-smooth">
                             <i class="fas fa-file mr-2"></i>Document
                         </button>
                         <button @click="activeTab = 'video'" 
-                                :class="activeTab === 'video' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
-                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                                :class="activeTab === 'video' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-smooth">
                             <i class="fas fa-video mr-2"></i>Vidéo
                         </button>
                     </nav>
@@ -117,7 +117,7 @@
                         {% endif %}
                         {% if block and block.image %}
                         <div class="mt-4">
-                            <img src="{{ block.image.url }}" alt="Current image" class="h-32 w-auto rounded border">
+                            <img src="{{ block.image.url }}" alt="Current image" class="h-32 w-auto rounded-xl border shadow-lg">
                         </div>
                         {% endif %}
                     </div>
@@ -187,7 +187,7 @@
         </div>
 
         <!-- Liens -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
             <h2 class="text-lg font-semibold text-gray-900 mb-6">Lien optionnel</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -211,18 +211,18 @@
 
         <!-- Actions -->
         <div class="flex justify-between items-center">
-            <a href="{% url 'administration:blocks_list' %}" class="btn btn-secondary">
+            <a href="{% url 'administration:blocks_list' %}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                 <i class="fas fa-arrow-left mr-2"></i>Retour
             </a>
             
             <div class="flex space-x-4">
                 {% if block and block.pk %}
-                <a href="{% url 'administration:block_detail' block.pk %}" target="_blank" class="btn btn-secondary">
+                <a href="{% url 'administration:block_detail' block.pk %}" target="_blank" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
                     <i class="fas fa-eye mr-2"></i>Prévisualiser
                 </a>
                 {% endif %}
                 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn-gradient px-6 py-3 text-white rounded-lg font-medium">
                     <i class="fas fa-save mr-2"></i>Enregistrer
                 </button>
             </div>
