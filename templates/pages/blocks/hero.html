@@ -1,13 +1,44 @@
 <!-- pages/templates/pages/blocks/hero.html -->
-<div class="relative min-h-screen flex items-center bg-hero-pattern {% if block.image %}bg-cover bg-center bg-no-repeat{% endif %}" 
-     {% if block.image %}style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ block.image.url }}');"{% endif %}>
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+    }
+    
+    * {
+        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+    
+    .bg-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+    }
+    
+    .btn-hero {
+        background: white;
+        color: var(--iut-green);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-hero:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<div class="relative min-h-screen flex items-center bg-gradient-iut text-white {% if not block.image %}bg-hero-pattern{% endif %}"
+     {% if block.image %}style="background-image: linear-gradient(rgba(22, 163, 74, 0.8), rgba(124, 58, 237, 0.8)), url('{{ block.image.url }}'); background-size: cover; background-center: center; background-repeat: no-repeat;"{% endif %}>
     <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-4xl">
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                 {{ block.title }}
             </h1>
             {% if block.subtitle %}
-                <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+                <p class="text-xl md:text-2xl opacity-90 mb-8 leading-relaxed">
                     {{ block.subtitle }}
                 </p>
             {% endif %}
@@ -15,11 +46,16 @@
                 {{ block.content|safe }}
             </div>
             {% if block.link_url %}
-                <a href="{{ block.link_url }}" 
-                   class="inline-block bg-white text-blue-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <a href="{{ block.link_url }}"
+                   class="btn-hero inline-block font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl">
                     {{ block.link_text|default:"En savoir plus" }}
                 </a>
             {% endif %}
         </div>
     </div>
+    
+    <!-- Decorative elements -->
+    <div class="absolute bottom-10 left-10 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="absolute top-10 right-10 w-20 h-20 bg-white opacity-10 rounded-full blur-xl"></div>
+    <div class="absolute top-1/2 right-20 w-16 h-16 bg-white opacity-5 rounded-full blur-lg"></div>
 </div>

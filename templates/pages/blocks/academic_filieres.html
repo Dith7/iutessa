@@ -1,8 +1,57 @@
 <!-- templates/pages/blocks/academic_filieres.html -->
-<section class="py-16 lg:py-24 bg-gradient-to-br from-blue-50 to-indigo-100">
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+    }
+    
+    * {
+        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+    
+    .bg-gradient-soft {
+        background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    }
+    
+    .text-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .bg-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+    
+    .card-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+<section class="py-16 lg:py-24 bg-gradient-soft">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
-            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            <h2 class="text-4xl lg:text-5xl font-bold text-gradient-iut mb-6">{{ block.title }}</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
             {{ block.content|safe }}
         </div>
@@ -13,8 +62,8 @@
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for filiere in filieres|slice:":6" %}
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6">
+            <div class="bg-white rounded-3xl shadow-xl card-hover overflow-hidden">
+                <div class="bg-gradient-iut p-6">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                             <span class="text-white font-bold text-lg">{{ filiere.code }}</span>
@@ -24,7 +73,7 @@
                         </span>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">{{ filiere.nom }}</h3>
-                    <p class="text-blue-100 text-sm">{{ filiere.get_domaine_requis_display }}</p>
+                    <p class="text-white/80 text-sm">{{ filiere.get_domaine_requis_display }}</p>
                 </div>
                 
                 <div class="p-6">
@@ -33,7 +82,7 @@
                         <span class="font-semibold text-gray-900">{{ filiere.places_restantes }}/{{ filiere.places_disponibles }}</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
-                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
+                        <div class="bg-gradient-iut h-2 rounded-full" style="width: {{ filiere.taux_occupation }}%"></div>
                     </div>
                     <div class="flex items-center justify-between mb-6">
                         <span class="text-sm text-gray-500">Frais</span>
@@ -42,11 +91,11 @@
                     
                     <div class="flex space-x-3">
                         <a href="{% url 'academique:filiere_detail_public' filiere.code %}" 
-                           class="flex-1 bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                           class="flex-1 bg-gray-100 text-gray-700 text-center py-3 rounded-xl hover:bg-gray-200 transition-colors text-sm font-medium">
                             Détails
                         </a>
                         <a href="{% url 'academique:filieres_list_public' %}" 
-                           class="flex-1 bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                           class="flex-1 btn-gradient text-white text-center py-3 rounded-xl text-sm font-medium">
                             S'inscrire
                         </a>
                     </div>
@@ -54,7 +103,9 @@
             </div>
             {% empty %}
             <div class="col-span-full text-center py-16">
-                <i class="fas fa-graduation-cap text-gray-300 text-6xl mb-4"></i>
+                <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                </div>
                 <p class="text-lg text-gray-500">Les filières seront bientôt disponibles</p>
             </div>
             {% endfor %}
@@ -62,7 +113,7 @@
         
         {% if block.link_url %}
         <div class="text-center mt-12">
-            <a href="{{ block.link_url }}" class="inline-flex items-center bg-blue-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+            <a href="{{ block.link_url }}" class="btn-gradient inline-flex items-center text-white font-semibold px-8 py-4 rounded-full shadow-lg">
                 {{ block.link_text|default:"Voir toutes les filières" }}
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>
@@ -70,5 +121,3 @@
         {% endif %}
     </div>
 </section>
-
-

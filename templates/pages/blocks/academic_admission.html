@@ -1,21 +1,53 @@
 <!-- templates/pages/blocks/academic_admission.html -->
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+    }
+    
+    * {
+        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+    
+    .text-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+</style>
+
 <section class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
-            <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{{ block.title }}</h2>
+            <h2 class="text-4xl lg:text-5xl font-bold text-gradient-iut mb-6">{{ block.title }}</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ block.subtitle }}</p>
         </div>
-        
         <div class="max-w-6xl mx-auto">
-            {{ block.content|safe }}
-            
-            {% if block.link_url %}
-            <div class="text-center mt-12">
-                <a href="{{ block.link_url }}" class="inline-flex items-center bg-green-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
-                    {{ block.link_text|default:"Commencer mon inscription" }}
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
+            <div class="bg-gray-50 rounded-3xl p-8 lg:p-12">
+                {{ block.content|safe }}
             </div>
+            {% if block.link_url %}
+                <div class="text-center mt-12">
+                    <a href="{{ block.link_url }}" class="btn-gradient inline-flex items-center text-white font-semibold px-8 py-4 rounded-full shadow-lg">
+                        {{ block.link_text|default:"Commencer mon inscription" }}
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
             {% endif %}
         </div>
     </div>
