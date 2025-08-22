@@ -1,11 +1,13 @@
-<!-- templates/notifications/emails/inscription_validee.html -->
-{% extends "notifications/emails/base_email.html" %} {% block title
-%}Inscription Validée - IUTESSA{% endblock %} {% block subtitle %}Validation
-Académique{% endblock %} {% block content %}
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Inscription Validée - IUTESSA{% endblock %}
+
+{% block subtitle %}Validation Académique{% endblock %}
+
+{% block content %}
 <div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
-  Excellente nouvelle ! Votre inscription académique a été validée par
-  l'administration.
+  Excellente nouvelle ! Votre inscription académique a été validée par l'administration.
 </div>
 <div class="success-box">
   <strong>🎉 Félicitations !</strong><br />
@@ -19,10 +21,7 @@ Académique{% endblock %} {% block content %}
   <tr>
     <td>Matricule :</td>
     <td>
-      <strong
-        >{{ notification.destinataire.etudiant_academique.numero_matricule
-        }}</strong
-      >
+      <strong>{{ notification.destinataire.etudiant_academique.numero_matricule }}</strong>
     </td>
   </tr>
   <tr>
@@ -50,25 +49,8 @@ Académique{% endblock %} {% block content %}
     Télécharger ma fiche d'inscription
   </a>
 </div>
-<div
-  style="
-    margin-top: 32px;
-    padding: 24px;
-    background: linear-gradient(
-      135deg,
-      rgba(22, 163, 74, 0.08) 0%,
-      rgba(124, 58, 237, 0.08) 100%
-    );
-    border-radius: 16px;
-    text-align: center;
-  "
->
-  <strong style="color: #2d3748; font-size: 18px"
-    >Bienvenue dans la communauté IUTESSA !</strong
-  ><br />
-  <span style="color: #4a5568; margin-top: 8px; display: block"
-    >Nous vous souhaitons une excellente année académique pleine de succès et
-    d'épanouissement.</span
-  >
+<div style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, rgba(22, 163, 74, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%); border-radius: 16px; text-align: center;">
+  <strong style="color: #2d3748; font-size: 18px">Bienvenue dans la communauté IUTESSA !</strong><br />
+  <span style="color: #4a5568; margin-top: 8px; display: block">Nous vous souhaitons une excellente année académique pleine de succès et d'épanouissement.</span>
 </div>
 {% endblock %}

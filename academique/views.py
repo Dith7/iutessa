@@ -274,6 +274,30 @@ def admin_validate_document(request, doc_id):
         'document': document
     })
 
+@admin_required
+def admin_etudiant_detail(request, etudiant_id):
+    """Détails complets d'un étudiant pour l'admin"""
+    etudiant = get_object_or_404(EtudiantAcademique, id=etudiant_id)
+    
+    # Documents avec statistiques
+    documents = etudiant.documents.all()
+    documents_stats = {
+        'total': documents.count(),
+        'valides': documents.filter(valide=True).count(),
+        'en_attente': documents.filter(valide=False).count(),
+    }
+    
+    # Progression du dossier
+    progression = _calculate_completion_progress(etudiant)
+    
+    context = {
+        'etudiant': etudiant,
+        'documents': documents,
+        'documents_stats': documents_stats,
+        'progression': progression,
+    }
+    
+    return render(request, 'academique/admin/etudiant_detail.html', context)
 
 @admin_required
 def admin_validate_inscription(request, etudiant_id):

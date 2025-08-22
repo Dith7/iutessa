@@ -69,43 +69,42 @@
       }
 
       /* Fixed Sidebar Navigation Styles */
-     .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 18rem;
-    background: white;
-    border-right: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    overflow-y: auto;
-    z-index: 50;
-}
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 18rem;
+        background: white;
+        border-right: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        overflow-y: auto;
+        z-index: 50;
+      }
 
-.main-content {
-    margin-left: 18rem;
-    height: 100vh; /* Changed from min-height to height */
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden; /* Add this to prevent any overflow from the container */
-}
+      .main-content {
+        margin-left: 18rem;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
 
+      .main-header {
+        position: relative;
+        flex-shrink: 0;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 40;
+      }
 
-    .main-header {
-    position: relative; /* Changed from fixed */
-    flex-shrink: 0; /* Prevent header from shrinking */
-    background: white;
-    border-bottom: 1px solid #e5e7eb;
-    z-index: 40;
-}
-
-.main-body {
-    flex: 1;
-    overflow-y: auto; /* Only vertical scroll */
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    position: relative;
-}
+      .main-body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+      }
 
       .nav-link {
         display: flex;
@@ -339,6 +338,7 @@
         border-bottom: 1px solid #f3f4f6;
         transition: all 0.3s ease;
         cursor: pointer;
+        position: relative;
       }
 
       .notification-item:hover {
@@ -628,7 +628,7 @@
                 </div>
 
                 <div class="notification-footer">
-                  <a href="#" id="viewAllNotifications"
+                  <a href="{% url 'notifications:list' %}" id="viewAllNotifications"
                     >Voir toutes les notifications</a
                   >
                 </div>
@@ -708,8 +708,6 @@
         {% endif %}
 
         <!-- Main Content -->
-
-        <!-- Content -->
         <div class="px-6 py-6">
             {% block content %}{% endblock %}
         </div>
@@ -748,11 +746,9 @@
           });
         }
 
-        // Notification functionality
+        // ===== NOTIFICATION SYSTEM =====
         const notificationBell = document.getElementById("notificationBell");
-        const notificationDropdown = document.getElementById(
-          "notificationDropdown"
-        );
+        const notificationDropdown = document.getElementById("notificationDropdown");
         const notificationBadge = document.getElementById("notificationBadge");
         const notificationList = document.getElementById("notificationList");
         const markAllReadBtn = document.getElementById("markAllRead");
@@ -763,7 +759,6 @@
             e.stopPropagation();
             notificationDropdown.classList.toggle("show");
 
-            // Load notifications when opened
             if (notificationDropdown.classList.contains("show")) {
               loadNotifications();
             }
@@ -791,10 +786,29 @@
           });
         }
 
-        // Load notifications function (to be implemented)
+        // Load notifications function
         function loadNotifications() {
-          // This will be implemented with your backend integration
-          console.log("Loading notifications...");
+          fetch("{% url 'notifications:ajax_recent' %}")
+            .then(response => response.json())
+            .then(data => {
+              renderNotifications(data.notifications);
+            })
+            .catch(error => {
+              console.error('Erreur lors du chargement des notifications:', error);
+              showErrorMessage();
+            });
+        }
+
+        // Load unread count
+        function loadUnreadCount() {
+          fetch("{% url 'notifications:ajax_unread_count' %}")
+            .then(response => response.json())
+            .then(data => {
+              updateNotificationBadge(data.unread_count);
+            })
+            .catch(error => {
+              console.error('Erreur lors du chargement du compteur:', error);
+            });
         }
 
         // Update notification badge
@@ -809,58 +823,124 @@
           }
         }
 
-        // Other notification functions...
+        // Render notifications
         function renderNotifications(notifications) {
           if (!notificationList) return;
 
           if (notifications.length === 0) {
             notificationList.innerHTML = `
-                        <div class="notification-empty">
-                            <i class="fas fa-bell-slash"></i>
-                            <p>Aucune notification</p>
-                        </div>
-                    `;
+              <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>Aucune notification récente</p>
+              </div>
+            `;
             return;
           }
 
           notificationList.innerHTML = notifications
-            .map(
-              (notification) => `
-                    <div class="notification-item ${
-                      !notification.read ? "unread" : ""
-                    }" data-id="${notification.id}">
-                        <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas ${
-                                  notification.icon || "fa-info"
-                                } text-gray-600 text-sm"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="font-medium text-gray-900 text-sm">${
-                                  notification.title
-                                }</p>
-                                <p class="text-gray-600 text-xs mt-1">${
-                                  notification.message
-                                }</p>
-                                <p class="text-gray-400 text-xs mt-2">${
-                                  notification.time_ago
-                                }</p>
-                            </div>
-                        </div>
-                    </div>
-                `
-            )
+            .map(notification => `
+              <div class="notification-item ${!notification.read ? 'unread' : ''}" data-id="${notification.id}">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas ${getNotificationIcon(notification.type)} text-gray-600 text-sm"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-medium text-gray-900 text-sm">${notification.titre}</p>
+                    <p class="text-gray-600 text-xs mt-1">${notification.message}</p>
+                    <p class="text-gray-400 text-xs mt-2">${notification.date}</p>
+                  </div>
+                  ${!notification.read ? `
+                    <button onclick="markNotificationAsRead(${notification.id})" 
+                            class="text-gray-400 hover:text-gray-600 text-xs">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            `)
             .join("");
         }
 
-        function markNotificationAsRead(notificationId) {
-          console.log("Marking notification as read:", notificationId);
+        // Get notification icon based on type
+        function getNotificationIcon(type) {
+          const icons = {
+            'inscription_complete': 'fa-user-check',
+            'inscription_validee': 'fa-check-circle',
+            'inscription_rejetee': 'fa-times-circle',
+            'document_upload': 'fa-file-upload',
+            'document_valide': 'fa-file-check',
+            'document_rejete': 'fa-file-times',
+            'document_manquant': 'fa-file-exclamation',
+            'profil_complete': 'fa-user-check',
+            'profil_incomplet': 'fa-user-times',
+            'validation_profil': 'fa-user-shield',
+            'import_success': 'fa-file-import',
+            'import_error': 'fa-file-excel',
+            'rappel': 'fa-bell',
+            'info': 'fa-info-circle',
+            'alerte': 'fa-exclamation-triangle',
+            'autre': 'fa-envelope'
+          };
+          return icons[type] || 'fa-bell';
         }
 
+        // Show error message
+        function showErrorMessage() {
+          if (notificationList) {
+            notificationList.innerHTML = `
+              <div class="notification-empty">
+                <i class="fas fa-exclamation-circle text-red-500"></i>
+                <p class="text-red-600">Erreur de chargement</p>
+              </div>
+            `;
+          }
+        }
+
+        // Mark single notification as read
+        window.markNotificationAsRead = function(notificationId) {
+          fetch("{% url 'notifications:ajax_mark_read' %}", {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `ids[]=${notificationId}`
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              loadNotifications();
+              loadUnreadCount();
+            }
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+        };
+
+        // Mark all notifications as read
         function markAllNotificationsAsRead() {
-          console.log("Marking all notifications as read...");
+          fetch("{% url 'notifications:ajax_mark_all_read' %}", {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              loadNotifications();
+              loadUnreadCount();
+              notificationDropdown.classList.remove("show");
+            }
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
         }
 
+        // Get CSRF token
         function getCookie(name) {
           let cookieValue = null;
           if (document.cookie && document.cookie !== "") {
@@ -878,8 +958,11 @@
           return cookieValue;
         }
 
-        // Initialize
-        loadNotifications();
+        // Initialize notifications
+        loadUnreadCount();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadUnreadCount, 30000);
       });
     </script>
 

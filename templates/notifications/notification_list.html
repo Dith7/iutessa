@@ -1,188 +1,123 @@
-{% extends 'base.html' %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - IUTESSA</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Poppins Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --iut-green: #16a34a;
+            --iut-green-dark: #15803d;
+            --iut-green-light: #dcfce7;
+            --iut-purple: #7c3aed;
+            --iut-purple-dark: #6d28d9;
+            --iut-purple-light: #ede9fe;
+        }
 
-{% block title %}Mes Notifications{% endblock %}
+        * {
+            font-family: "Poppins", system-ui, -apple-system, sans-serif;
+        }
 
-{% block extra_css %}
-<style>
-    :root {
-        --iut-green: #16a34a;
-        --iut-green-dark: #15803d;
-        --iut-green-light: #dcfce7;
-        --iut-purple: #7c3aed;
-        --iut-purple-dark: #6d28d9;
-        --iut-purple-light: #ede9fe;
-    }
-    
-    * {
-        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    }
-    
-    .bg-gradient-iut {
-        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-    }
-    
-    .bg-gradient-soft {
-        background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
-    }
-    
-    .text-gradient-iut {
-        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .btn-gradient {
-        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-        transition: all 0.3s ease;
-    }
-    
-    .btn-gradient:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
-    }
-    
-    .glass-effect {
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.9);
-    }
-    
-    .card-hover {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .card-hover:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-    
-    .notification-item {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .notification-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.1), transparent);
-        transition: left 0.5s ease;
-    }
-    
-    .notification-item:hover::before {
-        left: 100%;
-    }
-    
-    .notification-item:hover {
-        transform: translateX(8px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    }
-    
-    .notification-unread {
-        border-left: 4px solid var(--iut-green);
-        background: linear-gradient(135deg, rgba(22, 163, 74, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
-    }
-    
-    .notification-unread::after {
-        content: '';
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 8px;
-        height: 8px;
-        background: var(--iut-green);
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.7; transform: scale(1.2); }
-    }
-    
-    .priority-badge {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .priority-badge::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: left 0.3s ease;
-    }
-    
-    .priority-badge:hover::before {
-        left: 100%;
-    }
-    
-    /* Form styling */
-    select {
-        width: 100%;
-        padding: 0.625rem 0.875rem;
-        border: 1.5px solid #e5e7eb;
-        border-radius: 0.75rem;
-        color: #111827;
-        background-color: white;
-        font-size: 0.875rem;
-        transition: all 0.2s ease;
-    }
-    
-    select:focus {
-        outline: none;
-        border-color: var(--iut-green);
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
-    }
-    
-    .stats-card {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stats-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        transform: rotate(45deg);
-    }
-    
-    .stats-content {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .action-button {
-        transition: all 0.3s ease;
-        border-radius: 8px;
-        padding: 8px;
-    }
-    
-    .action-button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: scale(1.1);
-    }
-</style>
-{% endblock %}
+        .bg-gradient-iut {
+            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        }
 
-{% block content %}
-<div class="min-h-screen bg-gray-50">
+        .text-gradient-iut {
+            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bg-gradient-soft {
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .notification-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-1px);
+        }
+
+        .notification-unread {
+            border-left: 4px solid var(--iut-green) !important;
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.02) 0%, rgba(124, 58, 237, 0.02) 100%);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+        }
+
+        .action-button {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+        }
+
+        .stats-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body class="h-full bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-            <div class="flex items-center justify-between">
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between py-4">
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 bg-gradient-iut rounded-xl flex items-center justify-center shadow-lg">
                         <i class="fas fa-bell text-white text-xl"></i>
@@ -191,7 +126,7 @@
                         <h1 class="text-2xl font-bold text-gradient-iut">Mes Notifications</h1>
                         <p class="text-sm text-gray-600">
                             <span class="font-semibold text-green-600">{{ unread_count }}</span> non lue(s) sur 
-                            <span class="font-semibold">{{ notifications|length }}</span> notifications
+                            <span class="font-semibold">{{ total_count }}</span> notifications
                         </p>
                     </div>
                 </div>
@@ -225,38 +160,41 @@
                         <!-- Type -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Type de notification</label>
-                            <select name="type">
+                            <select name="type" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <option value="">Tous les types</option>
-                                <option value="inscription" {% if request.GET.type == 'inscription' %}selected{% endif %}>Inscription</option>
-                                <option value="document" {% if request.GET.type == 'document' %}selected{% endif %}>Documents</option>
-                                <option value="validation" {% if request.GET.type == 'validation' %}selected{% endif %}>Validation</option>
-                                <option value="rappel" {% if request.GET.type == 'rappel' %}selected{% endif %}>Rappels</option>
-                                <option value="info" {% if request.GET.type == 'info' %}selected{% endif %}>Information</option>
+                                <option value="inscription_complete" {% if filter_type == 'inscription_complete' %}selected{% endif %}>Inscription complétée</option>
+                                <option value="inscription_validee" {% if filter_type == 'inscription_validee' %}selected{% endif %}>Inscription validée</option>
+                                <option value="inscription_rejetee" {% if filter_type == 'inscription_rejetee' %}selected{% endif %}>Inscription rejetée</option>
+                                <option value="document_upload" {% if filter_type == 'document_upload' %}selected{% endif %}>Document téléchargé</option>
+                                <option value="document_valide" {% if filter_type == 'document_valide' %}selected{% endif %}>Document validé</option>
+                                <option value="document_rejete" {% if filter_type == 'document_rejete' %}selected{% endif %}>Document rejeté</option>
+                                <option value="rappel" {% if filter_type == 'rappel' %}selected{% endif %}>Rappel</option>
+                                <option value="info" {% if filter_type == 'info' %}selected{% endif %}>Information</option>
                             </select>
                         </div>
-                        
+
                         <!-- Priorité -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Priorité</label>
-                            <select name="priority">
+                            <select name="priority" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <option value="">Toutes les priorités</option>
-                                <option value="urgente" {% if request.GET.priority == 'urgente' %}selected{% endif %}>Urgente</option>
-                                <option value="haute" {% if request.GET.priority == 'haute' %}selected{% endif %}>Haute</option>
-                                <option value="normale" {% if request.GET.priority == 'normale' %}selected{% endif %}>Normale</option>
-                                <option value="basse" {% if request.GET.priority == 'basse' %}selected{% endif %}>Basse</option>
+                                <option value="urgente" {% if filter_priority == 'urgente' %}selected{% endif %}>Urgente</option>
+                                <option value="haute" {% if filter_priority == 'haute' %}selected{% endif %}>Haute</option>
+                                <option value="normale" {% if filter_priority == 'normale' %}selected{% endif %}>Normale</option>
+                                <option value="basse" {% if filter_priority == 'basse' %}selected{% endif %}>Basse</option>
                             </select>
                         </div>
-                        
-                        <!-- Statut -->
+
+                        <!-- Statut de lecture -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Statut de lecture</label>
-                            <select name="read">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
+                            <select name="read" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <option value="">Toutes</option>
-                                <option value="unread" {% if request.GET.read == 'unread' %}selected{% endif %}>Non lues</option>
-                                <option value="read" {% if request.GET.read == 'read' %}selected{% endif %}>Lues</option>
+                                <option value="unread" {% if filter_read == 'unread' %}selected{% endif %}>Non lues</option>
+                                <option value="read" {% if filter_read == 'read' %}selected{% endif %}>Lues</option>
                             </select>
                         </div>
-                        
+
                         <button type="submit" class="w-full btn-gradient text-white py-3 rounded-xl font-medium shadow-lg">
                             <i class="fas fa-search mr-2"></i>Appliquer les filtres
                         </button>
@@ -282,7 +220,7 @@
                                     <i class="fas fa-envelope mr-2"></i>
                                     Total
                                 </span>
-                                <span class="font-bold text-lg">{{ notifications|length }}</span>
+                                <span class="font-bold text-lg">{{ total_count }}</span>
                             </div>
                             <div class="flex justify-between items-center p-3 bg-white/10 rounded-xl backdrop-blur">
                                 <span class="flex items-center">
@@ -302,8 +240,9 @@
                                 <div class="text-sm mb-2">Taux de lecture</div>
                                 <div class="w-full bg-white/20 rounded-full h-3">
                                     <div class="bg-white h-3 rounded-full transition-all duration-500" 
-                                         style="width: {% if notifications|length > 0 %}{% widthratio notifications|length|add:0|sub:unread_count notifications|length 100 %}{% else %}0{% endif %}%"></div>
+                                         style="width: {{ read_percentage|floatformat:0 }}%"></div>
                                 </div>
+                                <div class="text-xs mt-1 text-center">{{ read_percentage|floatformat:1 }}%</div>
                             </div>
                         </div>
                     </div>
@@ -400,18 +339,18 @@
                 </div>
                 
                 <!-- Pagination -->
-                {% if notifications and is_paginated %}
+                {% if notifications.has_other_pages %}
                 <div class="mt-8 flex justify-center">
                     <nav class="flex items-center space-x-2">
-                        {% if page_obj.has_previous %}
-                        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" 
+                        {% if notifications.has_previous %}
+                        <a href="?page={{ notifications.previous_page_number }}&{{ request.GET.urlencode }}" 
                            class="px-4 py-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-white/60 transition-colors">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                         {% endif %}
                         
-                        {% for num in page_obj.paginator.page_range %}
-                        {% if num == page_obj.number %}
+                        {% for num in notifications.paginator.page_range %}
+                        {% if num == notifications.number %}
                         <span class="px-4 py-2 bg-gradient-iut text-white rounded-lg font-medium shadow-lg">{{ num }}</span>
                         {% elif num == '...' %}
                         <span class="px-4 py-2 text-gray-400">…</span>
@@ -421,8 +360,8 @@
                         {% endif %}
                         {% endfor %}
                         
-                        {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" 
+                        {% if notifications.has_next %}
+                        <a href="?page={{ notifications.next_page_number }}&{{ request.GET.urlencode }}" 
                            class="px-4 py-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-white/60 transition-colors">
                             <i class="fas fa-chevron-right"></i>
                         </a>
@@ -433,17 +372,16 @@
             </div>
         </div>
     </main>
-</div>
 
 <script>
 function markAsRead(notificationId) {
-    fetch("{% url 'notifications:mark_read' %}", {
+    fetch("{% url 'notifications:ajax_mark_read' %}", {
         method: 'POST',
         headers: {
             'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({id: notificationId})
+        body: `ids[]=${notificationId}`
     })
     .then(response => response.json())
     .then(data => {
@@ -461,7 +399,7 @@ function markAsRead(notificationId) {
 
 function markAllAsRead() {
     if (confirm('Marquer toutes les notifications comme lues ?')) {
-        fetch("{% url 'notifications:mark_all_read' %}", {
+        fetch("{% url 'notifications:ajax_mark_all_read' %}", {
             method: 'POST',
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}'
@@ -484,13 +422,11 @@ function markAllAsRead() {
 
 function deleteNotification(notificationId) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette notification ?')) {
-        fetch("{% url 'notifications:delete' %}", {
+        fetch(`{% url 'notifications:ajax_delete' 0 %}`.replace('0', notificationId), {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: notificationId})
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
         })
         .then(response => response.json())
         .then(data => {
@@ -506,5 +442,22 @@ function deleteNotification(notificationId) {
         });
     }
 }
+
+// Get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 </script>
-{% endblock %}
+</body>
+</html>

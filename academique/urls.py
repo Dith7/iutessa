@@ -24,6 +24,10 @@ urlpatterns = [
     path('administration/etudiants/', 
          views.admin_etudiants_list, 
          name='admin_etudiants_list'),
+
+    path('administration/etudiants/<int:etudiant_id>/', 
+         views.admin_etudiant_detail, 
+         name='admin_etudiant_detail'),
     
     path('administration/etudiants/import/', 
          views.admin_import_etudiants, 

@@ -177,28 +177,44 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {% with docs_count=etudiant.documents.count docs_valides=etudiant.documents.filter.valide.True.count %}
+                        {% with docs_count=etudiant.documents.count docs_valides=etudiant.documents_valides_count %}
                         <div class="flex items-center justify-center">
                             <div class="w-8 h-8 rounded-full border-2 
                                 {% if docs_valides == docs_count and docs_count > 0 %}border-green-500 text-green-600
                                 {% elif docs_valides > 0 %}border-yellow-500 text-yellow-600
                                 {% else %}border-red-500 text-red-600{% endif %} 
                                 flex items-center justify-center">
-                                <span class="text-xs font-bold">{{ docs_valides }}/{{ docs_count }}</span>
+                                <span class="text-xs font-bold">{{ docs_valides|default:0 }}/{{ docs_count }}</span>
                             </div>
                         </div>
                         {% endwith %}
                     </td>
                     <td class="px-6 py-4 text-center">
                         <div class="flex items-center justify-center space-x-2">
-                            <button class="text-green-600 hover:text-green-800 transition-smooth" title="Voir détails">
+                            <!-- Bouton Voir détails -->
+                            <a href="{% url 'academique:admin_etudiant_detail' etudiant.id %}" 
+                               class="text-green-600 hover:text-green-800 transition-smooth p-1 rounded hover:bg-green-50" 
+                               title="Voir détails">
                                 <i class="fas fa-eye"></i>
-                            </button>
+                            </a>
+                            
                             {% if etudiant.statut_validation == 'en_attente' %}
-                            <button class="text-blue-600 hover:text-blue-800 transition-smooth" title="Valider">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-800 transition-smooth" title="Rejeter">
+                            <!-- Bouton Valider -->
+                            <form method="post" action="{% url 'academique:admin_validate_inscription' etudiant.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="valider">
+                                <button type="submit" 
+                                        class="text-blue-600 hover:text-blue-800 transition-smooth p-1 rounded hover:bg-blue-50" 
+                                        title="Valider inscription"
+                                        onclick="return confirm('Confirmer la validation de l\'inscription de {{ etudiant.nom_complet|escapejs }} ?')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                            
+                            <!-- Bouton Rejeter -->
+                            <button onclick="openRejectModal({{ etudiant.id }}, '{{ etudiant.nom_complet|escapejs }}')" 
+                                    class="text-red-600 hover:text-red-800 transition-smooth p-1 rounded hover:bg-red-50" 
+                                    title="Rejeter inscription">
                                 <i class="fas fa-times"></i>
                             </button>
                             {% endif %}
@@ -229,7 +245,8 @@
             </p>
             <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px">
                 {% if etudiants.has_previous %}
-                <a href="?page={{ etudiants.previous_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-green-200 bg-white/70 text-sm font-medium text-gray-500 hover:bg-white transition-smooth">
+                <a href="?page={{ etudiants.previous_page_number }}&{{ request.GET.urlencode }}" 
+                   class="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-green-200 bg-white/70 text-sm font-medium text-gray-500 hover:bg-white transition-smooth">
                     <i class="fas fa-chevron-left"></i>
                 </a>
                 {% endif %}
@@ -239,7 +256,8 @@
                 </span>
                 
                 {% if etudiants.has_next %}
-                <a href="?page={{ etudiants.next_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-green-200 bg-white/70 text-sm font-medium text-gray-500 hover:bg-white transition-smooth">
+                <a href="?page={{ etudiants.next_page_number }}&{{ request.GET.urlencode }}" 
+                   class="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-green-200 bg-white/70 text-sm font-medium text-gray-500 hover:bg-white transition-smooth">
                     <i class="fas fa-chevron-right"></i>
                 </a>
                 {% endif %}
@@ -248,4 +266,100 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Modal de rejet -->
+<div id="rejectModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-200">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center mr-3">
+                    <i class="fas fa-times text-red-600"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900">Rejeter l'inscription</h3>
+            </div>
+            
+            <p class="text-gray-600 mb-4">
+                Vous êtes sur le point de rejeter l'inscription de <span id="etudiantNom" class="font-semibold"></span>.
+            </p>
+            
+            <form id="rejectForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="rejeter">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Raison du rejet <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="raison" 
+                              id="raisonRejet"
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" 
+                              rows="4" 
+                              placeholder="Expliquez clairement la raison du rejet pour que l'étudiant puisse corriger..."
+                              required></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" 
+                            onclick="closeRejectModal()" 
+                            class="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-smooth">
+                        Annuler
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-smooth">
+                        <i class="fas fa-times mr-2"></i>Rejeter l'inscription
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openRejectModal(etudiantId, etudiantNom) {
+    // Mettre à jour l'action du formulaire
+    document.getElementById('rejectForm').action = `{% url 'academique:admin_validate_inscription' 0 %}`.replace('0', etudiantId);
+    
+    // Mettre à jour le nom de l'étudiant dans le modal
+    document.getElementById('etudiantNom').textContent = etudiantNom;
+    
+    // Vider le textarea
+    document.getElementById('raisonRejet').value = '';
+    
+    // Afficher le modal
+    document.getElementById('rejectModal').classList.remove('hidden');
+    
+    // Focus sur le textarea
+    setTimeout(() => {
+        document.getElementById('raisonRejet').focus();
+    }, 100);
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModal').classList.add('hidden');
+}
+
+// Fermer le modal en cliquant à l'extérieur
+document.getElementById('rejectModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeRejectModal();
+    }
+});
+
+// Fermer le modal avec la touche Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeRejectModal();
+    }
+});
+
+// Confirmation avant validation
+document.querySelectorAll('form[action*="valider"]').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const etudiantNom = this.closest('tr').querySelector('.font-semibold').textContent;
+        if (!confirm(`Êtes-vous sûr de vouloir valider l'inscription de ${etudiantNom} ?\n\nCette action enverra une notification à l'étudiant.`)) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
 {% endblock %}

@@ -34,23 +34,30 @@ def notification_list(request):
     page = request.GET.get('page')
     notifications = paginator.get_page(page)
     
-    # Stats
-    stats = {
-        'total': request.user.notifications.count(),
-        'non_lues': request.user.notifications.filter(lu=False).count(),
-        'urgentes': request.user.notifications.filter(priorite__in=['haute', 'urgente'], lu=False).count(),
-    }
+    # Stats calculées
+    total_count = request.user.notifications.count()
+    unread_count = request.user.notifications.filter(lu=False).count()
+    read_count = total_count - unread_count
+    read_percentage = (read_count / total_count * 100) if total_count > 0 else 0
+    
+    # Stats cette semaine
+    from datetime import timedelta
+    week_ago = timezone.now() - timedelta(days=7)
+    week_count = request.user.notifications.filter(date_creation__gte=week_ago).count()
     
     context = {
         'notifications': notifications,
-        'stats': stats,
+        'total_count': total_count,
+        'unread_count': unread_count,
+        'read_count': read_count,
+        'read_percentage': read_percentage,
+        'week_count': week_count,
         'filter_type': filter_type,
         'filter_priority': filter_priority,
         'filter_read': filter_read,
     }
     
     return render(request, 'notifications/notification_list.html', context)
-
 
 @login_required
 def notification_detail(request, pk):

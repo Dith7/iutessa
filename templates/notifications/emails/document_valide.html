@@ -1,11 +1,13 @@
-<!-- templates/notifications/emails/document_valide.html -->
-{% extends "notifications/emails/base_email.html" %} {% block title %}Document
-Validé - IUTESSA{% endblock %} {% block subtitle %}Validation des Documents{%
-endblock %} {% block content %}
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Document Validé - IUTESSA{% endblock %}
+
+{% block subtitle %}Validation des Documents{% endblock %}
+
+{% block content %}
 <div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
-  Nous avons le plaisir de vous informer que votre document a été validé avec
-  succès 🎉.
+  Nous avons le plaisir de vous informer que votre document a été validé avec succès 🎉.
 </div>
 <div class="success-box">
   <strong>✅ Document validé :</strong><br />
@@ -18,8 +20,7 @@ endblock %} {% block content %}
       Aucune autre action n'est requise pour ce document
     </li>
     <li style="margin-bottom: 8px">
-      Vous pouvez consulter tous vos documents validés dans votre espace
-      étudiant
+      Vous pouvez consulter tous vos documents validés dans votre espace étudiant
     </li>
     <li style="margin-bottom: 8px">
       Continuez à suivre l'avancement de votre dossier académique
@@ -32,7 +33,6 @@ endblock %} {% block content %}
   </a>
 </div>
 <div class="message" style="font-size: 14px; color: #718096; margin-top: 24px">
-  Si vous avez des questions, n'hésitez pas à contacter l'administration
-  académique.
+  Si vous avez des questions, n'hésitez pas à contacter l'administration académique.
 </div>
 {% endblock %}

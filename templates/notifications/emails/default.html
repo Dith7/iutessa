@@ -1,6 +1,8 @@
-<!-- templates/notifications/emails/default.html -->
-{% extends "notifications/emails/base_email.html" %} {% block title %}{{
-notification.titre }} - IUTESSA{% endblock %} {% block content %}
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}{{ notification.titre }} - IUTESSA{% endblock %}
+
+{% block content %}
 <div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
   <h2>{{ notification.titre }}</h2>
@@ -12,4 +14,5 @@ notification.titre }} - IUTESSA{% endblock %} {% block content %}
     Voir plus de détails
   </a>
 </div>
-{% endif %} {% endblock %}
+{% endif %}
+{% endblock %}

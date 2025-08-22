@@ -1,5 +1,4 @@
 # notifications/services.py
-
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -10,7 +9,6 @@ import logging
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
-
 
 class NotificationService:
     """Service principal pour gérer les notifications et emails"""
@@ -26,9 +24,7 @@ class NotificationService:
         url_action='',
         send_email=True
     ):
-        """
-        Crée une notification et envoie un email si nécessaire
-        """
+        """Crée une notification et envoie un email si nécessaire"""
         try:
             # Créer la notification
             notification = Notification.objects.create(
@@ -86,12 +82,12 @@ class NotificationService:
     
     @staticmethod
     def send_email_notification(notification):
-        """Envoie un email HTML pour une notification"""
+        """Envoie un email HTML pour une notification avec optimisations anti-spam"""
         try:
             context = {
                 'notification': notification,
                 'user': notification.destinataire,
-                'site_name': 'IUT-ESSA',
+                'site_name': 'IUTESSA',
                 'site_url': settings.SITE_URL if hasattr(settings, 'SITE_URL') else 'http://localhost:8000',
             }
             
@@ -102,13 +98,29 @@ class NotificationService:
             html_content = render_to_string(f'notifications/emails/{template_name}', context)
             text_content = strip_tags(html_content)
             
-            # Créer et envoyer l'email
+            # Sujet optimisé selon le type de notification
+            subject = NotificationService.get_email_subject(notification)
+            
+            # Créer et configurer l'email
             email = EmailMultiAlternatives(
-                subject=f"[IUT-ESSA] {notification.titre}",
+                subject=subject,
                 body=text_content,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                to=[notification.destinataire.email]
+                to=[notification.destinataire.email],
+                headers={
+                    # Headers anti-spam
+                    'X-Mailer': 'IUTESSA v1.0',
+                    'X-Priority': '3',
+                    'X-MSMail-Priority': 'Normal',
+                    'Importance': 'Normal',
+                    'Auto-Submitted': 'auto-generated',
+                    'List-Unsubscribe': f'<{settings.SITE_URL if hasattr(settings, "SITE_URL") else "http://localhost:8000"}/notifications/preferences/>',
+                    'Message-ID': f'<{notification.id}@iutessa.com>',
+                    'X-Entity-ID': f'notification-{notification.id}',
+                }
             )
+            
+            # Ajouter le contenu HTML
             email.attach_alternative(html_content, "text/html")
             email.send(fail_silently=False)
             
@@ -118,6 +130,28 @@ class NotificationService:
         except Exception as e:
             logger.error(f"Erreur envoi email: {e}")
             return False
+    
+    @staticmethod
+    def get_email_subject(notification):
+        """Génère un sujet optimisé selon le type de notification"""
+        subjects = {
+            'inscription_complete': '✅ Inscription confirmée - IUTESSA',
+            'inscription_validee': '🎉 Inscription validée - Bienvenue à l\'IUTESSA',
+            'inscription_rejetee': '❌ Inscription rejetée - Action requise',
+            'document_valide': '✅ Document validé - IUTESSA',
+            'document_rejete': '⚠️ Document rejeté - Correction nécessaire',
+            'document_manquant': '📄 Document manquant - Action requise',
+            'rappel': '🔔 Rappel important - IUTESSA',
+            'info': 'ℹ️ Information importante - IUTESSA',
+            'alerte': '⚠️ Alerte - IUTESSA',
+        }
+        
+        # Sujet personnalisé ou générique
+        custom_subject = subjects.get(notification.type_notification)
+        if custom_subject:
+            return custom_subject
+        else:
+            return f"[IUTESSA] {notification.titre}"
     
     @staticmethod
     def get_email_template(type_notification):

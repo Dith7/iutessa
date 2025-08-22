@@ -1,7 +1,10 @@
-<!-- templates/notifications/emails/document_rejete.html -->
-{% extends "notifications/emails/base_email.html" %} {% block title %}Document
-Rejeté - IUTESSA{% endblock %} {% block subtitle %}Validation des Documents{%
-endblock %} {% block content %}
+{% extends "notifications/emails/base_email.html" %}
+
+{% block title %}Document Rejeté - IUTESSA{% endblock %}
+
+{% block subtitle %}Validation des Documents{% endblock %}
+
+{% block content %}
 <div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
   Nous vous informons qu'un de vos documents a été rejeté lors de la validation.
@@ -25,8 +28,7 @@ endblock %} {% block content %}
   </ol>
 </div>
 <div class="warning-box">
-  <strong>Important :</strong> Votre dossier ne pourra être validé qu'une fois
-  tous les documents approuvés.
+  <strong>Important :</strong> Votre dossier ne pourra être validé qu'une fois tous les documents approuvés.
 </div>
 <div style="text-align: center">
   <a href="{{ site_url }}/academique/documents/" class="button">
@@ -34,7 +36,6 @@ endblock %} {% block content %}
   </a>
 </div>
 <div class="message" style="font-size: 14px; color: #718096; margin-top: 24px">
-  Si vous avez des questions, n'hésitez pas à contacter l'administration
-  académique.
+  Si vous avez des questions, n'hésitez pas à contacter l'administration académique.
 </div>
 {% endblock %}
