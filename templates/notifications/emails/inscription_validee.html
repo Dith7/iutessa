@@ -1,60 +1,74 @@
 <!-- templates/notifications/emails/inscription_validee.html -->
-{% extends "notifications/emails/base_email.html" %}
-
-{% block title %}Inscription Validée - IUT-ESSA{% endblock %}
-{% block subtitle %}Validation Académique{% endblock %}
-
-{% block content %}
-<div class="greeting">
-    Bonjour {{ notification.destinataire.first_name }},
-</div>
-
+{% extends "notifications/emails/base_email.html" %} {% block title
+%}Inscription Validée - IUTESSA{% endblock %} {% block subtitle %}Validation
+Académique{% endblock %} {% block content %}
+<div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
-    Excellente nouvelle ! Votre inscription académique a été validée par l'administration.
+  Excellente nouvelle ! Votre inscription académique a été validée par
+  l'administration.
 </div>
-
-<div class="info-box" style="background-color: #f0fdf4; border-color: #16a34a;">
-    <strong>🎉 Félicitations !</strong><br>
-    Vous êtes maintenant officiellement inscrit(e) à l'IUT-ESSA.
+<div class="success-box">
+  <strong>🎉 Félicitations !</strong><br />
+  Vous êtes maintenant officiellement inscrit(e) à l'IUTESSA.
 </div>
-
 <table class="details-table">
-    <tr>
-        <td>Statut :</td>
-        <td><span style="color: #16a34a; font-weight: bold;">✓ Validé</span></td>
-    </tr>
-    <tr>
-        <td>Matricule :</td>
-        <td><strong>{{ notification.destinataire.etudiant_academique.numero_matricule }}</strong></td>
-    </tr>
-    <tr>
-        <td>Filière :</td>
-        <td>{{ notification.destinataire.etudiant_academique.filiere.nom }}</td>
-    </tr>
-    <tr>
-        <td>Année académique :</td>
-        <td>2024-2025</td>
-    </tr>
+  <tr>
+    <td>Statut :</td>
+    <td><span style="color: #16a34a; font-weight: bold">✓ Validé</span></td>
+  </tr>
+  <tr>
+    <td>Matricule :</td>
+    <td>
+      <strong
+        >{{ notification.destinataire.etudiant_academique.numero_matricule
+        }}</strong
+      >
+    </td>
+  </tr>
+  <tr>
+    <td>Filière :</td>
+    <td>{{ notification.destinataire.etudiant_academique.filiere.nom }}</td>
+  </tr>
+  <tr>
+    <td>Année académique :</td>
+    <td>2024-2025</td>
+  </tr>
 </table>
-
 <div class="message">
-    <strong>Vous pouvez maintenant :</strong>
-    <ul>
-        <li>Télécharger votre fiche d'inscription officielle</li>
-        <li>Accéder à tous les services étudiants</li>
-        <li>Consulter votre planning de cours</li>
-        <li>Participer aux activités académiques</li>
-    </ul>
+  <strong>Vous pouvez maintenant :</strong>
+  <ul style="margin: 16px 0; padding-left: 20px">
+    <li style="margin-bottom: 8px">
+      Télécharger votre fiche d'inscription officielle
+    </li>
+    <li style="margin-bottom: 8px">Accéder à tous les services étudiants</li>
+    <li style="margin-bottom: 8px">Consulter votre planning de cours</li>
+    <li style="margin-bottom: 8px">Participer aux activités académiques</li>
+  </ul>
 </div>
-
-<div style="text-align: center;">
-    <a href="{{ site_url }}/academique/fiche-inscription.pdf" class="button">
-        Télécharger ma fiche d'inscription
-    </a>
+<div style="text-align: center">
+  <a href="{{ site_url }}/academique/fiche-inscription.pdf" class="button">
+    Télécharger ma fiche d'inscription
+  </a>
 </div>
-
-<div class="message" style="margin-top: 30px; padding: 20px; background-color: #f9fafb; border-radius: 8px;">
-    <strong>Bienvenue dans la communauté IUT-ESSA !</strong><br>
-    Nous vous souhaitons une excellente année académique pleine de succès.
+<div
+  style="
+    margin-top: 32px;
+    padding: 24px;
+    background: linear-gradient(
+      135deg,
+      rgba(22, 163, 74, 0.08) 0%,
+      rgba(124, 58, 237, 0.08) 100%
+    );
+    border-radius: 16px;
+    text-align: center;
+  "
+>
+  <strong style="color: #2d3748; font-size: 18px"
+    >Bienvenue dans la communauté IUTESSA !</strong
+  ><br />
+  <span style="color: #4a5568; margin-top: 8px; display: block"
+    >Nous vous souhaitons une excellente année académique pleine de succès et
+    d'épanouissement.</span
+  >
 </div>
 {% endblock %}

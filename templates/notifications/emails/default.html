@@ -1,23 +1,15 @@
 <!-- templates/notifications/emails/default.html -->
-{% extends "notifications/emails/base_email.html" %}
-
-{% block title %}{{ notification.titre }} - IUT-ESSA{% endblock %}
-
-{% block content %}
-<div class="greeting">
-    Bonjour {{ notification.destinataire.first_name }},
-</div>
-
+{% extends "notifications/emails/base_email.html" %} {% block title %}{{
+notification.titre }} - IUTESSA{% endblock %} {% block content %}
+<div class="greeting">Bonjour {{ notification.destinataire.first_name }},</div>
 <div class="message">
-    <h2 style="color: #2d3748; font-size: 20px;">{{ notification.titre }}</h2>
-    <p>{{ notification.message|linebreaks }}</p>
+  <h2>{{ notification.titre }}</h2>
+  <p>{{ notification.message|linebreaks }}</p>
 </div>
-
 {% if notification.url_action %}
-<div style="text-align: center;">
-    <a href="{{ site_url }}{{ notification.url_action }}" class="button">
-        Voir plus de détails
-    </a>
+<div style="text-align: center">
+  <a href="{{ site_url }}{{ notification.url_action }}" class="button">
+    Voir plus de détails
+  </a>
 </div>
-{% endif %}
-{% endblock %}
+{% endif %} {% endblock %}

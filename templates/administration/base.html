@@ -99,6 +99,148 @@
             @apply bg-blue-50 text-blue-800 border-blue-200; 
         }
         
+        /* Notification Bell Styles */
+        .notification-bell {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-bell:hover {
+            transform: scale(1.1);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 380px;
+            max-height: 480px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(22, 163, 74, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .notification-dropdown.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .notification-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid rgba(255, 255, 255, 0.95);
+        }
+        
+        .notification-header {
+            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px 16px 0 0;
+            font-weight: 600;
+        }
+        
+        .notification-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(22, 163, 74, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .notification-item:hover {
+            background: rgba(22, 163, 74, 0.03);
+            transform: translateX(4px);
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-item.unread {
+            background: rgba(22, 163, 74, 0.03);
+            border-left: 3px solid var(--iut-green);
+        }
+        
+        .notification-item.unread::after {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--iut-green);
+            border-radius: 50%;
+        }
+        
+        .notification-footer {
+            padding: 12px 20px;
+            border-top: 1px solid rgba(22, 163, 74, 0.1);
+            text-align: center;
+        }
+        
+        .notification-footer a {
+            color: var(--iut-purple);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-footer a:hover {
+            color: var(--iut-purple-dark);
+        }
+        
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .notification-empty i {
+            font-size: 32px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -116,6 +258,11 @@
         
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, var(--iut-green-dark) 0%, var(--iut-purple-dark) 100%);
+        }
+        
+        .notification-dropdown .notification-list {
+            max-height: 320px;
+            overflow-y: auto;
         }
     </style>
     
@@ -234,6 +381,37 @@
                             <i class="fas fa-plus mr-2"></i>Nouveau bloc
                         </a>
                         
+                        <!-- Notifications Bell -->
+                        <div class="relative" id="notificationContainer">
+                            <button id="notificationBell" class="notification-bell w-10 h-10 bg-gray-100 hover:bg-green-100 rounded-xl flex items-center justify-center text-gray-600 hover:text-green-600">
+                                <i class="fas fa-bell text-lg"></i>
+                                <!-- Notification Badge - will be populated by JavaScript -->
+                                <span id="notificationBadge" class="notification-badge hidden">0</span>
+                            </button>
+                            
+                            <!-- Notifications Dropdown -->
+                            <div id="notificationDropdown" class="notification-dropdown">
+                                <div class="notification-header flex items-center justify-between">
+                                    <span>Notifications</span>
+                                    <button id="markAllRead" class="text-white/80 hover:text-white text-sm">
+                                        <i class="fas fa-check-double mr-1"></i>Tout marquer
+                                    </button>
+                                </div>
+                                
+                                <div class="notification-list" id="notificationList">
+                                    <!-- Notifications will be populated by JavaScript -->
+                                    <div class="notification-empty">
+                                        <i class="fas fa-bell-slash"></i>
+                                        <p>Aucune notification</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-footer">
+                                    <a href="#" id="viewAllNotifications">Voir toutes les notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- User Profile -->
                         <div class="flex items-center space-x-3 pl-4 border-l border-gray-200">
                             <div class="text-right">
@@ -288,6 +466,164 @@
     </div>
 
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <!-- Notification System JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationBell = document.getElementById('notificationBell');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationBadge = document.getElementById('notificationBadge');
+            const notificationList = document.getElementById('notificationList');
+            const markAllReadBtn = document.getElementById('markAllRead');
+            
+            // Toggle dropdown
+            notificationBell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notificationDropdown.classList.toggle('show');
+                
+                // Load notifications when opened
+                if (notificationDropdown.classList.contains('show')) {
+                    loadNotifications();
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                notificationDropdown.classList.remove('show');
+            });
+            
+            // Prevent dropdown from closing when clicked inside
+            notificationDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Mark all as read
+            markAllReadBtn.addEventListener('click', function() {
+                markAllNotificationsAsRead();
+            });
+            
+            // Load notifications function (to be implemented)
+            function loadNotifications() {
+                // This will be implemented with your backend integration
+                console.log('Loading notifications...');
+                
+                // Example of how notifications will be populated:
+                // fetch('/api/admin/notifications/')
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         updateNotificationBadge(data.unread_count);
+                //         renderNotifications(data.notifications);
+                //     });
+            }
+            
+            // Update notification badge
+            function updateNotificationBadge(count) {
+                if (count > 0) {
+                    notificationBadge.textContent = count > 99 ? '99+' : count;
+                    notificationBadge.classList.remove('hidden');
+                } else {
+                    notificationBadge.classList.add('hidden');
+                }
+            }
+            
+            // Render notifications
+            function renderNotifications(notifications) {
+                if (notifications.length === 0) {
+                    notificationList.innerHTML = `
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>Aucune notification</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                notificationList.innerHTML = notifications.map(notification => `
+                    <div class="notification-item ${!notification.read ? 'unread' : ''}" data-id="${notification.id}">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-gradient-iut rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas ${notification.icon || 'fa-info'} text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-gray-900 text-sm">${notification.title}</p>
+                                <p class="text-gray-600 text-xs mt-1">${notification.message}</p>
+                                <p class="text-gray-400 text-xs mt-2">${notification.time_ago}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add click listeners to notification items
+                document.querySelectorAll('.notification-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const notificationId = this.dataset.id;
+                        markNotificationAsRead(notificationId);
+                        
+                        // Handle notification click action
+                        const notification = notifications.find(n => n.id == notificationId);
+                        if (notification && notification.url) {
+                            window.location.href = notification.url;
+                        }
+                    });
+                });
+            }
+            
+            // Mark notification as read
+            function markNotificationAsRead(notificationId) {
+                // This will be implemented with your backend integration
+                console.log('Marking notification as read:', notificationId);
+                
+                // fetch(`/api/admin/notifications/${notificationId}/mark-read/`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'X-CSRFToken': getCookie('csrftoken'),
+                //         'Content-Type': 'application/json'
+                //     }
+                // }).then(() => {
+                //     loadNotifications();
+                // });
+            }
+            
+            // Mark all notifications as read
+            function markAllNotificationsAsRead() {
+                // This will be implemented with your backend integration
+                console.log('Marking all notifications as read...');
+                
+                // fetch('/api/admin/notifications/mark-all-read/', {
+                //     method: 'POST',
+                //     headers: {
+                //         'X-CSRFToken': getCookie('csrftoken'),
+                //         'Content-Type': 'application/json'
+                //     }
+                // }).then(() => {
+                //     loadNotifications();
+                // });
+            }
+            
+            // Get CSRF token helper
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            // Initialize - load notifications on page load
+            loadNotifications();
+            
+            // Optionally, set up periodic refresh
+            // setInterval(loadNotifications, 30000); // Refresh every 30 seconds
+        });
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>
