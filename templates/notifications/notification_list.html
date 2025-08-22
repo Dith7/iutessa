@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes Notifications{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+    }
+    
+    .bg-gradient-iut {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+    }
+    
+    .bg-gradient-soft {
+        background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    }
+    
+    .notification-item {
+        transition: all 0.3s ease;
+    }
+    
+    .notification-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .notification-unread {
+        border-left: 4px solid var(--iut-green);
+        background-color: #fafafa;
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-iut rounded-xl flex items-center justify-center">
+                        <i class="fas fa-bell text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Mes Notifications</h1>
+                        <p class="text-sm text-gray-600">{{ unread_count }} non lue(s) sur {{ notifications|length }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button onclick="markAllAsRead()" class="px-4 py-2 text-sm text-gray-700 hover:text-green-600 transition-colors">
+                        <i class="fas fa-check-double mr-2"></i>Tout marquer comme lu
+                    </button>
+                    <a href="{% url 'users:etudiant_dashboard' %}" class="text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-home text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Filtres -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Filtres</h3>
+                    
+                    <form method="get" class="space-y-4">
+                        <!-- Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                            <select name="type" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">Tous les types</option>
+                                <option value="inscription">Inscription</option>
+                                <option value="document">Documents</option>
+                                <option value="validation">Validation</option>
+                                <option value="rappel">Rappels</option>
+                                <option value="info">Information</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Priorité -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Priorité</label>
+                            <select name="priority" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">Toutes les priorités</option>
+                                <option value="urgente">Urgente</option>
+                                <option value="haute">Haute</option>
+                                <option value="normale">Normale</option>
+                                <option value="basse">Basse</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Statut -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
+                            <select name="read" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">Toutes</option>
+                                <option value="unread">Non lues</option>
+                                <option value="read">Lues</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="w-full px-4 py-2 btn-gradient text-white rounded-lg font-medium">
+                            <i class="fas fa-filter mr-2"></i>Filtrer
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Stats rapides -->
+                <div class="bg-gradient-iut rounded-xl p-6 text-white mt-6">
+                    <h4 class="font-bold mb-4">Statistiques</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Total</span>
+                            <span class="font-bold">{{ notifications|length }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Non lues</span>
+                            <span class="font-bold">{{ unread_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Cette semaine</span>
+                            <span class="font-bold">{{ week_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des notifications -->
+            <div class="lg:col-span-2">
+                <div class="space-y-4">
+                    {% for notification in notifications %}
+                    <div class="notification-item bg-white rounded-xl shadow-sm border border-gray-200 p-6 {% if not notification.lu %}notification-unread{% endif %}"
+                         data-id="{{ notification.id }}">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start space-x-4 flex-1">
+                                <div class="w-10 h-10 bg-gradient-soft rounded-lg flex items-center justify-center border border-gray-200">
+                                    <i class="fas {{ notification.icone }}"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 mb-1">
+                                        {{ notification.titre }}
+                                        {% if not notification.lu %}
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Nouveau
+                                        </span>
+                                        {% endif %}
+                                    </h4>
+                                    <p class="text-sm text-gray-600 mb-3">{{ notification.message }}</p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span><i class="far fa-clock mr-1"></i>{{ notification.date_creation|timesince }}</span>
+                                        {% if notification.expediteur %}
+                                        <span><i class="far fa-user mr-1"></i>{{ notification.expediteur.get_full_name|default:notification.expediteur.username }}</span>
+                                        {% endif %}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                            {% if notification.priorite == 'urgente' %}bg-red-100 text-red-800
+                                            {% elif notification.priorite == 'haute' %}bg-orange-100 text-orange-800
+                                            {% elif notification.priorite == 'normale' %}bg-blue-100 text-blue-800
+                                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                            {{ notification.get_priorite_display }}
+                                        </span>
+                                    </div>
+                                    {% if notification.url_action %}
+                                    <div class="mt-3">
+                                        <a href="{{ notification.url_action }}" class="text-green-600 hover:text-green-700 text-sm font-medium">
+                                            Voir plus <i class="fas fa-arrow-right ml-1"></i>
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-2 ml-4">
+                                {% if not notification.lu %}
+                                <button onclick="markAsRead({{ notification.id }})" class="text-gray-400 hover:text-green-600" title="Marquer comme lu">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                {% endif %}
+                                <button onclick="deleteNotification({{ notification.id }})" class="text-gray-400 hover:text-red-600" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                        <div class="w-20 h-20 bg-gradient-soft rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                            <i class="fas fa-bell-slash text-gray-400 text-3xl"></i>
+                        </div>
+                        <p class="text-lg text-gray-500">Aucune notification</p>
+                        <p class="text-sm text-gray-400 mt-2">Vous n'avez aucune notification pour le moment</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if notifications %}
+                <div class="mt-6 flex justify-center">
+                    <nav class="flex items-center space-x-2">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if num == page_obj.number %}
+                        <span class="px-3 py-2 bg-gradient-iut text-white rounded-lg">{{ num }}</span>
+                        {% else %}
+                        <a href="?page={{ num }}" class="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">{{ num }}</a>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+function markAsRead(notificationId) {
+    fetch("{% url 'notifications:mark_read' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: notificationId})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function markAllAsRead() {
+    fetch("{% url 'notifications:mark_all_read' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function deleteNotification(notificationId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette notification ?')) {
+        fetch("{% url 'notifications:delete' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: notificationId})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

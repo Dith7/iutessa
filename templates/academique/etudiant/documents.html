@@ -1,4 +1,3 @@
-<!-- templates/academique/etudiant/documents.html -->
 {% extends 'base.html' %}
 
 {% block title %}Mes Documents{% endblock %}
@@ -82,8 +81,20 @@ function deleteDocument(docId) {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
         fetch(`/academique/documents/${docId}/supprimer/`, {
             method: 'POST',
-            headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value}
-        }).then(() => location.reload());
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Erreur lors de la suppression du document');
+            }
+        }).catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la suppression du document');
+        });
     }
 }
 </script>

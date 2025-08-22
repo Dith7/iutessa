@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'administration',
     'users',
     'academique',
+    'notifications',
     # 'concours',   # à ajouter plus tard
 ]
 
@@ -305,5 +306,13 @@ LOGGING = {
     },
 }
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'contact@iutessa.com'
+EMAIL_HOST_PASSWORD = '18a435EG-iutessa'
+DEFAULT_FROM_EMAIL = 'contact@iutessa.com'
 # Créer le dossier logs s'il n'existe pas
 (BASE_DIR / 'logs').mkdir(exist_ok=True)

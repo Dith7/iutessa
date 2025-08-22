@@ -147,6 +147,8 @@
                         <div class="nav-icon"><i class="fas fa-home"></i></div>
                         <span>Dashboard</span>
                     </a>
+
+                    
                     
                     <a href="{% url 'administration:blocks_list' %}" class="nav-link {% if 'block' in request.resolver_match.url_name %}active{% endif %}">
                         <div class="nav-icon"><i class="fas fa-th-large"></i></div>

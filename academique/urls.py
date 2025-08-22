@@ -1,4 +1,5 @@
-# academique/urls.py - Remplacer le contenu existant
+# academique/urls.py - Ajouter cette URL après admin_validate_document
+
 from django.urls import path
 from . import views
 
@@ -40,6 +41,11 @@ urlpatterns = [
     path('administration/documents/<int:doc_id>/valider/', 
          views.admin_validate_document, 
          name='admin_validate_document'),
+    
+    # NOUVELLE URL: Validation inscription
+    path('administration/etudiants/<int:etudiant_id>/valider/', 
+         views.admin_validate_inscription, 
+         name='admin_validate_inscription'),
     
     # =================== URLs ÉTUDIANT ===================
     # Inscription et profil

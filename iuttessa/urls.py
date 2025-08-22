@@ -11,6 +11,8 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('users/', include('users.urls')),
     path('academique/', include('academique.urls')),
+    path('notifications/', include('notifications.urls', namespace='notifications')),
+
 
 ]
 
