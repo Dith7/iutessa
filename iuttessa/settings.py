@@ -1,27 +1,35 @@
 """
-Configuration Django complète avec CKEditor 5 et Tailwind CSS
+Configuration Django complète avec CKEditor 5, Tailwind CSS et Google Cloud Storage
 """
 import os
 from pathlib import Path
+from google.oauth2 import service_account
+from dotenv import load_dotenv
+
+# Charger le fichier .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'votre-clé-secrète-ici'
+# ====================
+# VARIABLES SECRÈTES
+# ====================
+SECRET_KEY = os.getenv("SECRET_KEY", "insecure-key")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 AUTH_USER_MODEL = 'users.User'
+
 # URLs de redirection
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:dashboard'
 LOGOUT_REDIRECT_URL = 'pages:home'
 
 
-# Application definition
+# ====================
+# APPLICATIONS
+# ====================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,7 +42,8 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_ckeditor_5',
-    
+    'storages',
+
     # Vos apps
     'pages',
     'administration',
@@ -44,6 +53,20 @@ INSTALLED_APPS = [
     # 'concours',   # à ajouter plus tard
 ]
 
+
+# ====================
+# GOOGLE CLOUD STORAGE
+# ====================
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+)
+
+
+# ====================
+# MIDDLEWARE
+# ====================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,6 +79,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'iuttessa.urls'
 
+# ====================
+# TEMPLATES
+# ====================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -81,19 +107,25 @@ MESSAGE_TAGS = {
     messages.ERROR: 'error',
 }
 
-# Sécurité
+# ====================
+# SÉCURITÉ
+# ====================
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-# Sessions
+# ====================
+# SESSIONS
+# ====================
 SESSION_COOKIE_AGE = 86400  # 24 heures
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_SAVE_EVERY_REQUEST = True
 
 WSGI_APPLICATION = 'iuttessa.wsgi.application'
 
-# Database
+# ====================
+# DATABASE
+# ====================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -101,7 +133,9 @@ DATABASES = {
     }
 }
 
-# Password validation
+# ====================
+# PASSWORD VALIDATORS
+# ====================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -117,24 +151,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-LANGUAGE_CODE = 'fr-fr'
-TIME_ZONE = 'Africa/Douala'
+# ====================
+# INTERNATIONALISATION
+# ====================
+LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "fr-fr")
+TIME_ZONE = os.getenv("TIME_ZONE", "Africa/Douala")
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# ====================
+# STATIC & MEDIA
+# ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+MEDIA_ROOT = ""
 
-# Default primary key field type
+# ====================
+# AUTO FIELD
+# ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ====================
@@ -277,7 +316,7 @@ CKEDITOR_5_CONFIGS = {
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
 # ====================
-# CONFIGURATION DE LOGGING (optionnel)
+# LOGGING
 # ====================
 LOGGING = {
     'version': 1,
@@ -307,13 +346,16 @@ LOGGING = {
     },
 }
 
-
+# ====================
+# EMAIL
+# ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hostinger.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'contact@iutessa.com'
-EMAIL_HOST_PASSWORD = '18a435EG-iutessa'
-DEFAULT_FROM_EMAIL = 'contact@iutessa.com'
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 465))
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "True") == "True"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
 # Créer le dossier logs s'il n'existe pas
 (BASE_DIR / 'logs').mkdir(exist_ok=True)
