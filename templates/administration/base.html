@@ -1,629 +1,888 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Administration{% endblock %} - IUTESSA</title>
     {% tailwind_css %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Poppins Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --iut-green: #16a34a;
-            --iut-green-dark: #15803d;
-            --iut-green-light: #dcfce7;
-            --iut-purple: #7c3aed;
-            --iut-purple-dark: #6d28d9;
-            --iut-purple-light: #ede9fe;
-        }
-        
-        * {
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-        }
-        
-        .bg-gradient-iut {
-            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-        }
-        
-        .bg-gradient-soft {
-            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-        }
-        
-        .text-gradient-iut {
-            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .transition-smooth {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .btn-gradient {
-            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
-        }
-        
-        /* Pattern background for sidebar */
-        .pattern-bg {
-            background-color: #ffffff;
-            background-image: 
-                linear-gradient(135deg, rgba(22, 163, 74, 0.03) 25%, transparent 25%),
-                linear-gradient(225deg, rgba(124, 58, 237, 0.03) 25%, transparent 25%),
-                linear-gradient(45deg, rgba(22, 163, 74, 0.03) 25%, transparent 25%),
-                linear-gradient(315deg, rgba(124, 58, 237, 0.03) 25%, transparent 25%);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 0, 15px -15px, 0 15px;
-        }
-        
-        .nav-link {
-            @apply relative flex items-center px-4 py-3 text-gray-700 rounded-xl transition-smooth group hover:bg-gradient-soft hover:text-green-700;
-        }
-        
-        .nav-link.active {
-            @apply bg-gradient-iut text-white shadow-lg;
-        }
-        
-        .nav-link.active span {
-            @apply text-white;
-        }
-        
-        .nav-icon {
-            @apply w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-smooth mr-3 group-hover:bg-green-100 group-hover:text-green-600;
-        }
-        
-        .nav-link.active .nav-icon {
-            @apply bg-white/20 text-white;
-        }
-        
-        .alert-success { 
-            @apply bg-green-50 text-green-800 border-green-200; 
-        }
-        .alert-error { 
-            @apply bg-red-50 text-red-800 border-red-200; 
-        }
-        .alert-warning { 
-            @apply bg-yellow-50 text-yellow-800 border-yellow-200; 
-        }
-        .alert-info { 
-            @apply bg-blue-50 text-blue-800 border-blue-200; 
-        }
-        
-        /* Notification Bell Styles */
-        .notification-bell {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .notification-bell:hover {
-            transform: scale(1.1);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
-            min-width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s infinite;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .notification-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 380px;
-            max-height: 480px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(22, 163, 74, 0.1);
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
-        }
-        
-        .notification-dropdown.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        
-        .notification-dropdown::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: 20px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 8px solid rgba(255, 255, 255, 0.95);
-        }
-        
-        .notification-header {
-            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 16px 16px 0 0;
-            font-weight: 600;
-        }
-        
-        .notification-item {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(22, 163, 74, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .notification-item:hover {
-            background: rgba(22, 163, 74, 0.03);
-            transform: translateX(4px);
-        }
-        
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-        
-        .notification-item.unread {
-            background: rgba(22, 163, 74, 0.03);
-            border-left: 3px solid var(--iut-green);
-        }
-        
-        .notification-item.unread::after {
-            content: '';
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background: var(--iut-green);
-            border-radius: 50%;
-        }
-        
-        .notification-footer {
-            padding: 12px 20px;
-            border-top: 1px solid rgba(22, 163, 74, 0.1);
-            text-align: center;
-        }
-        
-        .notification-footer a {
-            color: var(--iut-purple);
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .notification-footer a:hover {
-            color: var(--iut-purple-dark);
-        }
-        
-        .notification-empty {
-            padding: 40px 20px;
-            text-align: center;
-            color: #6b7280;
-        }
-        
-        .notification-empty i {
-            font-size: 32px;
-            margin-bottom: 12px;
-            opacity: 0.5;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f3f4f6;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--iut-green) 0%, var(--iut-purple) 100%);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, var(--iut-green-dark) 0%, var(--iut-purple-dark) 100%);
-        }
-        
-        .notification-dropdown .notification-list {
-            max-height: 320px;
-            overflow-y: auto;
-        }
-    </style>
-    
-    {% block extra_css %}{% endblock %}
-</head>
-<body class="h-full bg-gray-50">
-    <div class="flex h-full">
-        <!-- Sidebar -->
-        <aside class="w-72 bg-white/90 backdrop-blur-xl shadow-2xl border-r border-green-100 pattern-bg">
-            <!-- Logo -->
-            <div class="p-8 border-b border-green-100">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-iut rounded-2xl flex items-center justify-center shadow-lg">
-                        <img src="{% static 'images/logo-iutessa.png' %}" alt="IUTESSA" class="h-8 w-8">
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gradient-iut">Administration</h1>
-                        <p class="text-xs text-gray-600 font-medium">IUTESSA Portal</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Navigation -->
-            <nav class="p-6 space-y-2">
-                <!-- Principal -->
-                <div class="mb-6">
-                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Principal</p>
-                    <a href="{% url 'administration:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                        <div class="nav-icon"><i class="fas fa-home"></i></div>
-                        <span>Dashboard</span>
-                    </a>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
-                    
-                    
-                    <a href="{% url 'administration:blocks_list' %}" class="nav-link {% if 'block' in request.resolver_match.url_name %}active{% endif %}">
-                        <div class="nav-icon"><i class="fas fa-th-large"></i></div>
-                        <span>Blocs de contenu</span>
-                    </a>
-                    
-                    <a href="{% url 'administration:media_library' %}" class="nav-link {% if 'media' in request.resolver_match.url_name %}active{% endif %}">
-                        <div class="nav-icon"><i class="fas fa-images"></i></div>
-                        <span>Médiathèque</span>
-                    </a>
-                </div>
-                
-                <!-- Académique -->
-                <div class="mb-6">
-                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Académique</p>
-                    <a href="{% url 'academique:admin_filieres_list' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <span>Filières</span>
-                    </a>
-                    
-                    <a href="{% url 'academique:admin_etudiants_list' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-users"></i></div>
-                        <span>Étudiants</span>
-                    </a>
-                    
-                    <a href="{% url 'academique:admin_documents_validation' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-file-check"></i></div>
-                        <span>Documents</span>
-                    </a>
-                    
-                    <a href="{% url 'academique:admin_import_etudiants' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-upload"></i></div>
-                        <span>Import Excel</span>
-                    </a>
-                </div>
-                
-                <!-- Analytics -->
-                <div class="mb-6">
-                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Analytics</p>
-                    <a href="{% url 'administration:analytics' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
-                        <span>Analytics</span>
-                    </a>
-                </div>
-                
-                <!-- Système -->
-                <div class="border-t border-green-100 pt-6">
-                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Système</p>
-                    <a href="{% url 'administration:settings' %}" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-cog"></i></div>
-                        <span>Paramètres</span>
-                    </a>
-                    
-                    <a href="{% url 'pages:home' %}" class="nav-link" target="_blank">
-                        <div class="nav-icon"><i class="fas fa-external-link-alt"></i></div>
-                        <span>Voir le site</span>
-                    </a>
-                    
-                    <a href="/admin/" class="nav-link">
-                        <div class="nav-icon"><i class="fas fa-tools"></i></div>
-                        <span>Django Admin</span>
-                    </a>
-                </div>
+    <!-- Poppins Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --iut-green: #16a34a;
+        --iut-green-dark: #15803d;
+        --iut-green-light: #dcfce7;
+        --iut-purple: #7c3aed;
+        --iut-purple-dark: #6d28d9;
+        --iut-purple-light: #ede9fe;
+      }
+
+      * {
+        font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      }
+
+      .bg-gradient-iut {
+        background: linear-gradient(
+          135deg,
+          var(--iut-green) 0%,
+          var(--iut-purple) 100%
+        );
+      }
+
+      .text-gradient-iut {
+        background: linear-gradient(
+          135deg,
+          var(--iut-green) 0%,
+          var(--iut-purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .transition-smooth {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .btn-gradient {
+        background: linear-gradient(
+          135deg,
+          var(--iut-green) 0%,
+          var(--iut-purple) 100%
+        );
+        transition: all 0.3s ease;
+      }
+
+      .btn-gradient:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+      }
+
+      /* Fixed Sidebar Navigation Styles */
+     .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 18rem;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow-y: auto;
+    z-index: 50;
+}
+
+.main-content {
+    margin-left: 18rem;
+    height: 100vh; /* Changed from min-height to height */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Add this to prevent any overflow from the container */
+}
+
+
+    .main-header {
+    position: relative; /* Changed from fixed */
+    flex-shrink: 0; /* Prevent header from shrinking */
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 40;
+}
+
+.main-body {
+    flex: 1;
+    overflow-y: auto; /* Only vertical scroll */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    position: relative;
+}
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.625rem 0.75rem;
+        margin-bottom: 0.25rem;
+        color: #374151;
+        border-radius: 0.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.875rem;
+        position: relative;
+        white-space: nowrap;
+      }
+
+      .nav-link:hover {
+        background-color: #f9fafb;
+        color: #111827;
+      }
+
+      .nav-link.active {
+        background-color: #f0fdf4;
+        color: #15803d;
+      }
+
+      .nav-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        transition: color 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .nav-link:hover .nav-icon {
+        color: #374151;
+      }
+
+      .nav-link.active .nav-icon {
+        color: #16a34a;
+      }
+
+      .nav-section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        margin-top: 1.5rem;
+        padding: 0 0.75rem;
+      }
+
+      .nav-section-title:first-child {
+        margin-top: 0;
+      }
+
+      .nav-section {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f3f4f6;
+        margin-bottom: 1rem;
+      }
+
+      .nav-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      /* Logo section */
+      .logo-section {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        background: white;
+      }
+
+      .logo-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .logo-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: linear-gradient(
+          135deg,
+          var(--iut-green) 0%,
+          var(--iut-purple) 100%
+        );
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .logo-text h1 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .logo-text p {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      /* Navigation container */
+      .nav-container {
+        padding: 1rem;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      /* Alert styles */
+      .alert-success {
+        background-color: #f0fdf4;
+        color: #15803d;
+        border-color: #bbf7d0;
+      }
+      .alert-error {
+        background-color: #fef2f2;
+        color: #dc2626;
+        border-color: #fecaca;
+      }
+      .alert-warning {
+        background-color: #fffbeb;
+        color: #d97706;
+        border-color: #fed7aa;
+      }
+      .alert-info {
+        background-color: #eff6ff;
+        color: #2563eb;
+        border-color: #bfdbfe;
+      }
+
+      /* Notification Bell Styles */
+      .notification-bell {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .notification-bell:hover {
+        transform: scale(1.05);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #ef4444;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 10px;
+        min-width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s infinite;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .notification-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 360px;
+        max-height: 400px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e7eb;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+      }
+
+      .notification-dropdown.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .notification-dropdown::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        right: 20px;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid white;
+      }
+
+      .notification-header {
+        background: #f9fafb;
+        color: #374151;
+        padding: 16px 20px;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: 600;
+      }
+
+      .notification-item {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .notification-item:hover {
+        background: #f9fafb;
+      }
+
+      .notification-item:last-child {
+        border-bottom: none;
+      }
+
+      .notification-item.unread {
+        background: #f0f9ff;
+        border-left: 3px solid var(--iut-green);
+      }
+
+      .notification-item.unread::after {
+        content: "";
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background: var(--iut-green);
+        border-radius: 50%;
+      }
+
+      .notification-footer {
+        padding: 12px 20px;
+        border-top: 1px solid #e5e7eb;
+        text-align: center;
+        background: #f9fafb;
+        border-radius: 0 0 12px 12px;
+      }
+
+      .notification-footer a {
+        color: var(--iut-green);
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .notification-footer a:hover {
+        color: var(--iut-green-dark);
+      }
+
+      .notification-empty {
+        padding: 40px 20px;
+        text-align: center;
+        color: #6b7280;
+      }
+
+      .notification-empty i {
+        font-size: 24px;
+        margin-bottom: 8px;
+        opacity: 0.5;
+      }
+
+      .notification-dropdown .notification-list {
+        max-height: 280px;
+        overflow-y: auto;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .main-header {
+          left: 0;
+        }
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+      }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body class="h-full bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo-content">
+          <div class="logo-icon">
+            <img
+              src="{% static 'images/logo-iutessa.png' %}"
+              alt="IUTESSA"
+              class="h-6 w-6"
+            />
+          </div>
+          <div class="logo-text">
+            <h1>Administration</h1>
+            <p>IUTESSA Portal</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="nav-container">
+        <!-- Principal -->
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a
+            href="{% url 'administration:dashboard' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <span>Dashboard</span>
+          </a>
+
+          <a
+            href="{% url 'administration:blocks_list' %}"
+            class="nav-link {% if 'block' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-th-large"></i></div>
+            <span>Blocs de contenu</span>
+          </a>
+
+          <a
+            href="{% url 'administration:media_library' %}"
+            class="nav-link {% if 'media' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-images"></i></div>
+            <span>Médiathèque</span>
+          </a>
+        </div>
+
+        <!-- Académique -->
+        <div class="nav-section">
+          <div class="nav-section-title">Académique</div>
+          <a href="{% url 'academique:admin_filieres_list' %}" class="nav-link">
+            <div class="nav-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span>Filières</span>
+          </a>
+
+          <a
+            href="{% url 'academique:admin_etudiants_list' %}"
+            class="nav-link"
+          >
+            <div class="nav-icon"><i class="fas fa-users"></i></div>
+            <span>Étudiants</span>
+          </a>
+
+          <a
+            href="{% url 'academique:admin_documents_validation' %}"
+            class="nav-link"
+          >
+            <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
+            <span>Documents</span>
+          </a>
+
+          <a
+            href="{% url 'academique:admin_import_etudiants' %}"
+            class="nav-link"
+          >
+            <div class="nav-icon"><i class="fas fa-upload"></i></div>
+            <span>Import Excel</span>
+          </a>
+        </div>
+
+        <!-- Analytics -->
+        <div class="nav-section">
+          <div class="nav-section-title">Analytics</div>
+          <a href="{% url 'administration:analytics' %}" class="nav-link">
+            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+            <span>Analytics</span>
+          </a>
+        </div>
+
+        <!-- Système -->
+        <div class="nav-section">
+          <div class="nav-section-title">Système</div>
+          <a href="{% url 'administration:settings' %}" class="nav-link">
+            <div class="nav-icon"><i class="fas fa-cog"></i></div>
+            <span>Paramètres</span>
+          </a>
+
+          <a href="{% url 'pages:home' %}" class="nav-link" target="_blank">
+            <div class="nav-icon"><i class="fas fa-external-link-alt"></i></div>
+            <span>Voir le site</span>
+          </a>
+
+          <a href="/admin/" class="nav-link">
+            <div class="nav-icon"><i class="fas fa-tools"></i></div>
+            <span>Django Admin</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="flex items-center justify-between px-6 py-4">
+          <!-- Mobile menu button -->
+          <button
+            id="mobileMenuBtn"
+            class="lg:hidden p-2 rounded-md hover:bg-gray-100"
+          >
+            <i class="fas fa-bars text-gray-600"></i>
+          </button>
+
+          <!-- Breadcrumbs -->
+          <div class="flex-1">
+            <nav class="flex items-center space-x-2 text-sm">
+              <a
+                href="{% url 'administration:dashboard' %}"
+                class="text-gray-500 hover:text-gray-700 font-medium transition-smooth"
+                >Administration</a
+              >
+              {% block breadcrumb_items %}{% endblock %}
             </nav>
-        </aside>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="flex items-center space-x-4">
+            <a
+              href="{% url 'administration:block_create' %}"
+              class="btn-gradient text-white px-4 py-2 rounded-lg flex items-center font-medium text-sm"
+            >
+              <i class="fas fa-plus mr-2"></i>Nouveau bloc
+            </a>
+
+            <!-- Notifications Bell -->
+            <div class="relative" id="notificationContainer">
+              <button
+                id="notificationBell"
+                class="notification-bell w-10 h-10 bg-gray-50 hover:bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:text-gray-700 border border-gray-200"
+              >
+                <i class="fas fa-bell"></i>
+                <!-- Notification Badge - will be populated by JavaScript -->
+                <span id="notificationBadge" class="notification-badge hidden"
+                  >0</span
+                >
+              </button>
+
+              <!-- Notifications Dropdown -->
+              <div id="notificationDropdown" class="notification-dropdown">
+                <div
+                  class="notification-header flex items-center justify-between"
+                >
+                  <span>Notifications</span>
+                  <button
+                    id="markAllRead"
+                    class="text-gray-600 hover:text-gray-900 text-sm"
+                  >
+                    <i class="fas fa-check-double mr-1"></i>Tout marquer
+                  </button>
+                </div>
+
+                <div class="notification-list" id="notificationList">
+                  <!-- Notifications will be populated by JavaScript -->
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>Aucune notification</p>
+                  </div>
+                </div>
+
+                <div class="notification-footer">
+                  <a href="#" id="viewAllNotifications"
+                    >Voir toutes les notifications</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- User Profile -->
+            <div
+              class="flex items-center space-x-3 pl-4 border-l border-gray-200"
+            >
+              <div class="text-right">
+                <p class="text-sm font-semibold text-gray-900">
+                  {{ user.username }}
+                </p>
+                <p class="text-xs text-gray-500">Administrateur</p>
+              </div>
+              <div
+                class="w-8 h-8 bg-gradient-iut rounded-full flex items-center justify-center"
+              >
+                <span class="text-white text-xs font-bold"
+                  >{{ user.username|first|upper }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body -->
+      <div class="main-body">
+        <!-- Messages -->
+        {% if messages %}
+        <div class="px-6 py-4">
+          {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }} p-4 rounded-lg border mb-4 transition-smooth"
+          >
+            <div class="flex items-center">
+              {% if message.tags == 'success' %}
+              <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {% elif message.tags == 'error' %}
+              <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {% elif message.tags == 'warning' %}
+              <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {% else %}
+              <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {% endif %}
+              <span>{{ message }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-h-0">
-            <!-- Header -->
-            <header class="bg-white/80 backdrop-blur-xl border-b border-green-100 shadow-sm">
-                <div class="flex items-center justify-between px-8 py-6">
-                    <!-- Breadcrumbs -->
-                    <div>
-                        <nav class="flex items-center space-x-2 text-sm">
-                            <a href="{% url 'administration:dashboard' %}" class="text-gray-600 hover:text-green-600 font-medium transition-smooth">Administration</a>
-                            {% block breadcrumb_items %}{% endblock %}
-                        </nav>
-                    </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="flex items-center space-x-4">
-                        <a href="{% url 'administration:block_create' %}" class="btn-gradient text-white px-4 py-2 rounded-lg flex items-center font-medium">
-                            <i class="fas fa-plus mr-2"></i>Nouveau bloc
-                        </a>
-                        
-                        <!-- Notifications Bell -->
-                        <div class="relative" id="notificationContainer">
-                            <button id="notificationBell" class="notification-bell w-10 h-10 bg-gray-100 hover:bg-green-100 rounded-xl flex items-center justify-center text-gray-600 hover:text-green-600">
-                                <i class="fas fa-bell text-lg"></i>
-                                <!-- Notification Badge - will be populated by JavaScript -->
-                                <span id="notificationBadge" class="notification-badge hidden">0</span>
-                            </button>
-                            
-                            <!-- Notifications Dropdown -->
-                            <div id="notificationDropdown" class="notification-dropdown">
-                                <div class="notification-header flex items-center justify-between">
-                                    <span>Notifications</span>
-                                    <button id="markAllRead" class="text-white/80 hover:text-white text-sm">
-                                        <i class="fas fa-check-double mr-1"></i>Tout marquer
-                                    </button>
-                                </div>
-                                
-                                <div class="notification-list" id="notificationList">
-                                    <!-- Notifications will be populated by JavaScript -->
-                                    <div class="notification-empty">
-                                        <i class="fas fa-bell-slash"></i>
-                                        <p>Aucune notification</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="notification-footer">
-                                    <a href="#" id="viewAllNotifications">Voir toutes les notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- User Profile -->
-                        <div class="flex items-center space-x-3 pl-4 border-l border-gray-200">
-                            <div class="text-right">
-                                <p class="text-sm font-semibold text-gray-900">{{ user.username }}</p>
-                                <p class="text-xs text-gray-600">Administrateur</p>
-                            </div>
-                            <div class="w-10 h-10 bg-gradient-iut rounded-full flex items-center justify-center shadow-lg">
-                                <span class="text-white text-sm font-bold">{{ user.username|first|upper }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
-            <!-- Messages -->
-            {% if messages %}
-            <div class="px-8 py-4">
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} p-4 rounded-xl border shadow-sm mb-4 transition-smooth">
-                    <div class="flex items-center">
-                        {% if message.tags == 'success' %}
-                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                        {% elif message.tags == 'error' %}
-                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                            </svg>
-                        {% elif message.tags == 'warning' %}
-                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                        {% else %}
-                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                            </svg>
-                        {% endif %}
-                        <span>{{ message }}</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            <!-- Main Content -->
-            <main class="flex-1 overflow-auto bg-gradient-soft">
-                <div class="px-8 py-8">
-                    {% block content %}{% endblock %}
-                </div>
-            </main>
+        <!-- Content -->
+        <div class="px-6 py-6">
+            {% block content %}{% endblock %}
         </div>
+      </div>
     </div>
 
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    
-    <!-- Notification System JavaScript -->
+    <!-- Mobile menu overlay -->
+    <div
+      id="mobileOverlay"
+      class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"
+    ></div>
+
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const notificationBell = document.getElementById('notificationBell');
-            const notificationDropdown = document.getElementById('notificationDropdown');
-            const notificationBadge = document.getElementById('notificationBadge');
-            const notificationList = document.getElementById('notificationList');
-            const markAllReadBtn = document.getElementById('markAllRead');
-            
-            // Toggle dropdown
-            notificationBell.addEventListener('click', function(e) {
-                e.stopPropagation();
-                notificationDropdown.classList.toggle('show');
-                
-                // Load notifications when opened
-                if (notificationDropdown.classList.contains('show')) {
-                    loadNotifications();
-                }
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function() {
-                notificationDropdown.classList.remove('show');
-            });
-            
-            // Prevent dropdown from closing when clicked inside
-            notificationDropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-            
-            // Mark all as read
-            markAllReadBtn.addEventListener('click', function() {
-                markAllNotificationsAsRead();
-            });
-            
-            // Load notifications function (to be implemented)
-            function loadNotifications() {
-                // This will be implemented with your backend integration
-                console.log('Loading notifications...');
-                
-                // Example of how notifications will be populated:
-                // fetch('/api/admin/notifications/')
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         updateNotificationBadge(data.unread_count);
-                //         renderNotifications(data.notifications);
-                //     });
+      document.addEventListener("DOMContentLoaded", function () {
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const sidebar = document.getElementById("sidebar");
+        const mobileOverlay = document.getElementById("mobileOverlay");
+
+        if (mobileMenuBtn) {
+          mobileMenuBtn.addEventListener("click", function () {
+            sidebar.classList.add("open");
+            mobileOverlay.classList.remove("hidden");
+          });
+        }
+
+        if (mobileOverlay) {
+          mobileOverlay.addEventListener("click", function () {
+            sidebar.classList.remove("open");
+            mobileOverlay.classList.add("hidden");
+          });
+        }
+
+        // Notification functionality
+        const notificationBell = document.getElementById("notificationBell");
+        const notificationDropdown = document.getElementById(
+          "notificationDropdown"
+        );
+        const notificationBadge = document.getElementById("notificationBadge");
+        const notificationList = document.getElementById("notificationList");
+        const markAllReadBtn = document.getElementById("markAllRead");
+
+        // Toggle dropdown
+        if (notificationBell) {
+          notificationBell.addEventListener("click", function (e) {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle("show");
+
+            // Load notifications when opened
+            if (notificationDropdown.classList.contains("show")) {
+              loadNotifications();
             }
-            
-            // Update notification badge
-            function updateNotificationBadge(count) {
-                if (count > 0) {
-                    notificationBadge.textContent = count > 99 ? '99+' : count;
-                    notificationBadge.classList.remove('hidden');
-                } else {
-                    notificationBadge.classList.add('hidden');
-                }
+          });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function () {
+          if (notificationDropdown) {
+            notificationDropdown.classList.remove("show");
+          }
+        });
+
+        // Prevent dropdown from closing when clicked inside
+        if (notificationDropdown) {
+          notificationDropdown.addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+        }
+
+        // Mark all as read
+        if (markAllReadBtn) {
+          markAllReadBtn.addEventListener("click", function () {
+            markAllNotificationsAsRead();
+          });
+        }
+
+        // Load notifications function (to be implemented)
+        function loadNotifications() {
+          // This will be implemented with your backend integration
+          console.log("Loading notifications...");
+        }
+
+        // Update notification badge
+        function updateNotificationBadge(count) {
+          if (notificationBadge) {
+            if (count > 0) {
+              notificationBadge.textContent = count > 99 ? "99+" : count;
+              notificationBadge.classList.remove("hidden");
+            } else {
+              notificationBadge.classList.add("hidden");
             }
-            
-            // Render notifications
-            function renderNotifications(notifications) {
-                if (notifications.length === 0) {
-                    notificationList.innerHTML = `
+          }
+        }
+
+        // Other notification functions...
+        function renderNotifications(notifications) {
+          if (!notificationList) return;
+
+          if (notifications.length === 0) {
+            notificationList.innerHTML = `
                         <div class="notification-empty">
                             <i class="fas fa-bell-slash"></i>
                             <p>Aucune notification</p>
                         </div>
                     `;
-                    return;
-                }
-                
-                notificationList.innerHTML = notifications.map(notification => `
-                    <div class="notification-item ${!notification.read ? 'unread' : ''}" data-id="${notification.id}">
+            return;
+          }
+
+          notificationList.innerHTML = notifications
+            .map(
+              (notification) => `
+                    <div class="notification-item ${
+                      !notification.read ? "unread" : ""
+                    }" data-id="${notification.id}">
                         <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 bg-gradient-iut rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas ${notification.icon || 'fa-info'} text-white text-sm"></i>
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas ${
+                                  notification.icon || "fa-info"
+                                } text-gray-600 text-sm"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-medium text-gray-900 text-sm">${notification.title}</p>
-                                <p class="text-gray-600 text-xs mt-1">${notification.message}</p>
-                                <p class="text-gray-400 text-xs mt-2">${notification.time_ago}</p>
+                                <p class="font-medium text-gray-900 text-sm">${
+                                  notification.title
+                                }</p>
+                                <p class="text-gray-600 text-xs mt-1">${
+                                  notification.message
+                                }</p>
+                                <p class="text-gray-400 text-xs mt-2">${
+                                  notification.time_ago
+                                }</p>
                             </div>
                         </div>
                     </div>
-                `).join('');
-                
-                // Add click listeners to notification items
-                document.querySelectorAll('.notification-item').forEach(item => {
-                    item.addEventListener('click', function() {
-                        const notificationId = this.dataset.id;
-                        markNotificationAsRead(notificationId);
-                        
-                        // Handle notification click action
-                        const notification = notifications.find(n => n.id == notificationId);
-                        if (notification && notification.url) {
-                            window.location.href = notification.url;
-                        }
-                    });
-                });
+                `
+            )
+            .join("");
+        }
+
+        function markNotificationAsRead(notificationId) {
+          console.log("Marking notification as read:", notificationId);
+        }
+
+        function markAllNotificationsAsRead() {
+          console.log("Marking all notifications as read...");
+        }
+
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(
+                  cookie.substring(name.length + 1)
+                );
+                break;
+              }
             }
-            
-            // Mark notification as read
-            function markNotificationAsRead(notificationId) {
-                // This will be implemented with your backend integration
-                console.log('Marking notification as read:', notificationId);
-                
-                // fetch(`/api/admin/notifications/${notificationId}/mark-read/`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'X-CSRFToken': getCookie('csrftoken'),
-                //         'Content-Type': 'application/json'
-                //     }
-                // }).then(() => {
-                //     loadNotifications();
-                // });
-            }
-            
-            // Mark all notifications as read
-            function markAllNotificationsAsRead() {
-                // This will be implemented with your backend integration
-                console.log('Marking all notifications as read...');
-                
-                // fetch('/api/admin/notifications/mark-all-read/', {
-                //     method: 'POST',
-                //     headers: {
-                //         'X-CSRFToken': getCookie('csrftoken'),
-                //         'Content-Type': 'application/json'
-                //     }
-                // }).then(() => {
-                //     loadNotifications();
-                // });
-            }
-            
-            // Get CSRF token helper
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            
-            // Initialize - load notifications on page load
-            loadNotifications();
-            
-            // Optionally, set up periodic refresh
-            // setInterval(loadNotifications, 30000); // Refresh every 30 seconds
-        });
+          }
+          return cookieValue;
+        }
+
+        // Initialize
+        loadNotifications();
+      });
     </script>
-    
+
     {% block extra_js %}{% endblock %}
-</body>
+  </body>
 </html>

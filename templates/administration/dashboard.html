@@ -4,406 +4,363 @@
 
 {% block content %}
 <!-- Header Section -->
-<div class="mb-12">
+<div class="mb-8">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-5xl font-bold text-gradient-iut mb-3">Dashboard</h1>
-            <p class="text-xl text-gray-700 font-medium">Vue d'ensemble de votre écosystème universitaire</p>
-        </div>
-        <div class="hidden lg:block">
-            <div class="w-32 h-32 bg-gradient-iut rounded-3xl flex items-center justify-center shadow-xl">
-                <i class="fas fa-chart-line text-4xl text-white"></i>
-            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+            <p class="text-gray-600">Vue d'ensemble de votre écosystème universitaire</p>
         </div>
     </div>
 </div>
 
 <!-- Stats Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
     <!-- Total Étudiants -->
-    <div class="group relative">
-        <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
-        <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-            <div class="flex items-start justify-between mb-6">
-                <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-user-graduate text-white text-2xl"></i>
-                </div>
-                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-arrow-up text-green-600 text-sm"></i>
-                </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-graduate text-green-600 text-xl"></i>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Étudiants</p>
-                <p class="text-4xl font-bold text-gray-900 mb-2">{{ academic_stats.total_etudiants|default:0 }}</p>
-                <p class="text-sm text-gray-600">{{ academic_stats.etudiants_valides|default:0 }} validés</p>
+            <div class="text-right">
+                <div class="text-2xl font-bold text-gray-900">{{ academic_stats.total_etudiants|default:0 }}</div>
+                <div class="text-xs text-gray-500">Étudiants</div>
             </div>
+        </div>
+        <div class="text-sm text-gray-600">{{ academic_stats.etudiants_valides|default:0 }} validés</div>
+        <div class="mt-3 flex items-center text-xs text-green-600">
+            <i class="fas fa-arrow-up mr-1"></i>
+            +5% ce mois
         </div>
     </div>
 
     <!-- Filières Actives -->
-    <div class="group relative">
-        <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
-        <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-            <div class="flex items-start justify-between mb-6">
-                <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-graduation-cap text-white text-2xl"></i>
-                </div>
-                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-check text-green-600 text-sm"></i>
-                </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Filières</p>
-                <p class="text-4xl font-bold text-gray-900 mb-2">{{ academic_stats.filieres_actives|default:0 }}</p>
-                <p class="text-sm text-gray-600">sur {{ academic_stats.total_filieres|default:0 }} total</p>
+            <div class="text-right">
+                <div class="text-2xl font-bold text-gray-900">{{ academic_stats.filieres_actives|default:0 }}</div>
+                <div class="text-xs text-gray-500">Filières</div>
             </div>
+        </div>
+        <div class="text-sm text-gray-600">sur {{ academic_stats.total_filieres|default:0 }} total</div>
+        <div class="mt-3 flex items-center text-xs text-blue-600">
+            <i class="fas fa-check mr-1"></i>
+            Toutes actives
         </div>
     </div>
 
     <!-- Documents en attente -->
-    <div class="group relative">
-        <div class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
-        <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-            <div class="flex items-start justify-between mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-file-alt text-white text-2xl"></i>
-                </div>
-                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-exclamation text-orange-600 text-sm"></i>
-                </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-file-alt text-orange-600 text-xl"></i>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Docs en attente</p>
-                <p class="text-4xl font-bold text-gray-900 mb-2">{{ academic_stats.documents_en_attente|default:0 }}</p>
-                <p class="text-sm text-gray-600">À valider</p>
+            <div class="text-right">
+                <div class="text-2xl font-bold text-gray-900">{{ academic_stats.documents_en_attente|default:0 }}</div>
+                <div class="text-xs text-gray-500">Documents</div>
             </div>
+        </div>
+        <div class="text-sm text-gray-600">À valider</div>
+        <div class="mt-3 flex items-center text-xs text-orange-600">
+            <i class="fas fa-clock mr-1"></i>
+            En attente
         </div>
     </div>
 
     <!-- Total Blocs -->
-    <div class="group relative">
-        <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
-        <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-            <div class="flex items-start justify-between mb-6">
-                <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-th-large text-white text-2xl"></i>
-                </div>
-                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-star text-purple-600 text-sm"></i>
-                </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-th-large text-purple-600 text-xl"></i>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Total Blocs</p>
-                <p class="text-4xl font-bold text-gray-900 mb-2">{{ stats.total_blocks|default:0 }}</p>
-                <p class="text-sm text-gray-600">{{ stats.active_blocks|default:0 }} actifs</p>
+            <div class="text-right">
+                <div class="text-2xl font-bold text-gray-900">{{ stats.total_blocks|default:0 }}</div>
+                <div class="text-xs text-gray-500">Blocs</div>
             </div>
+        </div>
+        <div class="text-sm text-gray-600">{{ stats.active_blocks|default:0 }} actifs</div>
+        <div class="mt-3 flex items-center text-xs text-purple-600">
+            <i class="fas fa-star mr-1"></i>
+            Contenu géré
         </div>
     </div>
 </div>
 
 <!-- Main Content Grid -->
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-12">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
     <!-- Top Filières -->
-    <div class="xl:col-span-1">
-        <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl overflow-hidden h-full">
-            <div class="p-8 border-b border-green-100 bg-gradient-soft">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Top Filières</h3>
-                        <p class="text-gray-600">Les plus demandées</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-trophy text-green-600 text-xl"></i>
-                    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Top Filières</h3>
+                    <p class="text-sm text-gray-600">Les plus demandées</p>
                 </div>
-            </div>
-            <div class="p-8">
-                <div class="space-y-6">
-                    {% for filiere in top_filieres %}
-                    <div class="flex items-center justify-between p-6 bg-gradient-soft rounded-2xl hover:bg-green-50 transition-smooth">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-gradient-iut rounded-xl flex items-center justify-center shadow-lg">
-                                <span class="text-white font-bold text-sm">{{ filiere.code }}</span>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">{{ filiere.nom|truncatechars:20 }}</p>
-                                <p class="text-sm text-gray-600">{{ filiere.nb_etudiants }} étudiants</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-2xl font-bold text-gray-900">{{ filiere.taux_occupation|floatformat:0 }}%</p>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="text-gray-600 text-center py-8">Aucune filière disponible</p>
-                    {% endfor %}
+                <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-trophy text-green-600 text-sm"></i>
                 </div>
-            </div>
-            <div class="p-6 bg-gradient-soft border-t border-green-100">
-                <a href="{% url 'academique:admin_filieres_list' %}" class="text-sm font-semibold text-gradient-iut hover:opacity-80 transition-opacity flex items-center">
-                    Gérer les filières <i class="fas fa-arrow-right ml-2"></i>
-                </a>
             </div>
         </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                {% for filiere in top_filieres %}
+                <div class="flex items-center justify-between py-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-700 font-medium text-xs">{{ filiere.code }}</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">{{ filiere.nom|truncatechars:20 }}</p>
+                            <p class="text-xs text-gray-500">{{ filiere.nb_etudiants }} étudiants</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-semibold text-gray-900">{{ filiere.taux_occupation|floatformat:0 }}%</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-graduation-cap text-2xl mb-2 opacity-50"></i>
+                    <p class="text-sm">Aucune filière disponible</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if top_filieres %}
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+            <a href="{% url 'academique:admin_filieres_list' %}" class="text-sm font-medium text-green-600 hover:text-green-700 flex items-center">
+                Gérer les filières <i class="fas fa-arrow-right ml-2 text-xs"></i>
+            </a>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Nouvelles Inscriptions -->
-    <div>
-        <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl overflow-hidden h-full">
-            <div class="p-8 border-b border-green-100 bg-gradient-soft">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Nouvelles Inscriptions</h3>
-                        <p class="text-gray-600">Derniers étudiants</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-user-plus text-green-600 text-xl"></i>
-                    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Nouvelles Inscriptions</h3>
+                    <p class="text-sm text-gray-600">Derniers étudiants</p>
+                </div>
+                <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-plus text-blue-600 text-sm"></i>
                 </div>
             </div>
-            <div class="p-8 space-y-6">
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
                 {% for etudiant in recent_etudiants %}
-                <div class="flex items-start space-x-4 p-4 rounded-2xl hover:bg-gradient-soft transition-smooth">
-                    <div class="w-10 h-10 bg-gradient-iut rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                        {{ etudiant.nom|first }}{{ etudiant.prenoms|first }}
+                <div class="flex items-center space-x-3 py-2">
+                    <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-gray-700 font-medium text-xs">{{ etudiant.nom|first }}{{ etudiant.prenoms|first }}</span>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-semibold text-gray-900 truncate">{{ etudiant.nom_complet }}</p>
-                        <p class="text-xs text-gray-600 bg-green-100 px-2 py-1 rounded-full inline-block mt-1">{{ etudiant.filiere.code }}</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        <p class="font-medium text-gray-900 text-sm truncate">{{ etudiant.nom_complet }}</p>
+                        <div class="flex items-center justify-between mt-1">
+                            <span class="text-xs text-gray-500">{{ etudiant.filiere.code }}</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                 {% if etudiant.statut_validation == 'valide' %}bg-green-100 text-green-700
                                 {% elif etudiant.statut_validation == 'en_attente' %}bg-yellow-100 text-yellow-700
                                 {% else %}bg-red-100 text-red-700{% endif %}">
                                 {{ etudiant.get_statut_validation_display }}
                             </span>
-                            <span class="text-xs text-gray-500">{{ etudiant.date_inscription|date:"d/m H:i" }}</span>
                         </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="text-center py-8">
-                    <i class="fas fa-user-graduate text-gray-300 text-4xl mb-4"></i>
-                    <p class="text-gray-600">Aucune nouvelle inscription</p>
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-user-graduate text-2xl mb-2 opacity-50"></i>
+                    <p class="text-sm">Aucune nouvelle inscription</p>
                 </div>
                 {% endfor %}
             </div>
-            <div class="p-6 bg-gradient-soft border-t border-green-100">
-                <a href="{% url 'academique:admin_etudiants_list' %}" class="text-sm font-semibold text-gradient-iut hover:opacity-80 transition-opacity flex items-center">
-                    Voir tous les étudiants <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
+        {% if recent_etudiants %}
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+            <a href="{% url 'academique:admin_etudiants_list' %}" class="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center">
+                Voir tous les étudiants <i class="fas fa-arrow-right ml-2 text-xs"></i>
+            </a>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Activité des Blocs -->
-    <div>
-        <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl overflow-hidden h-full">
-            <div class="p-8 border-b border-green-100 bg-gradient-soft">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Activité Récente</h3>
-                        <p class="text-gray-600">Dernières modifications</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-clock text-purple-600 text-xl"></i>
-                    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Activité Récente</h3>
+                    <p class="text-sm text-gray-600">Dernières modifications</p>
+                </div>
+                <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-clock text-purple-600 text-sm"></i>
                 </div>
             </div>
-            <div class="p-8 space-y-6">
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
                 {% for block in recent_blocks %}
-                <div class="flex items-start space-x-4 p-4 rounded-2xl hover:bg-gradient-soft transition-smooth">
-                    <div class="w-10 h-10 bg-gradient-iut rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                        {{ block.title|first|upper }}
+                <div class="flex items-center space-x-3 py-2">
+                    <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="text-gray-700 font-medium text-xs">{{ block.title|first|upper }}</span>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-semibold text-gray-900 truncate">{{ block.title }}</p>
-                        <p class="text-xs text-gray-600 bg-purple-100 px-2 py-1 rounded-full inline-block mt-1">{{ block.get_block_type_display }}</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        <p class="font-medium text-gray-900 text-sm truncate">{{ block.title }}</p>
+                        <div class="flex items-center justify-between mt-1">
+                            <span class="text-xs text-gray-500">{{ block.get_block_type_display }}</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                 {% if block.status == 'active' %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
                                 {{ block.get_status_display }}
                             </span>
-                            <span class="text-xs text-gray-500">{{ block.updated_at|date:"d/m H:i" }}</span>
                         </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="text-center py-8">
-                    <i class="fas fa-th-large text-gray-300 text-4xl mb-4"></i>
-                    <p class="text-gray-600">Aucun bloc récent</p>
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-th-large text-2xl mb-2 opacity-50"></i>
+                    <p class="text-sm">Aucun bloc récent</p>
                 </div>
                 {% endfor %}
             </div>
-            <div class="p-6 bg-gradient-soft border-t border-green-100">
-                <a href="{% url 'administration:blocks_list' %}" class="text-sm font-semibold text-gradient-iut hover:opacity-80 transition-opacity flex items-center">
-                    Gérer les blocs <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
+        {% if recent_blocks %}
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+            <a href="{% url 'administration:blocks_list' %}" class="text-sm font-medium text-purple-600 hover:text-purple-700 flex items-center">
+                Gérer les blocs <i class="fas fa-arrow-right ml-2 text-xs"></i>
+            </a>
+        </div>
+        {% endif %}
     </div>
 </div>
 
 <!-- Quick Actions -->
-<div class="mb-12">
-    <div class="flex items-center justify-between mb-8">
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-6">
         <div>
-            <h3 class="text-3xl font-bold text-gray-900 mb-2">Actions Rapides</h3>
-            <p class="text-gray-600">Raccourcis vers les tâches courantes</p>
+            <h3 class="text-xl font-semibold text-gray-900">Actions Rapides</h3>
+            <p class="text-sm text-gray-600">Raccourcis vers les tâches courantes</p>
         </div>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <a href="{% url 'academique:admin_filieres_list' %}" class="group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-0 group-hover:opacity-25 transition-opacity duration-500"></div>
-            <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div class="flex items-center space-x-6">
-                    <div class="w-20 h-20 bg-gradient-iut rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500">
-                        <i class="fas fa-graduation-cap text-white text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Filières</h4>
-                        <p class="text-gray-600 mt-1">Gestion des programmes</p>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="{% url 'academique:admin_filieres_list' %}" class="group p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-green-200 transition-all">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-green-50 group-hover:bg-green-100 rounded-xl flex items-center justify-center transition-colors">
+                    <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">Filières</h4>
+                    <p class="text-sm text-gray-600">Gestion des programmes</p>
                 </div>
             </div>
         </a>
 
-        <a href="{% url 'academique:admin_etudiants_list' %}" class="group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-0 group-hover:opacity-25 transition-opacity duration-500"></div>
-            <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div class="flex items-center space-x-6">
-                    <div class="w-20 h-20 bg-gradient-iut rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500">
-                        <i class="fas fa-users text-white text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Étudiants</h4>
-                        <p class="text-gray-600 mt-1">Gestion des dossiers</p>
-                    </div>
+        <a href="{% url 'academique:admin_etudiants_list' %}" class="group p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-200 transition-all">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 rounded-xl flex items-center justify-center transition-colors">
+                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Étudiants</h4>
+                    <p class="text-sm text-gray-600">Gestion des dossiers</p>
                 </div>
             </div>
         </a>
 
-        <a href="{% url 'administration:blocks_list' %}" class="group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-0 group-hover:opacity-25 transition-opacity duration-500"></div>
-            <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div class="flex items-center space-x-6">
-                    <div class="w-20 h-20 bg-gradient-iut rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500">
-                        <i class="fas fa-th-large text-white text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Blocs</h4>
-                        <p class="text-gray-600 mt-1">Contenu du site</p>
-                    </div>
+        <a href="{% url 'administration:blocks_list' %}" class="group p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-purple-200 transition-all">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-purple-50 group-hover:bg-purple-100 rounded-xl flex items-center justify-center transition-colors">
+                    <i class="fas fa-th-large text-purple-600 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">Blocs</h4>
+                    <p class="text-sm text-gray-600">Contenu du site</p>
                 </div>
             </div>
         </a>
 
-        <a href="{% url 'administration:block_create' %}" class="group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-iut rounded-3xl blur opacity-0 group-hover:opacity-25 transition-opacity duration-500"></div>
-            <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-green-100 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div class="flex items-center space-x-6">
-                    <div class="w-20 h-20 bg-gradient-iut rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500">
-                        <i class="fas fa-plus text-white text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Nouveau Bloc</h4>
-                        <p class="text-gray-600 mt-1">Créer du contenu</p>
-                    </div>
+        <a href="{% url 'administration:block_create' %}" class="group p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-gray-300 transition-all">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gray-50 group-hover:bg-gray-100 rounded-xl flex items-center justify-center transition-colors">
+                    <i class="fas fa-plus text-gray-600 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">Nouveau Bloc</h4>
+                    <p class="text-sm text-gray-600">Créer du contenu</p>
                 </div>
             </div>
         </a>
     </div>
 </div>
 
-<!-- Statistiques avancées -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+<!-- Bottom Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Blocs par type -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl overflow-hidden">
-        <div class="p-8 border-b border-green-100 bg-gradient-soft">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Types de Blocs</h3>
-            <p class="text-gray-600">Répartition du contenu</p>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="p-6 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900">Types de Blocs</h3>
+            <p class="text-sm text-gray-600">Répartition du contenu</p>
         </div>
-        <div class="p-8">
-            <div class="space-y-4">
+        <div class="p-6">
+            <div class="space-y-3">
                 {% for block_type in blocks_by_type %}
-                <div class="flex items-center justify-between p-4 bg-gradient-soft rounded-xl">
-                    <span class="font-medium text-gray-900">{{ block_type.block_type|capfirst }}</span>
-                    <span class="text-2xl font-bold text-gradient-iut">{{ block_type.count }}</span>
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-700">{{ block_type.block_type|capfirst }}</span>
+                    <span class="text-lg font-semibold text-gray-900">{{ block_type.count }}</span>
                 </div>
                 {% empty %}
-                <p class="text-gray-600 text-center py-8">Aucun bloc disponible</p>
+                <div class="text-center py-8 text-gray-500">
+                    <p class="text-sm">Aucun bloc disponible</p>
+                </div>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- Utilisateurs récents -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl overflow-hidden">
-        <div class="p-8 border-b border-green-100 bg-gradient-soft">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Nouveaux Utilisateurs</h3>
-            <p class="text-gray-600">Dernières inscriptions</p>
+    <!-- System Info -->
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="p-6 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900">Informations Système</h3>
+            <p class="text-sm text-gray-600">État de votre environnement</p>
         </div>
-        <div class="p-8 space-y-4">
-            {% for user in recent_users %}
-            <div class="flex items-center space-x-4 p-4 bg-gradient-soft rounded-xl">
-                <div class="w-10 h-10 bg-gradient-iut rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {{ user.username|first|upper }}
+        <div class="p-6">
+            <div class="space-y-4">
+                <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hdd text-blue-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm text-gray-700">Espace Utilisé</span>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-900">{{ media_size|default:0 }} MB</span>
                 </div>
-                <div class="flex-1">
-                    <p class="font-medium text-gray-900">{{ user.full_name|default:user.username }}</p>
-                    <p class="text-sm text-gray-600">{{ user.get_role_display }}</p>
+                
+                <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                            <i class="fab fa-python text-green-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm text-gray-700">Django Version</span>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-900">5.2+</span>
                 </div>
-                <span class="text-xs text-gray-500">{{ user.date_joined|date:"d/m" }}</span>
+                
+                <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cogs text-gray-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm text-gray-700">Environnement</span>
+                    </div>
+                    <span class="text-sm font-semibold 
+                        {% if debug %}text-amber-600{% else %}text-green-600{% endif %}">
+                        {% if debug %}Development{% else %}Production{% endif %}
+                    </span>
+                </div>
             </div>
-            {% empty %}
-            <p class="text-gray-600 text-center py-8">Aucun utilisateur récent</p>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-<!-- System Info -->
-<div class="bg-gradient-soft backdrop-blur-xl rounded-3xl border border-green-100 shadow-xl p-8">
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <h3 class="text-3xl font-bold text-gray-900 mb-2">Informations Système</h3>
-            <p class="text-gray-600">État de votre environnement</p>
-        </div>
-        <div class="w-16 h-16 bg-green-100 rounded-3xl flex items-center justify-center">
-            <i class="fas fa-server text-green-600 text-2xl"></i>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center p-8 bg-white/70 rounded-2xl border border-green-100">
-            <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <i class="fas fa-hdd text-white text-2xl"></i>
-            </div>
-            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Espace Utilisé</p>
-            <p class="text-4xl font-bold text-gray-900">{{ media_size|default:0 }} MB</p>
-        </div>
-        
-        <div class="text-center p-8 bg-white/70 rounded-2xl border border-green-100">
-            <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <i class="fab fa-python text-white text-2xl"></i>
-            </div>
-            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Django Version</p>
-            <p class="text-4xl font-bold text-gray-900">5.2+</p>
-        </div>
-        
-        <div class="text-center p-8 bg-white/70 rounded-2xl border border-green-100">
-            <div class="w-16 h-16 bg-gradient-iut rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <i class="fas fa-cogs text-white text-2xl"></i>
-            </div>
-            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Mode Environnement</p>
-            <p class="text-4xl font-bold">
-                {% if debug %}
-                <span class="text-amber-600">Dev</span>
-                {% else %}
-                <span class="text-green-600">Prod</span>
-                {% endif %}
-            </p>
         </div>
     </div>
 </div>
