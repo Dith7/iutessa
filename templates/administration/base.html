@@ -479,19 +479,19 @@
           </a>
 
           <a
-            href="{% url 'administration:blocks_list' %}"
-            class="nav-link {% if 'block' in request.resolver_match.url_name %}active{% endif %}"
+            href="{% url 'administration:academic_overview' %}"
+            class="nav-link {% if 'academic' in request.resolver_match.url_name %}active{% endif %}"
           >
-            <div class="nav-icon"><i class="fas fa-th-large"></i></div>
-            <span>Blocs de contenu</span>
+            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+            <span>Vue d'ensemble</span>
           </a>
 
           <a
-            href="{% url 'administration:media_library' %}"
-            class="nav-link {% if 'media' in request.resolver_match.url_name %}active{% endif %}"
+            href="{% url 'administration:statistics' %}"
+            class="nav-link {% if 'statistics' in request.resolver_match.url_name %}active{% endif %}"
           >
-            <div class="nav-icon"><i class="fas fa-images"></i></div>
-            <span>Médiathèque</span>
+            <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+            <span>Statistiques</span>
           </a>
         </div>
 
@@ -525,15 +525,6 @@
           >
             <div class="nav-icon"><i class="fas fa-upload"></i></div>
             <span>Import Excel</span>
-          </a>
-        </div>
-
-        <!-- Analytics -->
-        <div class="nav-section">
-          <div class="nav-section-title">Analytics</div>
-          <a href="{% url 'administration:analytics' %}" class="nav-link">
-            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
-            <span>Analytics</span>
           </a>
         </div>
 
@@ -586,10 +577,10 @@
           <!-- Quick Actions -->
           <div class="flex items-center space-x-4">
             <a
-              href="{% url 'administration:block_create' %}"
+              href="{% url 'academique:admin_filiere_create' %}"
               class="btn-gradient text-white px-4 py-2 rounded-lg flex items-center font-medium text-sm"
             >
-              <i class="fas fa-plus mr-2"></i>Nouveau bloc
+              <i class="fas fa-plus mr-2"></i>Nouvelle filière
             </a>
 
             <!-- Notifications Bell -->
