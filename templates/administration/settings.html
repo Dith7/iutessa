@@ -8,170 +8,374 @@
 {% endblock %}
 
 {% block content %}
+<!-- Header Section -->
 <div class="mb-8">
-    <h1 class="text-4xl font-bold text-gradient-iut mb-2">Paramètres</h1>
-    <p class="text-lg text-gray-600">Configuration du site universitaire</p>
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Paramètres</h1>
+            <p class="text-gray-600">Configuration et paramétrage du système</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button type="button" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth flex items-center cursor-pointer">
+                <i class="fas fa-undo mr-2"></i>Réinitialiser
+            </button>
+            <button type="submit" form="settings-form" class="btn-gradient px-4 py-2 text-white rounded-lg font-medium flex items-center cursor-pointer">
+                <i class="fas fa-save mr-2"></i>Sauvegarder
+            </button>
+        </div>
+    </div>
 </div>
 
-<form method="post" class="space-y-8">
+<!-- System Information First -->
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-900">Informations Système</h3>
+            <p class="text-sm text-gray-600">État et statistiques de votre environnement</p>
+        </div>
+        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth flex items-center text-sm cursor-pointer">
+            <i class="fas fa-sync-alt mr-2"></i>Actualiser
+        </button>
+    </div>
+    
+    <!-- System Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+        <!-- Total Blocs -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-th-large text-green-600 text-xl"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold text-gray-900">{{ site_info.total_blocks|default:0 }}</div>
+                    <div class="text-xs text-gray-500">Blocs</div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600">Total des blocs</div>
+            <div class="mt-3 flex items-center text-xs text-green-600">
+                <i class="fas fa-cube mr-1"></i>
+                Contenu géré
+            </div>
+        </div>
+
+        <!-- Blocs Actifs -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow ">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold text-gray-900">{{ site_info.active_blocks|default:0 }}</div>
+                    <div class="text-xs text-gray-500">Actifs</div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600">Blocs publiés</div>
+            <div class="mt-3 flex items-center text-xs text-blue-600">
+                <i class="fas fa-eye mr-1"></i>
+                Visibles publiquement
+            </div>
+        </div>
+
+        <!-- Espace Utilisé -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow ">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-hdd text-purple-600 text-xl"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold text-gray-900">{{ site_info.media_size|default:0 }}</div>
+                    <div class="text-xs text-gray-500">MB</div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600">Espace disque</div>
+            <div class="mt-3 flex items-center text-xs text-purple-600">
+                <i class="fas fa-database mr-1"></i>
+                Médias stockés
+            </div>
+        </div>
+
+        <!-- Dernière MAJ -->
+        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-clock text-orange-600 text-xl"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm font-bold text-gray-900">
+                        {% if site_info.last_update %}
+                            {{ site_info.last_update.updated_at|date:"d/m/Y" }}
+                        {% else %}
+                            Jamais
+                        {% endif %}
+                    </div>
+                    <div class="text-xs text-gray-500">Dernière MAJ</div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600">Système</div>
+            <div class="mt-3 flex items-center text-xs text-orange-600">
+                <i class="fas fa-history mr-1"></i>
+                Mise à jour
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional System Info -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Environment Info -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">Environnement</h3>
+                <p class="text-sm text-gray-600">Configuration du serveur</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                                <i class="fab fa-python text-green-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Django Version</span>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">5.2+</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-server text-blue-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Mode</span>
+                        </div>
+                        <span class="text-sm font-semibold px-2 py-1 rounded
+                            {% if debug %}bg-amber-100 text-amber-700{% else %}bg-green-100 text-green-700{% endif %}">
+                            {% if debug %}Development{% else %}Production{% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-database text-purple-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Base de données</span>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">Actions Système</h3>
+                <p class="text-sm text-gray-600">Maintenance et gestion</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3">
+                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-50 group-hover:bg-blue-100 rounded-lg flex items-center justify-center transition-colors">
+                                <i class="fas fa-broom text-blue-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Vider le cache</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+
+                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-50 group-hover:bg-green-100 rounded-lg flex items-center justify-center transition-colors">
+                                <i class="fas fa-download text-green-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Sauvegarde</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+
+                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-orange-50 group-hover:bg-orange-100 rounded-lg flex items-center justify-center transition-colors">
+                                <i class="fas fa-file-alt text-orange-600 text-sm"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Logs système</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="settings-form" method="post" class="space-y-6">
     {% csrf_token %}
     
-    <!-- Informations générales -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations générales</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nom du site</label>
-                <input type="text" name="site_name" value="Université" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+    <!-- Main Settings Grid -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- Informations générales -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Informations Générales</h3>
+                        <p class="text-sm text-gray-600">Configuration de base du site</p>
+                    </div>
+                    <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-info-circle text-green-600 text-sm"></i>
+                    </div>
+                </div>
             </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <input type="text" name="site_description" value="Site universitaire moderne" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom du site</label>
+                        <input type="text" name="site_name" value="Université" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <input type="text" name="site_description" value="Site universitaire moderne" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email de contact</label>
+                        <input type="email" name="contact_email" value="contact@universite.fr" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                        <input type="tel" name="phone" value="+33 1 23 45 67 89" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                    </div>
+                </div>
             </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Email de contact</label>
-                <input type="email" name="contact_email" value="contact@universite.fr" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+        </div>
+
+        <!-- Configuration d'affichage -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Affichage</h3>
+                        <p class="text-sm text-gray-600">Options d'affichage du site</p>
+                    </div>
+                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-eye text-blue-600 text-sm"></i>
+                    </div>
+                </div>
             </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
-                <input type="tel" name="phone" value="+33 1 23 45 67 89" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">Informations de contact</p>
+                            <p class="text-xs text-gray-500">Afficher les infos de contact dans le footer</p>
+                        </div>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="show_contact_info" value="1" checked 
+                                   class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">Commentaires</p>
+                            <p class="text-xs text-gray-500">Autoriser les commentaires sur les articles</p>
+                        </div>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="enable_comments" value="1" 
+                                   class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">Mode maintenance</p>
+                            <p class="text-xs text-red-500">Désactive temporairement le site public</p>
+                        </div>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="maintenance_mode" value="1" 
+                                   class="h-4 w-4 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 focus:ring-2">
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Configuration d'affichage -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Affichage</h2>
-        
-        <div class="space-y-6">
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" name="show_contact_info" checked 
-                           class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                    <span class="ml-3 text-sm font-medium text-gray-700">Afficher les informations de contact</span>
-                </label>
+    <!-- SEO & Analytics Row -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- SEO -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">SEO</h3>
+                        <p class="text-sm text-gray-600">Optimisation pour les moteurs de recherche</p>
+                    </div>
+                    <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-purple-600 text-sm"></i>
+                    </div>
+                </div>
             </div>
-            
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" name="enable_comments" 
-                           class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                    <span class="ml-3 text-sm font-medium text-gray-700">Activer les commentaires</span>
-                </label>
-            </div>
-            
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" name="maintenance_mode" 
-                           class="h-4 w-4 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 focus:ring-2">
-                    <span class="ml-3 text-sm font-medium text-gray-700">Mode maintenance</span>
-                </label>
-            </div>
-        </div>
-    </div>
-
-    <!-- SEO -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">SEO</h2>
-        
-        <div class="space-y-6">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
-                <textarea name="meta_description" rows="3" 
-                          class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none"
-                          placeholder="Description pour les moteurs de recherche..."></textarea>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés</label>
-                <input type="text" name="meta_keywords" placeholder="université, formation, éducation" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+                        <textarea name="meta_description" rows="3" 
+                                  class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth resize-none cursor-text"
+                                  placeholder="Description pour les moteurs de recherche..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés</label>
+                        <input type="text" name="meta_keywords" placeholder="université, formation, éducation" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                        <p class="text-xs text-gray-500 mt-1">Séparez les mots-clés par des virgules</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Analytics -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Analytics</h2>
-        
-        <div class="space-y-6">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Google Analytics ID</label>
-                <input type="text" name="google_analytics" placeholder="G-XXXXXXXXXX" 
-                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+        <!-- Analytics -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Analytics</h3>
+                        <p class="text-sm text-gray-600">Suivi et analyse de trafic</p>
+                    </div>
+                    <div class="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-orange-600 text-sm"></i>
+                    </div>
+                </div>
             </div>
-            
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" name="enable_analytics" 
-                           class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                    <span class="ml-3 text-sm font-medium text-gray-700">Activer le suivi analytics</span>
-                </label>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Google Analytics ID</label>
+                        <input type="text" name="google_analytics" placeholder="G-XXXXXXXXXX" 
+                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
+                        <p class="text-xs text-gray-500 mt-1">Votre identifiant Google Analytics</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between py-3 border-t border-gray-100">
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">Activer le suivi</p>
+                            <p class="text-xs text-gray-500">Suivre les visiteurs avec Google Analytics</p>
+                        </div>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="enable_analytics" value="1" 
+                                   class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="flex justify-end space-x-4">
-        <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth">
-            Annuler
-        </button>
-        <button type="submit" class="btn-gradient px-6 py-3 text-white rounded-lg font-medium">
-            <i class="fas fa-save mr-2"></i>Sauvegarder
-        </button>
     </div>
 </form>
-
-<!-- Informations système -->
-<div class="mt-12 bg-gradient-soft backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations système</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
-            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <i class="fas fa-cube text-white text-xl"></i>
-            </div>
-            <p class="text-sm font-medium text-gray-600">Total blocs</p>
-            <p class="text-2xl font-bold text-gray-900">{{ site_info.total_blocks }}</p>
-        </div>
-        
-        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
-            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <i class="fas fa-check-circle text-white text-xl"></i>
-            </div>
-            <p class="text-sm font-medium text-gray-600">Blocs actifs</p>
-            <p class="text-2xl font-bold text-gray-900">{{ site_info.active_blocks }}</p>
-        </div>
-        
-        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
-            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <i class="fas fa-hdd text-white text-xl"></i>
-            </div>
-            <p class="text-sm font-medium text-gray-600">Espace utilisé</p>
-            <p class="text-2xl font-bold text-gray-900">{{ site_info.media_size }} MB</p>
-        </div>
-        
-        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
-            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <i class="fas fa-clock text-white text-xl"></i>
-            </div>
-            <p class="text-sm font-medium text-gray-600">Dernière MAJ</p>
-            <p class="text-sm font-bold text-gray-900">
-                {% if site_info.last_update %}
-                    {{ site_info.last_update.updated_at|date:"d/m/Y" }}
-                {% else %}
-                    Jamais
-                {% endif %}
-            </p>
-        </div>
-    </div>
-</div>
 {% endblock %}
