@@ -1,0 +1,323 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Gestion Filières{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Gestion Filières</li>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des Filières</h1>
+            <p class="text-gray-600">Administration des programmes d'études</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <a href="{% url 'academique:admin_filiere_create' %}" 
+               class="btn-gradient text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium">
+                <i class="fas fa-plus mr-2"></i>Nouvelle filière
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+    <form method="get" class="flex items-center space-x-4">
+        <div class="flex-1">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text" name="search" value="{{ search }}" 
+                       placeholder="Rechercher par nom, code ou description..." 
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+        </div>
+        <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors">
+            <i class="fas fa-search mr-2"></i>Rechercher
+        </button>
+    </form>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600">Total Filières</p>
+                <p class="text-2xl font-bold text-gray-900">{{ filieres.paginator.count }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
+                <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600">Filières Actives</p>
+                <p class="text-2xl font-bold text-gray-900">
+                    {% for filiere in filieres %}{% if filiere.statut == 'active' %}{{ forloop.counter }}{% endif %}{% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mr-4">
+                <i class="fas fa-users text-purple-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600">Total Étudiants</p>
+                <p class="text-2xl font-bold text-gray-900">
+                    {% for filiere in filieres %}{{ filiere.nb_etudiants|add:0 }}{% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des filières -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="p-6 border-b border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Filières</h3>
+                <p class="text-sm text-gray-600">{{ filieres.paginator.count }} filière(s) au total</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Places</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frais</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for filiere in filieres %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <span class="text-sm font-medium text-gray-600">{{ filiere.code|slice:":2"|upper }}</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">{{ filiere.nom }}</div>
+                                <div class="text-sm text-gray-500">{{ filiere.code }}</div>
+                                {% if filiere.description %}
+                                <div class="text-xs text-gray-400 mt-1">{{ filiere.description|truncatechars:50 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ filiere.nb_etudiants }}/{{ filiere.places_disponibles }}</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="bg-gradient-iut h-2 rounded-full" 
+                                 style="width: {{ filiere.taux_occupation }}%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">{{ filiere.taux_occupation|floatformat:0 }}% occupé</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">{{ filiere.frais_inscription|floatformat:0 }} FCFA</div>
+                        <div class="text-xs text-gray-500">{{ filiere.duree_formation }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            {% if filiere.statut == 'active' %}bg-green-100 text-green-800
+                            {% elif filiere.statut == 'inactive' %}bg-gray-100 text-gray-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ filiere.get_statut_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex items-center space-x-2">
+                            <a href="{% url 'academique:admin_filiere_detail' filiere.id %}" 
+                               class="text-blue-600 hover:text-blue-900" title="Voir détails">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{% url 'academique:admin_filiere_edit' filiere.id %}" 
+                               class="text-green-600 hover:text-green-900" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {% if filiere.statut == 'active' %}
+                            <button onclick="toggleStatus({{ filiere.id }}, 'inactive')" 
+                                    class="text-yellow-600 hover:text-yellow-900" title="Désactiver">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            {% else %}
+                            <button onclick="toggleStatus({{ filiere.id }}, 'active')" 
+                                    class="text-green-600 hover:text-green-900" title="Activer">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            {% endif %}
+                            <button onclick="confirmDelete({{ filiere.id }}, '{{ filiere.nom }}')" 
+                                    class="text-red-600 hover:text-red-900" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        <i class="fas fa-graduation-cap text-2xl mb-2 opacity-50"></i>
+                        <p>Aucune filière trouvée</p>
+                        {% if search %}
+                        <p class="text-sm mt-2">
+                            <a href="{% url 'administration:filieres_management' %}" class="text-blue-600 hover:underline">
+                                Voir toutes les filières
+                            </a>
+                        </p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if filieres.has_other_pages %}
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                {% if filieres.has_previous %}
+                <a href="?page={{ filieres.previous_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                   class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-100">
+                    Précédent
+                </a>
+                {% endif %}
+                
+                <span class="text-sm text-gray-700">
+                    Page {{ filieres.number }} sur {{ filieres.paginator.num_pages }}
+                </span>
+                
+                {% if filieres.has_next %}
+                <a href="?page={{ filieres.next_page_number }}{% if search %}&search={{ search }}{% endif %}" 
+                   class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-100">
+                    Suivant
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation-triangle text-red-600"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900">Confirmer la suppression</h3>
+                </div>
+                <div id="deleteContent" class="mb-6 text-sm text-gray-600"></div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeDeleteModal()" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Annuler
+                    </button>
+                    <button type="button" onclick="executeDelete()" 
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let deleteFilliereId = null;
+
+function toggleStatus(filiereId, newStatus) {
+    const action = newStatus === 'active' ? 'activer' : 'désactiver';
+    
+    if (confirm(`Êtes-vous sûr de vouloir ${action} cette filière ?`)) {
+        fetch(`/academique/administration/filiere/${filiereId}/toggle-status/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Erreur lors de la modification du statut');
+            }
+        });
+    }
+}
+
+function confirmDelete(filiereId, filiereName) {
+    deleteFilliereId = filiereId;
+    document.getElementById('deleteContent').innerHTML = `
+        <p>Êtes-vous sûr de vouloir supprimer la filière <strong>"${filiereName}"</strong> ?</p>
+        <p class="mt-2 text-red-600 font-medium">Cette action est irréversible et supprimera tous les étudiants associés.</p>
+    `;
+    document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    deleteFilliereId = null;
+}
+
+function executeDelete() {
+    if (deleteFilliereId) {
+        fetch(`/academique/administration/filiere/${deleteFilliereId}/delete/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Erreur lors de la suppression');
+            }
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

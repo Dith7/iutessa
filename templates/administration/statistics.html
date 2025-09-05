@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- Header Section -->
+<!-- Header -->
 <div class="mb-8">
     <h1 class="text-4xl font-bold text-gradient-iut mb-2">Statistiques Académiques</h1>
     <p class="text-lg text-gray-600">Analytics avancées de votre système universitaire</p>
@@ -26,27 +26,17 @@
                 <p class="text-2xl font-bold text-gray-900">{{ filieres_data.0.total_etudiants|default:0 }}</p>
             </div>
         </div>
-        <div class="text-sm text-gray-600">Blocs créés</div>
-        <div class="mt-3 flex items-center text-xs text-green-600">
-            <i class="fas fa-arrow-up mr-1"></i>
-            Nouveaux contenus
-        </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-6">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-gradient-iut rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-check-circle text-white text-xl"></i>
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600">Étudiants validés</p>
                 <p class="text-2xl font-bold text-gray-900">{{ docs_stats.valides|default:0 }}</p>
             </div>
-        </div>
-        <div class="text-sm text-gray-600">Actifs</div>
-        <div class="mt-3 flex items-center text-xs text-blue-600">
-            <i class="fas fa-eye mr-1"></i>
-            Visibles publiquement
         </div>
     </div>
     
@@ -72,11 +62,6 @@
                 <p class="text-2xl font-bold text-gray-900">{{ filieres_data|length|default:0 }}</p>
             </div>
         </div>
-        <div class="text-sm text-gray-600">Inactifs</div>
-        <div class="mt-3 flex items-center text-xs text-orange-600">
-            <i class="fas fa-pause mr-1"></i>
-            En attente
-        </div>
     </div>
 </div>
 
@@ -97,6 +82,9 @@
                 </div>
                 <span class="text-lg font-bold text-gradient-iut">{{ filiere.total_etudiants }}</span>
             </div>
+            {% empty %}
+            <p class="text-gray-500 text-center py-8">Aucune donnée disponible</p>
+            {% endfor %}
         </div>
     </div>
     
@@ -107,7 +95,7 @@
             <p class="text-gray-600 mt-1">État des dossiers étudiants</p>
         </div>
         <div class="p-6">
-            <div class="space-y-6">
+            <div class="space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <div class="w-4 h-4 bg-green-500 rounded-full mr-3"></div>

@@ -1,3 +1,4 @@
+# administration/views.py
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -6,45 +7,22 @@ from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.urls import reverse_lazy
-from django.core.files.storage import default_storage
 import json
-import os
-from pages.models import PageBlock
-from .forms import PageBlockForm, MediaUploadForm
 from datetime import timedelta
 from django.utils import timezone
-from notifications.services import NotificationService  # AJOUT IMPORT NOTIFICATION
-
-# Importer les décorateurs du module users
+from notifications.services import NotificationService
 from users.decorators import admin_required, role_required
-
 
 
 @admin_required
 def dashboard_view(request):
-    """Dashboard principal avec statistiques et module académique"""
+    """Dashboard administration centré sur l'académique"""
     from django.contrib.auth import get_user_model
-    from django.conf import settings
-    from django.utils import timezone
-    from datetime import timedelta
     from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
     
     User = get_user_model()
     
-    # Statistiques des blocs (existantes)
-    stats = {
-        'total_blocks': PageBlock.objects.count(),
-        'active_blocks': PageBlock.objects.filter(status='active').count(),
-        'inactive_blocks': PageBlock.objects.filter(status='inactive').count(),
-        'blocks_with_media': PageBlock.objects.filter(
-            Q(image__isnull=False) | 
-            Q(document__isnull=False) | 
-            Q(video_file__isnull=False) | 
-            Q(video_url__isnull=False)
-        ).count(),
-    }
-    
-    # Statistiques des utilisateurs (existantes)
+    # Statistiques utilisateurs
     user_stats = {
         'total_users': User.objects.count(),
         'admin_count': User.objects.filter(role='ADMIN').count(),
@@ -53,14 +31,16 @@ def dashboard_view(request):
         'active_users': User.objects.filter(is_active=True).count(),
     }
     
-    # NOUVELLES STATISTIQUES ACADÉMIQUES
+    # Statistiques académiques principales
     academic_stats = {
         'total_filieres': Filiere.objects.count(),
         'filieres_actives': Filiere.objects.filter(statut='active').count(),
         'total_etudiants': EtudiantAcademique.objects.count(),
         'etudiants_en_attente': EtudiantAcademique.objects.filter(statut_validation='en_attente').count(),
         'etudiants_valides': EtudiantAcademique.objects.filter(statut_validation='valide').count(),
+        'etudiants_rejetes': EtudiantAcademique.objects.filter(statut_validation='rejete').count(),
         'documents_en_attente': DocumentEtudiant.objects.filter(valide=False).count(),
+        'documents_valides': DocumentEtudiant.objects.filter(valide=True).count(),
         'taux_validation': 0
     }
     
@@ -70,24 +50,24 @@ def dashboard_view(request):
             academic_stats['etudiants_valides'] / academic_stats['total_etudiants']
         ) * 100
     
-    # NOTIFICATION: Rappel si trop de documents en attente
+    # Notification pour documents en attente
     if academic_stats['documents_en_attente'] > 10 and not request.session.get('docs_reminder_sent'):
         NotificationService.create_notification(
             destinataire=request.user,
             type_notification='rappel',
             titre='Documents en attente de validation',
-            message=f'{academic_stats["documents_en_attente"]} documents sont en attente de validation',
+            message=f'{academic_stats["documents_en_attente"]} documents nécessitent votre attention',
             priorite='haute',
             url_action='/academique/administration/documents/'
         )
         request.session['docs_reminder_sent'] = True
     
-    # Top 5 filières par nombre d'étudiants
+    # Top filières par étudiants
     top_filieres = Filiere.objects.annotate(
         nb_etudiants=Count('etudiants')
     ).order_by('-nb_etudiants')[:5]
     
-    # Évolution des inscriptions (7 derniers jours)
+    # Évolution inscriptions (7 derniers jours)
     today = timezone.now().date()
     week_ago = today - timedelta(days=7)
     
@@ -102,439 +82,260 @@ def dashboard_view(request):
             'count': count
         })
     
-    # Blocs par type (existants)
-    blocks_by_type = (
-        PageBlock.objects
-        .values('block_type')
-        .annotate(count=Count('id'))
-        .order_by('-count')
-    )
+    # Derniers étudiants inscrits
+    recent_etudiants = EtudiantAcademique.objects.select_related(
+        'filiere', 'user'
+    ).order_by('-date_inscription')[:10]
     
-    # Derniers blocs modifiés (existants)
-    recent_blocks = (
-        PageBlock.objects
-        .order_by('-updated_at')[:5]
-    )
+    # Documents récents
+    recent_documents = DocumentEtudiant.objects.select_related(
+        'etudiant', 'etudiant__filiere'
+    ).order_by('-date_upload')[:10]
     
-    # Derniers utilisateurs créés (existants)
-    recent_users = (
-        User.objects
-        .order_by('-date_joined')[:5]
-    )
-    
-    # NOUVEAUX : Derniers étudiants inscrits
-    recent_etudiants = (
-        EtudiantAcademique.objects
-        .select_related('filiere')
-        .order_by('-date_inscription')[:5]
-    )
-    
-    # Taille média (existante)
-    media_size = _calculate_media_size()
-    
-    # Mode debug (existant)
-    debug = getattr(settings, 'DEBUG', False)
+    # Statistiques par filière
+    filieres_stats = []
+    for filiere in Filiere.objects.filter(statut='active'):
+        filieres_stats.append({
+            'filiere': filiere,
+            'etudiants': filiere.etudiants.count(),
+            'en_attente': filiere.etudiants.filter(statut_validation='en_attente').count(),
+            'valides': filiere.etudiants.filter(statut_validation='valide').count(),
+            'taux_occupation': filiere.taux_occupation,
+        })
     
     context = {
-        # Données existantes
-        'stats': stats,
         'user_stats': user_stats,
-        'blocks_by_type': blocks_by_type,
-        'recent_blocks': recent_blocks,
-        'recent_users': recent_users,
-        'media_size': media_size,
-        'debug': debug,
-        
-        # NOUVELLES DONNÉES ACADÉMIQUES
         'academic_stats': academic_stats,
         'top_filieres': top_filieres,
         'inscriptions_semaine': inscriptions_semaine,
         'recent_etudiants': recent_etudiants,
+        'recent_documents': recent_documents,
+        'filieres_stats': filieres_stats,
+        'debug': getattr(settings, 'DEBUG', False),
     }
     
     return render(request, 'administration/dashboard.html', context)
 
 
-def _calculate_media_size():
-    """Calcule la taille des médias en MB"""
-    import os
-    from django.conf import settings
-    
-    try:
-        media_root = settings.MEDIA_ROOT
-        total_size = 0
-        for dirpath, dirnames, filenames in os.walk(media_root):
-            for filename in filenames:
-                filepath = os.path.join(dirpath, filename)
-                if os.path.exists(filepath):
-                    total_size += os.path.getsize(filepath)
-        return round(total_size / (1024 * 1024), 2)
-    except:
-        return 0
-
 @admin_required
-def blocks_list_view(request):
-    """Liste des blocs avec recherche et filtres"""
-    blocks = PageBlock.objects.all()
-    
-    # Recherche
-    search = request.GET.get('search')
-    if search:
-        blocks = blocks.filter(
-            Q(title__icontains=search) |
-            Q(content__icontains=search) |
-            Q(subtitle__icontains=search)
-        )
+def academic_overview(request):
+    """Vue d'ensemble académique détaillée"""
+    from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
     
     # Filtres
-    block_type = request.GET.get('type')
-    if block_type:
-        blocks = blocks.filter(block_type=block_type)
+    filiere_filter = request.GET.get('filiere')
+    statut_filter = request.GET.get('statut')
     
-    status = request.GET.get('status')
-    if status:
-        blocks = blocks.filter(status=status)
+    etudiants = EtudiantAcademique.objects.select_related('filiere', 'user')
     
-    # Tri
-    sort_by = request.GET.get('sort', '-updated_at')
-    blocks = blocks.order_by(sort_by)
+    if filiere_filter:
+        etudiants = etudiants.filter(filiere_id=filiere_filter)
+    if statut_filter:
+        etudiants = etudiants.filter(statut_validation=statut_filter)
     
     # Pagination
-    paginator = Paginator(blocks, 12)
+    paginator = Paginator(etudiants.order_by('-date_inscription'), 20)
     page = request.GET.get('page')
-    blocks = paginator.get_page(page)
+    etudiants = paginator.get_page(page)
     
     context = {
-        'blocks': blocks,
-        'block_types': PageBlock.BLOCK_TYPE_CHOICES,
+        'etudiants': etudiants,
+        'filieres': Filiere.objects.filter(statut='active'),
         'current_filters': {
-            'search': search,
-            'type': block_type,
-            'status': status,
-            'sort': sort_by,
+            'filiere': filiere_filter,
+            'statut': statut_filter,
+        },
+        'statut_choices': EtudiantAcademique.STATUT_VALIDATION_CHOICES,
+    }
+    
+    return render(request, 'administration/academic_overview.html', context)
+
+
+@admin_required
+def documents_validation(request):
+    """Validation des documents étudiants"""
+    from academique.models import DocumentEtudiant
+    
+    # Documents en attente
+    documents = DocumentEtudiant.objects.filter(
+        valide=False
+    ).select_related('etudiant', 'etudiant__filiere').order_by('-date_upload')
+    
+    # Filtres
+    type_filter = request.GET.get('type')
+    filiere_filter = request.GET.get('filiere')
+    
+    if type_filter:
+        documents = documents.filter(type_document=type_filter)
+    if filiere_filter:
+        documents = documents.filter(etudiant__filiere_id=filiere_filter)
+    
+    # Pagination
+    paginator = Paginator(documents, 20)
+    page = request.GET.get('page')
+    documents = paginator.get_page(page)
+    
+    context = {
+        'documents': documents,
+        'types_documents': DocumentEtudiant.TYPE_DOCUMENT_CHOICES,
+        'current_filters': {
+            'type': type_filter,
+            'filiere': filiere_filter,
         }
     }
     
-    return render(request, 'administration/blocks/list.html', context)
-
-
-@admin_required
-def block_create_view(request):
-    """Créer un nouveau bloc"""
-    if request.method == 'POST':
-        form = PageBlockForm(request.POST, request.FILES)
-        if form.is_valid():
-            block = form.save()
-            messages.success(request, f'Bloc "{block.title}" créé avec succès.')
-            return redirect('administration:block_detail', pk=block.pk)
-    else:
-        form = PageBlockForm()
-    
-    context = {
-        'form': form,
-        'title': 'Créer un nouveau bloc',
-        'action_url': reverse_lazy('administration:block_create'),
-    }
-    
-    return render(request, 'administration/blocks/form.html', context)
-
-
-@admin_required
-def block_detail_view(request, pk):
-    """Détail et édition d'un bloc"""
-    block = get_object_or_404(PageBlock, pk=pk)
-    
-    context = {
-        'block': block,
-        'preview_url': f"/?preview_block={block.pk}",
-    }
-    
-    return render(request, 'administration/blocks/detail.html', context)
-
-
-@admin_required
-def block_update_view(request, pk):
-    """Modifier un bloc"""
-    block = get_object_or_404(PageBlock, pk=pk)
-    
-    if request.method == 'POST':
-        form = PageBlockForm(request.POST, request.FILES, instance=block)
-        if form.is_valid():
-            block = form.save()
-            messages.success(request, f'Bloc "{block.title}" modifié avec succès.')
-            return redirect('administration:block_detail', pk=block.pk)
-    else:
-        form = PageBlockForm(instance=block)
-    
-    context = {
-        'form': form,
-        'block': block,
-        'title': f'Modifier "{block.title}"',
-        'action_url': reverse_lazy('administration:block_update', kwargs={'pk': pk}),
-    }
-    
-    return render(request, 'administration/blocks/form.html', context)
-
-
-@admin_required
-def block_delete_view(request, pk):
-    """Supprimer un bloc"""
-    block = get_object_or_404(PageBlock, pk=pk)
-    
-    if request.method == 'POST':
-        block_title = block.title
-        block.delete()
-        messages.success(request, f'Bloc "{block_title}" supprimé avec succès.')
-        return redirect('administration:blocks_list')
-    
-    context = {
-        'block': block,
-        'title': f'Supprimer "{block.title}"',
-    }
-    
-    return render(request, 'administration/blocks/delete.html', context)
+    return render(request, 'administration/documents_validation.html', context)
 
 
 @admin_required
 @require_http_methods(["POST"])
-def block_toggle_status_view(request, pk):
-    """Activer/désactiver un bloc (AJAX)"""
-    block = get_object_or_404(PageBlock, pk=pk)
+def validate_document(request, document_id):
+    """Valider/rejeter un document"""
+    from academique.models import DocumentEtudiant
     
-    new_status = 'active' if block.status == 'inactive' else 'inactive'
-    block.status = new_status
-    block.save()
+    document = get_object_or_404(DocumentEtudiant, id=document_id)
+    action = request.POST.get('action')
+    commentaire = request.POST.get('commentaire', '')
     
-    return JsonResponse({
-        'success': True,
-        'status': new_status,
-        'message': f'Bloc {new_status}',
-    })
+    if action == 'validate':
+        document.valide = True
+        document.valide_par = request.user
+        document.commentaire = commentaire
+        document.save()
+        
+        # Notification à l'étudiant
+        NotificationService.create_notification(
+            destinataire=document.etudiant.user,
+            expediteur=request.user,
+            type_notification='validation',
+            titre='Document validé',
+            message=f'Votre {document.get_type_document_display()} a été validé',
+            priorite='normale'
+        )
+        
+        messages.success(request, 'Document validé avec succès.')
+        
+    elif action == 'reject':
+        document.valide = False
+        document.commentaire = commentaire
+        document.save()
+        
+        # Notification à l'étudiant
+        NotificationService.create_notification(
+            destinataire=document.etudiant.user,
+            expediteur=request.user,
+            type_notification='rejet',
+            titre='Document rejeté',
+            message=f'Votre {document.get_type_document_display()} a été rejeté. Raison: {commentaire}',
+            priorite='haute'
+        )
+        
+        messages.warning(request, 'Document rejeté.')
+    
+    return redirect('administration:documents_validation')
 
 
 @admin_required
-@require_http_methods(["POST"])
-def blocks_reorder_view(request):
-    """Réorganiser l'ordre des blocs (AJAX)"""
-    try:
-        data = json.loads(request.body)
-        block_orders = data.get('orders', [])
-        
-        for item in block_orders:
-            block_id = item.get('id')
-            new_order = item.get('order')
-            
-            PageBlock.objects.filter(pk=block_id).update(order=new_order)
-        
-        return JsonResponse({'success': True})
+def filieres_management(request):
+    """Gestion des filières"""
+    from academique.models import Filiere
     
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})
-
-
-@admin_required
-def media_library_view(request):
-    """Bibliothèque des médias"""
-    # Images - filtrer pour éviter les erreurs de fichiers manquants
-    images = PageBlock.objects.filter(
-        image__isnull=False
-    ).exclude(image__exact='').order_by('-updated_at')
+    filieres = Filiere.objects.annotate(
+        nb_etudiants=Count('etudiants')
+    ).order_by('nom')
     
-    # Documents
-    documents = PageBlock.objects.filter(
-        document__isnull=False
-    ).exclude(document__exact='').order_by('-updated_at')
-    
-    # Vidéos
-    videos = PageBlock.objects.filter(
-        Q(video_file__isnull=False) | Q(video_url__isnull=False)
-    ).order_by('-updated_at')
-    
-    # Statistiques médias
-    media_stats = {
-        'images_count': images.count(),
-        'documents_count': documents.count(),
-        'videos_count': videos.count(),
-        'total_size': _calculate_media_size(),
-    }
+    # Filtres
+    search = request.GET.get('search')
+    if search:
+        filieres = filieres.filter(
+            Q(nom__icontains=search) | Q(code__icontains=search)
+        )
     
     context = {
-        'images': images[:20],  # Pagination à implémenter
-        'documents': documents[:20],
-        'videos': videos[:20],
-        'media_stats': media_stats,
+        'filieres': filieres,
+        'search': search,
     }
     
-    return render(request, 'administration/media/library.html', context)
+    return render(request, 'administration/filieres_management.html', context)
 
 
 @admin_required
-@require_http_methods(["POST"])
-def media_upload_view(request):
-    """Upload de médias (AJAX)"""
-    form = MediaUploadForm(request.POST, request.FILES)
+def statistics_view(request):
+    """Statistiques avancées"""
+    from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
+    from django.db.models import Count, Avg
     
-    if form.is_valid():
-        # Traitement selon le type de fichier
-        uploaded_file = request.FILES['file']
-        
-        # Sauvegarder et retourner infos
-        file_path = default_storage.save(uploaded_file.name, uploaded_file)
-        file_url = default_storage.url(file_path)
-        
-        return JsonResponse({
-            'success': True,
-            'file_url': file_url,
-            'file_name': uploaded_file.name,
-            'file_size': uploaded_file.size,
-        })
+    # Stats par filière
+    filieres_data = Filiere.objects.annotate(
+        total_etudiants=Count('etudiants'),
+        etudiants_valides=Count('etudiants', filter=Q(etudiants__statut_validation='valide')),
+        etudiants_attente=Count('etudiants', filter=Q(etudiants__statut_validation='en_attente'))
+    ).order_by('-total_etudiants')
     
-    return JsonResponse({
-        'success': False,
-        'errors': form.errors,
-    })
+    # Évolution des inscriptions par mois
+    from django.db.models.functions import TruncMonth
+    inscriptions_monthly = EtudiantAcademique.objects.annotate(
+        mois=TruncMonth('date_inscription')
+    ).values('mois').annotate(count=Count('id')).order_by('mois')
+    
+    # Stats documents
+    docs_stats = {
+        'total': DocumentEtudiant.objects.count(),
+        'valides': DocumentEtudiant.objects.filter(valide=True).count(),
+        'en_attente': DocumentEtudiant.objects.filter(valide=False).count(),
+    }
+    
+    # Documents par type
+    docs_by_type = DocumentEtudiant.objects.values(
+        'type_document'
+    ).annotate(count=Count('id')).order_by('-count')
+    
+    context = {
+        'filieres_data': filieres_data,
+        'inscriptions_monthly': inscriptions_monthly,
+        'docs_stats': docs_stats,
+        'docs_by_type': docs_by_type,
+    }
+    
+    return render(request, 'administration/statistics.html', context)
 
 
 @admin_required
 def settings_view(request):
-    """Paramètres du site"""
-    from pages.models import SiteSettings
-    
+    """Paramètres système"""
     if request.method == 'POST':
         # Traitement des paramètres
-        site_settings = SiteSettings.get_settings()
-        
-        # Mise à jour des champs depuis le formulaire
-        site_settings.site_name = request.POST.get('site_name', site_settings.site_name)
-        site_settings.site_description = request.POST.get('site_description', site_settings.site_description)
-        site_settings.contact_email = request.POST.get('contact_email', site_settings.contact_email)
-        site_settings.contact_phone = request.POST.get('phone', site_settings.contact_phone)
-        site_settings.meta_description = request.POST.get('meta_description', site_settings.meta_description)
-        site_settings.meta_keywords = request.POST.get('meta_keywords', site_settings.meta_keywords)
-        site_settings.google_analytics_id = request.POST.get('google_analytics', site_settings.google_analytics_id)
-        
-        # Options booléennes
-        site_settings.show_contact_info = 'show_contact_info' in request.POST
-        site_settings.maintenance_mode = 'maintenance_mode' in request.POST
-        
-        site_settings.save()
-        
-        messages.success(request, 'Paramètres sauvegardés avec succès.')
+        messages.success(request, 'Paramètres sauvegardés.')
         return redirect('administration:settings')
     
     context = {
-        'site_info': _get_site_info(),
-        'site_settings': SiteSettings.get_settings(),
+        'site_name': getattr(settings, 'SITE_NAME', 'IUTESSA'),
+        'debug': getattr(settings, 'DEBUG', False),
     }
     
     return render(request, 'administration/settings.html', context)
 
 
-@admin_required
-def preview_site_view(request):
-    """Preview du site public dans iframe"""
-    return render(request, 'administration/preview.html')
-
-
-@admin_required
-def analytics_view(request):
-    """Analytics et statistiques avancées"""
-    # Stats par période
-    stats_data = _get_analytics_data()
+# Utilitaires
+def _get_academic_summary():
+    """Résumé académique pour le dashboard"""
+    from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
     
-    context = {
-        'stats_data': stats_data,
-    }
-    
-    return render(request, 'administration/analytics.html', context)
-
-
-# Vue accessible aux étudiants et admins pour consulter leurs propres données
-@role_required('ADMIN', 'ETUDIANT')
-def user_analytics_view(request):
-    """Analytics pour les étudiants (leurs propres données)"""
-    if request.user.is_admin():
-        # Les admins voient tout
-        return redirect('administration:analytics')
-    
-    # Pour les étudiants : stats personnelles
-    context = {
-        'user_stats': _get_user_personal_stats(request.user),
-    }
-    
-    return render(request, 'administration/user_analytics.html', context)
-
-
-# Méthodes utilitaires privées
-
-def _calculate_media_size():
-    """Calculer la taille totale des médias"""
-    total_size = 0
-    
-    # Parcourir tous les blocs avec médias
-    blocks_with_media = PageBlock.objects.filter(
-        Q(image__isnull=False) | 
-        Q(document__isnull=False) | 
-        Q(video_file__isnull=False)
-    )
-    
-    for block in blocks_with_media:
-        try:
-            if block.image and default_storage.exists(block.image.name):
-                total_size += block.image.size
-        except:
-            pass
-        
-        try:
-            if block.document and default_storage.exists(block.document.name):
-                total_size += block.document.size
-        except:
-            pass
-        
-        try:
-            if block.video_file and default_storage.exists(block.video_file.name):
-                total_size += block.video_file.size
-        except:
-            pass
-    
-    # Convertir en MB
-    return round(total_size / (1024 * 1024), 2)
-
-
-def _get_site_info():
-    """Informations générales du site"""
     return {
-        'total_blocks': PageBlock.objects.count(),
-        'active_blocks': PageBlock.objects.filter(status='active').count(),
-        'media_size': _calculate_media_size(),
-        'last_update': PageBlock.objects.order_by('-updated_at').first(),
+        'filieres_count': Filiere.objects.filter(statut='active').count(),
+        'etudiants_total': EtudiantAcademique.objects.count(),
+        'documents_pending': DocumentEtudiant.objects.filter(valide=False).count(),
+        'validation_rate': _calculate_validation_rate(),
     }
 
 
-def _get_analytics_data():
-    """Données analytiques avancées"""
-    return {
-        'blocks_created_last_30_days': PageBlock.objects.filter(
-            created_at__gte=timezone.now() - timedelta(days=30)
-        ).count(),
-        'most_used_block_types': (
-            PageBlock.objects
-            .values('block_type')
-            .annotate(count=Count('id'))
-            .order_by('-count')[:5]
-        ),
-        'blocks_by_status': {
-            'active': PageBlock.objects.filter(status='active').count(),
-            'inactive': PageBlock.objects.filter(status='inactive').count(),
-        }
-    }
-
-
-def _get_user_personal_stats(user):
-    """Stats personnelles pour un étudiant"""
-    # À implémenter selon les besoins du module académique
-    return {
-        'courses_enrolled': 0,
-        'assignments_completed': 0,
-        'average_grade': 0,
-    }
+def _calculate_validation_rate():
+    """Calcul du taux de validation global"""
+    from academique.models import EtudiantAcademique
+    
+    total = EtudiantAcademique.objects.count()
+    if total == 0:
+        return 0
+    
+    valides = EtudiantAcademique.objects.filter(statut_validation='valide').count()
+    return round((valides / total) * 100, 1)

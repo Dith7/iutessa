@@ -1,0 +1,326 @@
+{% extends 'administration/base.html' %}
+
+{% block title %}Validation Documents{% endblock %}
+
+{% block breadcrumb_items %}
+<li><i class="fas fa-chevron-right text-gray-400 mx-2"></i></li>
+<li class="text-gray-500">Validation Documents</li>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Validation des Documents</h1>
+            <p class="text-gray-600">Vérification et validation des documents étudiants</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                {{ documents.paginator.count }} documents en attente
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres -->
+<div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+    <form method="get" class="flex items-center space-x-4">
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Type de document</label>
+            <select name="type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <option value="">Tous les types</option>
+                {% for value, label in types_documents %}
+                <option value="{{ value }}" {% if current_filters.type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Filière</label>
+            <select name="filiere" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <option value="">Toutes les filières</option>
+                {% for filiere in filieres %}
+                <option value="{{ filiere.id }}" {% if current_filters.filiere == filiere.id|stringformat:"s" %}selected{% endif %}>
+                    {{ filiere.code }} - {{ filiere.nom }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="flex items-end">
+            <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors">
+                <i class="fas fa-filter mr-2"></i>Filtrer
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Liste des documents -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="p-6 border-b border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Documents en attente</h3>
+                <p class="text-sm text-gray-600">Nécessitent votre validation</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="validateAllVisible()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <i class="fas fa-check-double mr-2"></i>Valider tout
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="divide-y divide-gray-200">
+        {% for document in documents %}
+        <div class="p-6 hover:bg-gray-50" id="document-{{ document.id }}">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-file-alt text-gray-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-3">
+                            <h4 class="text-lg font-medium text-gray-900">{{ document.etudiant.nom_complet }}</h4>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                                {{ document.etudiant.filiere.code }}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">{{ document.get_type_document_display }}</p>
+                        <p class="text-xs text-gray-500 mt-2">
+                            Uploadé le {{ document.date_upload|date:"d/m/Y à H:i" }}
+                        </p>
+                        {% if document.commentaire %}
+                        <div class="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <p class="text-sm text-yellow-800">{{ document.commentaire }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3 ml-4">
+                    <a href="{{ document.fichier.url }}" target="_blank" 
+                       class="bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+                        <i class="fas fa-eye mr-1"></i>Voir
+                    </a>
+                    
+                    <button onclick="showValidationModal({{ document.id }}, '{{ document.etudiant.nom_complet }}', '{{ document.get_type_document_display }}')" 
+                            class="bg-green-100 hover:bg-green-200 text-green-600 px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+                        <i class="fas fa-check mr-1"></i>Valider
+                    </button>
+                    
+                    <button onclick="showRejectionModal({{ document.id }}, '{{ document.etudiant.nom_complet }}', '{{ document.get_type_document_display }}')" 
+                            class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+                        <i class="fas fa-times mr-1"></i>Rejeter
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="p-12 text-center text-gray-500">
+            <i class="fas fa-check-circle text-4xl mb-4 opacity-50"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun document en attente</h3>
+            <p>Tous les documents ont été traités !</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if documents.has_other_pages %}
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                {% if documents.has_previous %}
+                <a href="?page={{ documents.previous_page_number }}{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.filiere %}&filiere={{ current_filters.filiere }}{% endif %}" 
+                   class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-100">
+                    Précédent
+                </a>
+                {% endif %}
+                
+                <span class="text-sm text-gray-700">
+                    Page {{ documents.number }} sur {{ documents.paginator.num_pages }}
+                </span>
+                
+                {% if documents.has_next %}
+                <a href="?page={{ documents.next_page_number }}{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.filiere %}&filiere={{ current_filters.filiere }}{% endif %}" 
+                   class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-100">
+                    Suivant
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal de validation -->
+<div id="validationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Valider le document</h3>
+                <div id="validationContent" class="mb-4"></div>
+                <form id="validationForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire (optionnel)</label>
+                        <textarea name="commentaire" rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Ajoutez un commentaire..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeModal()" 
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Annuler
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            Valider
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de rejet -->
+<div id="rejectionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Rejeter le document</h3>
+                <div id="rejectionContent" class="mb-4"></div>
+                <form id="rejectionForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Raison du rejet *</label>
+                        <textarea name="commentaire" rows="3" required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                  placeholder="Expliquez pourquoi le document est rejeté..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeModal()" 
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Annuler
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            Rejeter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentDocumentId = null;
+
+function showValidationModal(documentId, studentName, documentType) {
+    currentDocumentId = documentId;
+    document.getElementById('validationContent').innerHTML = `
+        <p class="text-sm text-gray-600">Vous êtes sur le point de valider :</p>
+        <p class="font-medium text-gray-900">${documentType}</p>
+        <p class="text-sm text-gray-600">de <strong>${studentName}</strong></p>
+    `;
+    document.getElementById('validationModal').classList.remove('hidden');
+}
+
+function showRejectionModal(documentId, studentName, documentType) {
+    currentDocumentId = documentId;
+    document.getElementById('rejectionContent').innerHTML = `
+        <p class="text-sm text-gray-600">Vous êtes sur le point de rejeter :</p>
+        <p class="font-medium text-gray-900">${documentType}</p>
+        <p class="text-sm text-gray-600">de <strong>${studentName}</strong></p>
+    `;
+    document.getElementById('rejectionModal').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('validationModal').classList.add('hidden');
+    document.getElementById('rejectionModal').classList.add('hidden');
+    currentDocumentId = null;
+}
+
+document.getElementById('validationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('action', 'validate');
+    formData.append('commentaire', this.commentaire.value);
+    
+    fetch(`{% url 'administration:validate_document' 0 %}`.replace('0', currentDocumentId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById(`document-${currentDocumentId}`).remove();
+            closeModal();
+            showSuccessMessage('Document validé avec succès');
+        }
+    });
+});
+
+document.getElementById('rejectionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('action', 'reject');
+    formData.append('commentaire', this.commentaire.value);
+    
+    fetch(`{% url 'administration:validate_document' 0 %}`.replace('0', currentDocumentId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById(`document-${currentDocumentId}`).remove();
+            closeModal();
+            showSuccessMessage('Document rejeté');
+        }
+    });
+});
+
+function validateAllVisible() {
+    if (confirm('Êtes-vous sûr de vouloir valider tous les documents visibles ?')) {
+        // Implémentation de validation en masse
+        location.reload();
+    }
+}
+
+function showSuccessMessage(message) {
+    // Afficher un message de succès temporaire
+    const alert = document.createElement('div');
+    alert.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50';
+    alert.textContent = message;
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 3000);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

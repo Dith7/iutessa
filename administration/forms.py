@@ -14,77 +14,93 @@ class PageBlockForm(forms.ModelForm):
             'video_type', 'video_file', 'video_url', 'video_embed_code', 'video_thumbnail',
             'link_url', 'link_text'
         ]
+
         
+            
         widgets = {
             'title': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'Titre du bloc'
             }),
             'subtitle': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'Sous-titre (optionnel)'
             }),
+            'content': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
+                'rows': 6,
+                'placeholder': 'Contenu du bloc...'
+            }),
             'block_type': forms.Select(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 cursor-pointer'
             }),
             'order': forms.NumberInput(attrs={
-                'class': 'w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900',
                 'min': '0'
             }),
             'status': forms.Select(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 cursor-pointer'
             }),
             'image': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100',
                 'accept': 'image/*'
             }),
             'document': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100',
                 'accept': '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.rtf'
             }),
             'document_title': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'Titre du document'
             }),
             'video_type': forms.Select(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 cursor-pointer'
             }),
             'video_file': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100',
                 'accept': 'video/*'
             }),
             'video_url': forms.URLInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'https://www.youtube.com/watch?v=...'
             }),
             'video_embed_code': forms.Textarea(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'rows': 4,
                 'placeholder': '<iframe src="..."></iframe>'
             }),
             'video_thumbnail': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100',
                 'accept': 'image/*'
             }),
             'link_url': forms.URLInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'https://...'
             }),
             'link_text': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500',
                 'placeholder': 'Texte du lien'
             }),
         }
+        
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Ajouter des classes CSS selon le type de champ
+        # Assurer que tous les champs ont du texte noir
         for field_name, field in self.fields.items():
-            if isinstance(field.widget, forms.Select):
-                field.widget.attrs['class'] += ' cursor-pointer'
-            elif isinstance(field.widget, forms.FileInput):
-                field.widget.attrs['class'] += ' file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'
+            current_class = field.widget.attrs.get('class', '')
+            if 'text-gray-900' not in current_class:
+                field.widget.attrs['class'] = current_class + ' text-gray-900'
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            print(f"Image reçue: {image.name}, taille: {image.size}")
+            # Validation taille
+            if image.size > 5 * 1024 * 1024:  # 5MB
+                raise forms.ValidationError('Image trop volumineuse (max 5MB)')
+        return image
 
     def clean(self):
         cleaned_data = super().clean()
@@ -93,17 +109,31 @@ class PageBlockForm(forms.ModelForm):
         video_url = cleaned_data.get('video_url')
         video_embed_code = cleaned_data.get('video_embed_code')
 
-        # Validation vidéo selon le type
-        if video_type == 'local' and not video_file:
-            self.add_error('video_file', 'Fichier vidéo requis pour le type "local".')
-        elif video_type in ['youtube', 'vimeo'] and not video_url:
+        # Validation vidéo selon le type (optionnelle)
+        # Seules les validations nécessaires si l'utilisateur veut vraiment ajouter une vidéo
+        if video_type in ['youtube', 'vimeo'] and video_url and not video_url.strip():
             self.add_error('video_url', 'URL requise pour YouTube/Vimeo.')
-        elif video_type == 'embed' and not video_embed_code:
+        elif video_type == 'embed' and video_embed_code and not video_embed_code.strip():
             self.add_error('video_embed_code', 'Code d\'intégration requis.')
 
         return cleaned_data
 
-
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        
+        # Debug pour voir ce qui se passe
+        print(f"Sauvegarde du bloc: {instance.title}")
+        if hasattr(self, 'cleaned_data'):
+            image = self.cleaned_data.get('image')
+            if image:
+                print(f"Image à sauvegarder: {image}")
+                instance.image = image
+            else:
+                print("Aucune image dans cleaned_data")
+        
+        if commit:
+            instance.save()
+        return instance
 
 class MultipleFileInput(forms.ClearableFileInput):
     """Widget pour permettre l'upload de plusieurs fichiers."""

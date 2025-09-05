@@ -28,318 +28,100 @@
 
 <!-- System Information First -->
 <div class="mb-8">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h3 class="text-xl font-semibold text-gray-900">Informations Système</h3>
-            <p class="text-sm text-gray-600">État et statistiques de votre environnement</p>
-        </div>
-        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-smooth flex items-center text-sm cursor-pointer">
-            <i class="fas fa-sync-alt mr-2"></i>Actualiser
-        </button>
-    </div>
-    
-    <!-- System Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
-        <!-- Total Blocs -->
-        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-th-large text-green-600 text-xl"></i>
-                </div>
-                <div class="text-right">
-                    <div class="text-2xl font-bold text-gray-900">{{ site_info.total_blocks|default:0 }}</div>
-                    <div class="text-xs text-gray-500">Blocs</div>
-                </div>
-            </div>
-            <div class="text-sm text-gray-600">Total des blocs</div>
-            <div class="mt-3 flex items-center text-xs text-green-600">
-                <i class="fas fa-cube mr-1"></i>
-                Contenu géré
-            </div>
-        </div>
-
-        <!-- Blocs Actifs -->
-        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow ">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-check-circle text-blue-600 text-xl"></i>
-                </div>
-                <div class="text-right">
-                    <div class="text-2xl font-bold text-gray-900">{{ site_info.active_blocks|default:0 }}</div>
-                    <div class="text-xs text-gray-500">Actifs</div>
-                </div>
-            </div>
-            <div class="text-sm text-gray-600">Blocs publiés</div>
-            <div class="mt-3 flex items-center text-xs text-blue-600">
-                <i class="fas fa-eye mr-1"></i>
-                Visibles publiquement
-            </div>
-        </div>
-
-        <!-- Espace Utilisé -->
-        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow ">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-hdd text-purple-600 text-xl"></i>
-                </div>
-                <div class="text-right">
-                    <div class="text-2xl font-bold text-gray-900">{{ site_info.media_size|default:0 }}</div>
-                    <div class="text-xs text-gray-500">MB</div>
-                </div>
-            </div>
-            <div class="text-sm text-gray-600">Espace disque</div>
-            <div class="mt-3 flex items-center text-xs text-purple-600">
-                <i class="fas fa-database mr-1"></i>
-                Médias stockés
-            </div>
-        </div>
-
-        <!-- Dernière MAJ -->
-        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-clock text-orange-600 text-xl"></i>
-                </div>
-                <div class="text-right">
-                    <div class="text-sm font-bold text-gray-900">
-                        {% if site_info.last_update %}
-                            {{ site_info.last_update.updated_at|date:"d/m/Y" }}
-                        {% else %}
-                            Jamais
-                        {% endif %}
-                    </div>
-                    <div class="text-xs text-gray-500">Dernière MAJ</div>
-                </div>
-            </div>
-            <div class="text-sm text-gray-600">Système</div>
-            <div class="mt-3 flex items-center text-xs text-orange-600">
-                <i class="fas fa-history mr-1"></i>
-                Mise à jour
-            </div>
-        </div>
-    </div>
-
-    <!-- Additional System Info -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Environment Info -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-900">Environnement</h3>
-                <p class="text-sm text-gray-600">Configuration du serveur</p>
-            </div>
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between py-2">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
-                                <i class="fab fa-python text-green-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm text-gray-700 font-medium">Django Version</span>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">5.2+</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between py-2">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-server text-blue-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm text-gray-700 font-medium">Mode</span>
-                        </div>
-                        <span class="text-sm font-semibold px-2 py-1 rounded
-                            {% if debug %}bg-amber-100 text-amber-700{% else %}bg-green-100 text-green-700{% endif %}">
-                            {% if debug %}Development{% else %}Production{% endif %}
-                        </span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between py-2">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-database text-purple-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm text-gray-700 font-medium">Base de données</span>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">PostgreSQL</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-900">Actions Système</h3>
-                <p class="text-sm text-gray-600">Maintenance et gestion</p>
-            </div>
-            <div class="p-6">
-                <div class="space-y-3">
-                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-blue-50 group-hover:bg-blue-100 rounded-lg flex items-center justify-center transition-colors">
-                                <i class="fas fa-broom text-blue-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm font-medium text-gray-700">Vider le cache</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                    </button>
-
-                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-green-50 group-hover:bg-green-100 rounded-lg flex items-center justify-center transition-colors">
-                                <i class="fas fa-download text-green-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm font-medium text-gray-700">Sauvegarde</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                    </button>
-
-                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-smooth group cursor-pointer">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-orange-50 group-hover:bg-orange-100 rounded-lg flex items-center justify-center transition-colors">
-                                <i class="fas fa-file-alt text-orange-600 text-sm"></i>
-                            </div>
-                            <span class="text-sm font-medium text-gray-700">Logs système</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1 class="text-4xl font-bold text-gradient-iut mb-2">Paramètres</h1>
+    <p class="text-lg text-gray-600">Configuration du système universitaire</p>
 </div>
 
 <form id="settings-form" method="post" class="space-y-6">
     {% csrf_token %}
     
-    <!-- Main Settings Grid -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <!-- Informations générales -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Informations Générales</h3>
-                        <p class="text-sm text-gray-600">Configuration de base du site</p>
-                    </div>
-                    <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-info-circle text-green-600 text-sm"></i>
-                    </div>
-                </div>
+    <!-- Informations générales -->
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations générales</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nom de l'établissement</label>
+                <input type="text" name="site_name" value="{{ site_name|default:'IUTESSA Mokolo' }}" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom du site</label>
-                        <input type="text" name="site_name" value="Université" 
-                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                        <input type="text" name="site_description" value="Site universitaire moderne" 
-                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email de contact</label>
-                        <input type="email" name="contact_email" value="contact@universite.fr" 
-                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
-                        <input type="tel" name="phone" value="+33 1 23 45 67 89" 
-                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
-                    </div>
-                </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <input type="text" name="site_description" value="Institut Universitaire de Technologie - Excellence en Formation" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
-        </div>
-
-        <!-- Configuration d'affichage -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Affichage</h3>
-                        <p class="text-sm text-gray-600">Options d'affichage du site</p>
-                    </div>
-                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-eye text-blue-600 text-sm"></i>
-                    </div>
-                </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email de contact</label>
+                <input type="email" name="contact_email" value="admin@iutessa-mokolo.cm" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">Informations de contact</p>
-                            <p class="text-xs text-gray-500">Afficher les infos de contact dans le footer</p>
-                        </div>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="show_contact_info" value="1" checked 
-                                   class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                        </label>
-                    </div>
-                    
-                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">Commentaires</p>
-                            <p class="text-xs text-gray-500">Autoriser les commentaires sur les articles</p>
-                        </div>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="enable_comments" value="1" 
-                                   class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                        </label>
-                    </div>
-                    
-                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">Mode maintenance</p>
-                            <p class="text-xs text-red-500">Désactive temporairement le site public</p>
-                        </div>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="maintenance_mode" value="1" 
-                                   class="h-4 w-4 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 focus:ring-2">
-                        </label>
-                    </div>
-                </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                <input type="tel" name="phone" value="+237 6XX XX XX XX" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
         </div>
     </div>
 
-    <!-- SEO & Analytics Row -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <!-- SEO -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">SEO</h3>
-                        <p class="text-sm text-gray-600">Optimisation pour les moteurs de recherche</p>
-                    </div>
-                    <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-search text-purple-600 text-sm"></i>
-                    </div>
-                </div>
+    <!-- Configuration académique -->
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Configuration Académique</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="auto_validation" 
+                           class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Validation automatique des documents</span>
+                </label>
             </div>
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
-                        <textarea name="meta_description" rows="3" 
-                                  class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth resize-none cursor-text"
-                                  placeholder="Description pour les moteurs de recherche..."></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés</label>
-                        <input type="text" name="meta_keywords" placeholder="université, formation, éducation" 
-                               class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-smooth cursor-text">
-                        <p class="text-xs text-gray-500 mt-1">Séparez les mots-clés par des virgules</p>
-                    </div>
-                </div>
+            
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="email_notifications" checked
+                           class="h-4 w-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Notifications email pour les étudiants</span>
+                </label>
+            </div>
+            
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="maintenance_mode" 
+                           class="h-4 w-4 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 focus:ring-2">
+                    <span class="ml-3 text-sm font-medium text-gray-700">Mode maintenance</span>
+                </label>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Année académique en cours</label>
+                <input type="text" name="academic_year" value="2024-2025" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
             </div>
         </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">SEO</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+                <textarea name="meta_description" rows="3" 
+                          class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none"
+                          placeholder="IUTESSA Mokolo - Institut Universitaire de Technologie d'Excellence...">IUTESSA Mokolo - Institut Universitaire de Technologie d'Excellence au Cameroun. Formation technique supérieure, inscriptions ouvertes.</textarea>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés</label>
+                <input type="text" name="meta_keywords" value="IUTESSA, université, technologie, Cameroun, formation, étudiants" 
+                       class="input-focus w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none">
+            </div>
+        </div>
+    </div>
 
         <!-- Analytics -->
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -378,4 +160,45 @@
         </div>
     </div>
 </form>
+
+<!-- Informations système -->
+<div class="mt-12 bg-gradient-soft backdrop-blur-xl rounded-3xl shadow-xl border border-green-100 p-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations système</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
+            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fas fa-users text-white text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-600">Total utilisateurs</p>
+            <p class="text-2xl font-bold text-gray-900">{{ user_stats.total_users|default:0 }}</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
+            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fas fa-user-graduate text-white text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-600">Étudiants</p>
+            <p class="text-2xl font-bold text-gray-900">{{ academic_stats.total_etudiants|default:0 }}</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
+            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fas fa-graduation-cap text-white text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-600">Filières actives</p>
+            <p class="text-2xl font-bold text-gray-900">{{ academic_stats.filieres_actives|default:0 }}</p>
+        </div>
+        
+        <div class="text-center p-6 bg-white/70 rounded-xl border border-green-100">
+            <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fas fa-server text-white text-xl"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-600">Environnement</p>
+            <p class="text-sm font-bold text-gray-900">
+                {% if debug %}Development{% else %}Production{% endif %}
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}
