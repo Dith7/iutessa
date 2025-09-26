@@ -31,6 +31,7 @@ WORKDIR /app
 # Construire Tailwind CSS et collecter les fichiers statiques
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput
+RUN npm install -g rimraf
 
 # Exposer le port interne
 EXPOSE 8000
