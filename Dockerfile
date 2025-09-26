@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Installer dépendances système utiles + Node.js + npm
+# Installer dépendances système + Node.js + npm
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -18,20 +18,17 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier le code Django
+# Copier tout le code Django
 COPY . .
 
 # Installer les dépendances Node pour Tailwind
 WORKDIR /app/theme/static_src
 RUN npm install
 
-# Revenir au répertoire principal
-WORKDIR /app
-
 # Construire Tailwind CSS et collecter les fichiers statiques
+WORKDIR /app
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput
-RUN npm install -g rimraf
 
 # Exposer le port interne
 EXPOSE 8000
