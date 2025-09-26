@@ -18,24 +18,22 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier tout le code Django
+# Copier le code Django
 COPY . .
 
 # Installer les dépendances Node pour Tailwind
 WORKDIR /app/theme/static_src
 RUN npm install
 
-# Construire Tailwind CSS
-RUN npm run build
-
 # Revenir au répertoire principal
 WORKDIR /app
 
-# Collecter les fichiers statiques
+# Construire Tailwind CSS et collecter les fichiers statiques
+RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput
 
-# Exposer le port
+# Exposer le port interne
 EXPOSE 8000
 
-# Lancer l'application
+# Lancer avec Uvicorn
 CMD ["uvicorn", "iuttessa.asgi:application", "--host", "0.0.0.0", "--port", "8000"]

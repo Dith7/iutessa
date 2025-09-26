@@ -6,12 +6,12 @@ services:
     container_name: iuttessa
     ports:
       - "8002:8000"
+    volumes:
+      - .:/app:cached          # Monte ton projet dans le conteneur
+      - static_volume:/app/staticfiles  # Volume dédié pour les fichiers statiques
     restart: always
     env_file:
       - .env
-    volumes:
-      # Monte seulement les fichiers statiques si besoin
-      - static_volume:/app/staticfiles
 
 volumes:
   static_volume:
