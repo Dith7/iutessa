@@ -124,7 +124,6 @@ dmypy.json
 
 # Django specific
 media/
-staticfiles/
 static_root/
 settings_local.py
 settings_prod.py
