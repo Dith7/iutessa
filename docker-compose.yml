@@ -7,8 +7,8 @@ services:
     ports:
       - "8002:8000"
     volumes:
-      - .:/app:cached          # Monte ton projet dans le conteneur
-      - static_volume:/app/staticfiles  # Volume dédié pour les fichiers statiques
+      - .:/app:cached
+      - static_volume:/app/staticfiles
     restart: always
     env_file:
       - .env
