@@ -7,5 +7,6 @@ echo "===> Pulling last changes..."
 git pull origin main
 
 echo "===> Rebuilding and restarting containers..."
-docker compose down
+# Utilise docker-compose partout
+docker-compose down
 docker-compose up -d --build
