@@ -183,7 +183,10 @@ USE_TZ = True
 # ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static', BASE_DIR / 'theme/static_src']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',                  # vos fichiers statiques normaux
+    BASE_DIR / 'theme/static_src',        # inclut le CSS généré par Tailwind
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

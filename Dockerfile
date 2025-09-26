@@ -1,14 +1,10 @@
-# ====================
-# Dockerfile - IUTESSA
-# ====================
-
 # Image de base Python
 FROM python:3.11-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Installer dépendances système utiles + Node.js + npm
+# Installer dépendances système + Node.js + npm
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -25,24 +21,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copier tout le code Django
 COPY . .
 
-# ====================
-# TAILWIND CSS
-# ====================
-# Installer dépendances Node dans theme/static_src
+# Installer les dépendances Node pour Tailwind
 WORKDIR /app/theme/static_src
 RUN npm install
 
 # Construire Tailwind CSS
 RUN npm run build
 
-# ====================
-# COLLECTSTATIC
-# ====================
+# Revenir au répertoire principal
 WORKDIR /app
+
+# Collecter les fichiers statiques
 RUN python manage.py collectstatic --noinput
 
-# Exposer le port interne
+# Exposer le port
 EXPOSE 8000
 
-# Lancer le serveur Uvicorn (ASGI)
+# Lancer l'application
 CMD ["uvicorn", "iuttessa.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
