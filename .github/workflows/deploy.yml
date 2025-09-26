@@ -1,32 +1,28 @@
-name: CI/CD iutessa
+name: Deploy Digitagro API
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main   # Déploiement automatique à chaque push sur main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Récupérer le code depuis GitHub
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # 2️⃣ Configurer SSH avec la clé privée
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.9.1
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-    # 3️⃣ Ajouter le serveur à known_hosts pour éviter Host key verification failed
-    - name: Add server to known_hosts
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+      - name: Copy deploy script to VPS
+        run: scp -o StrictHostKeyChecking=no deploy.sh root@148.230.117.196:/root/deploy.sh
 
-    # 4️⃣ Déployer le code avec rsync et exécuter le script deploy.sh
-    - name: Deploy to VPS
-      run: |
-        rsync -avz --delete ./ root@${{ secrets.VPS_HOST }}:/var/www/iutessa/
-        ssh root@${{ secrets.VPS_HOST }} 'bash /var/www/iutessa/deploy.sh'
+      - name: Make script executable
+        run: ssh -o StrictHostKeyChecking=no root@148.230.117.196 "chmod +x /root/deploy.sh"
+
+      - name: Deploy to VPS
+        run: ssh -o StrictHostKeyChecking=no root@148.230.117.196 "/root/deploy.sh"
