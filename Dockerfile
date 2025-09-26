@@ -1,10 +1,14 @@
+# -------------------------------
+# Dockerfile pour Django + Tailwind
+# -------------------------------
+
 # Image de base Python
 FROM python:3.11-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Installer dépendances système + Node.js + npm
+# Installer dépendances système + Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -18,20 +22,22 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier tout le code Django
+# Copier le code Django
 COPY . .
 
 # Installer les dépendances Node pour Tailwind
 WORKDIR /app/theme/static_src
 RUN npm install
 
-# Construire Tailwind CSS et collecter les fichiers statiques
+# Revenir au répertoire principal
 WORKDIR /app
+
+# Construire Tailwind CSS et collecter les fichiers statiques
 RUN python manage.py tailwind build
 RUN python manage.py collectstatic --noinput
 
 # Exposer le port interne
 EXPOSE 8000
 
-# Lancer avec Uvicorn (ASGI pour WebSockets)
+# Lancer avec Uvicorn (ASGI)
 CMD ["uvicorn", "iuttessa.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
