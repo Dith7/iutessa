@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  iuttessa:
+    build: .
+    container_name: iuttessa
+    ports:
+      - "8002:8000"
+    volumes:
+      - .:/app:cached
+      - static_volume:/app/staticfiles
+    restart: always
+    env_file:
+      - .env
+
+volumes:
+  static_volume:
