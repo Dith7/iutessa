@@ -144,7 +144,7 @@
             <div class="kingster-mobile-header-container kingster-container clearfix">
                 <div class="kingster-logo  kingster-item-pdlr">
                     <div class="kingster-logo-inner">
-                        <a class="" href="{% url 'pages:home' %}"><img src="{% static 'images/logo-iutessa.png' %}" alt="" /></a>
+                        <a class="" href="{% url 'pages:home' %}"><img src="{% static 'images/logo-iutessa.png' %}" alt="" />IUTESSA</a>
                     </div>
                 </div>
                 <div class="kingster-mobile-menu-right">
@@ -165,84 +165,22 @@
                     <div class="kingster-mobile-menu"><a class="kingster-mm-menu-button kingster-mobile-menu-button kingster-mobile-button-hamburger" href="#kingster-mobile-menu"><span></span></a>
                         <div class="kingster-mm-menu-wrap kingster-navigation-font" id="kingster-mobile-menu" data-slide="right">
                             <ul id="menu-main-navigation" class="m-menu">
-                                <li class="menu-item menu-item-home current-menu-item menu-item-has-children"><a href="{% url 'pages:home' %}">Home</a>
-                                    <!-- <ul class="sub-menu">
-                                        <li class="menu-item menu-item-home"><a href="index.html">Homepage 1</a></li>
-                                        <li class="menu-item"><a href="homepage-2.html">Homepage 2</a></li>
-                                    </ul> -->
+                                <li class="menu-item menu-item-home current-menu-item "><a href="{% url 'pages:home' %}">Home</a>
                                 </li>
                                 <li class="menu-item menu-item-has-children"><a href="#">Pages</a>
                                     <ul class="sub-menu">
-                                        <li class="menu-item"><a href="about-us.html">About KU</a></li>
+                                        <li class="menu-item"><a href="{% url 'pages:about-us' %}">À Propos d'IUTESSA</a></li>
                                         <li class="menu-item menu-item-has-children"><a href="blog-full-right-sidebar-with-frame.html">Blog</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item menu-item-has-children"><a href="blog-full-right-sidebar-with-frame.html">Blog Full</a>
-                                                    <ul class="sub-menu">
-                                                        <li class="menu-item"><a href="blog-full-right-sidebar-with-frame.html">Blog Full Right Sidebar With Frame</a></li>
-                                                        <li class="menu-item"><a href="blog-full-left-sidebar-with-frame.html">Blog Full Left Sidebar With Frame</a></li>
-                                                        <li class="menu-item"><a href="blog-full-both-sidebar-with-frame.html">Blog Full Both Sidebar With Frame</a></li>
-                                                        <li class="menu-item"><a href="blog-full-right-sidebar.html">Blog Full Right Sidebar</a></li>
-                                                        <li class="menu-item"><a href="blog-full-left-sidebar.html">Blog Full Left Sidebar</a></li>
-                                                        <li class="menu-item"><a href="blog-full-both-sidebar.html">Blog Full Both Sidebar</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item menu-item-has-children"><a href="blog-grid-3-columns-no-space.html">Blog Grid</a>
-                                                    <ul class="sub-menu">
-                                                        <li class="menu-item"><a href="blog-grid-2-columns.html">Blog Grid 2 Columns</a></li>
-                                                        <li class="menu-item"><a href="blog-grid-3-columns.html">Blog Grid 3 Columns</a></li>
-                                                        <li class="menu-item"><a href="blog-grid-4-columns.html">Blog Grid 4 Columns</a></li>
-                                                        <li class="menu-item"><a href="blog-grid-2-columns-no-space.html">Blog Grid 2 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="blog-grid-3-columns-no-space.html">Blog Grid 3 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="blog-grid-4-columns-no-space.html">Blog Grid 4 Columns No Space</a></li>
-                                                    </ul>
-                                                </li>
-
-                                                <li class="menu-item"><a href="standard-post-type.html">Single Post</a></li>
-                                            </ul>
                                         </li>
-                                        <li class="menu-item menu-item-has-children"><a href="#">Contact</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item"><a href="contact.html">Contact</a></li>
-                                                <li class="menu-item"><a href="contact-2.html">Contact 2</a></li>
-                                                <li class="menu-item"><a href="contact-3.html">Contact 3</a></li>
-                                            </ul>
+                                        <li class="menu-item menu-item-has-children"><a href="contact-2.html">Contact</a>  
                                         </li>
-                                        <li class="menu-item menu-item-has-children"><a href="portfolio-3-columns.html">Portfolio</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item menu-item-has-children"><a>Portfolio Grid</a>
-                                                    <ul class="sub-menu">
-                                                        <li class="menu-item"><a href="portfolio-2-columns.html">Portfolio 2 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-3-columns.html">Portfolio 3 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-4-columns.html">Portfolio 4 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-5-columns.html">Portfolio 5 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-2-columns-with-frame.html">Portfolio 2 Columns With Frame</a></li>
-                                                        <li class="menu-item"><a href="portfolio-3-columns-with-frame.html">Portfolio 3 Columns With Frame</a></li>
-                                                        <li class="menu-item"><a href="portfolio-4-columns-with-frame.html">Portfolio 4 Columns With Frame</a></li>
-                                                        <li class="menu-item"><a href="portfolio-2-columns-no-space.html">Portfolio 2 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="portfolio-3-columns-no-space.html">Portfolio 3 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="portfolio-4-columns-no-space.html">Portfolio 4 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="portfolio-5-columns-no-space.html">Portfolio 5 Columns No Space</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item menu-item-has-children"><a>Portfolio Masonry</a>
-                                                    <ul class="sub-menu">
-                                                        <li class="menu-item"><a href="portfolio-masonry-4-columns.html">Masonry 4 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-masonry-3-columns.html">Masonry 3 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-masonry-2-columns.html">Masonry 2 Columns</a></li>
-                                                        <li class="menu-item"><a href="portfolio-masonry-4-columns-no-space.html">Masonry 4 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="portfolio-masonry-3-columns-no-space.html">Masonry 3 Columns No Space</a></li>
-                                                        <li class="menu-item"><a href="portfolio-masonry-2-columns-no-space.html">Masonry 2 Columns No Space</a></li>
-                                                    </ul>
-                                                </li>
-
-                                                <li class="menu-item menu-item-has-children"><a class="sf-with-ul-pre" href="singleportfolio.html">Single Portfolio</a></li>
-                                            </ul>
+                                        <li class="menu-item menu-item-has-children"><a href="portfolio-masonry-2-columns.html">Portfolio</a>
                                         </li>
-                                        <li class="menu-item"><a href="gallery.html">Gallery</a></li>
-                                        <li class="menu-item"><a href="price-table.html">Price Table</a></li>
-                                        <li class="menu-item"><a href="maintenance.html">Maintenance</a></li>
+                                        <li class="menu-item"><a href="gallery.html">Gallerie</a></li>
+                                        <li class="menu-item"><a href="price-table.html">Pension</a></li>
+                                        <!-- <li class="menu-item"><a href="maintenance.html">Maintenance</a></li>
                                         <li class="menu-item"><a href="coming-soon.html">Coming Soon</a></li>
-                                        <li class="menu-item"><a href="404.html">404 Page</a></li>
+                                        <li class="menu-item"><a href="404.html">404 Page</a></li> -->
                                     </ul>
                                 </li>
                                 <li class="menu-item menu-item-has-children"><a href="bachelor-of-science-in-business-administration.html">Academics</a>
@@ -279,23 +217,23 @@
                                 </li>
                                 <li class="menu-item menu-item-has-children"><a href="apply-to-kingster.html">Admissions</a>
                                     <ul class="sub-menu">
-                                        <li class="menu-item"><a href="apply-to-kingster.html">Apply To Kingster</a></li>
-                                        <li class="menu-item"><a href="campus-tour.html">Campus Tour</a></li>
-                                        <li class="menu-item"><a href="scholarships.html">Scholarships</a></li>
+                                        <li class="menu-item"><a href="apply-to-kingster.html">Postuler à IUTESSA</a></li>
+                                        <li class="menu-item"><a href="campus-tour.html">Visite du Campus</a></li>
+                                        <!-- <li class="menu-item"><a href="scholarships.html">Scholarships</a></li>
                                         <li class="menu-item"><a href="athletics.html">Athletics</a></li>
-                                        <li class="menu-item"><a href="give-to-kingster.html">Give To Kingster</a></li>
-                                        <li class="menu-item"><a href="alumni.html">Alumni</a></li>
-                                        <li class="menu-item"><a href="event-calendar.html">Event Calendar</a></li>
+                                        <li class="menu-item"><a href="give-to-kingster.html">Give To Kingster</a></li> -->
+                                        <li class="menu-item"><a href="alumni.html">Anciens Eleves</a></li>
+                                        <li class="menu-item"><a href="{% url 'pages:events' %}">Calendrier des Événements</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item menu-item-has-children"><a href="#">Courses</a>
+                                <li class="menu-item menu-item-has-children"><a href="course-list-1.html">Formations</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="course-list-1.html">Course List 1</a></li>
-                                        <li class="menu-item"><a href="course-list-2.html">Course List 2</a></li>
+                                        <!-- <li class="menu-item"><a href="course-list-2.html">Course List 2</a></li> -->
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="athletics.html">Athletics</a></li>
-                                <li class="menu-item"><a href="university-life.html">University Life</a></li>
+                                <!-- <li class="menu-item"><a href="athletics.html">Athletics</a></li> -->
+                                <li class="menu-item"><a href="university-life.html">Vie Universitaire</a></li>
                             </ul>
                         </div>
                     </div>
@@ -312,9 +250,9 @@
                         <div class="kingster-top-bar-left kingster-item-pdlr"><i class="fa fa-envelope-open-o" id="i_fd84_0"></i> contact@iutessa.cm <i class="fa fa-phone" id="i_fd84_1"></i> +237 677 55 44 33</div>
                         <div class="kingster-top-bar-right kingster-item-pdlr">
                             <ul id="kingster-top-bar-menu" class="sf-menu kingster-top-bar-menu kingster-top-bar-right-menu">
-                                <li class="menu-item kingster-normal-menu"><a href="#">Alumni</a></li>
-                                <li class="menu-item kingster-normal-menu"><a href="#">Calendar</a></li>
-                                <li class="menu-item kingster-normal-menu"><a href="#">Portal</a></li>
+                                <li class="menu-item kingster-normal-menu"><a href="#">Anciens Élèves</a></li>
+                                <li class="menu-item kingster-normal-menu"><a href="#">Calendrier</a></li>
+                                <li class="menu-item kingster-normal-menu"><a href="#">Portail</a></li>
                             </ul>
                             <div class="kingster-top-bar-right-social"></div><a class="kingster-top-bar-right-button" href="#" target="_blank">Connexion</a></div>
                     </div>
@@ -326,8 +264,9 @@
                     <div class="kingster-header-container-inner clearfix">
                         <div class="kingster-logo  kingster-item-pdlr">
                             <div class="kingster-logo-inner">
-                                <a class="w-16 h-auto" href="{% url 'pages:home' %}">
-                                    <img src="{% static 'images/logo-iutessa.svg' %}" alt="" style="max-width: 4rem; height: auto;" />
+                                <a class="flex items-center space-x-3 w-auto h-auto" href="{% url 'pages:home' %}">
+                                    <img src="{% static 'images/logo-iutessa.svg' %}" alt="IUTESSA Logo" style="max-width: 4rem; height: auto; margin-right: 10px;" />
+                                    <span class="text-3xl ml-5 font-semibold" style="font-family: 'Poppins', system-ui, sans-serif;">IUTESSA</span>
                                 </a>
                             </div>
                         </div>
@@ -342,82 +281,22 @@
                                     </li>
                                     <li class="menu-item menu-item-has-children kingster-normal-menu"><a href="#" class="sf-with-ul-pre">Pages</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item" data-size="60"><a href="about-us.html">About KU</a></li>
-                                            <li class="menu-item menu-item-has-children" data-size="60"><a href="blog-full-right-sidebar-with-frame.html" class="sf-with-ul-pre">Blog</a>
-                                                <ul class="sub-menu">
-                                                    <li class="menu-item menu-item-has-children"><a href="blog-full-right-sidebar-with-frame.html" class="sf-with-ul-pre">Blog Full</a>
-                                                        <ul class="sub-menu">
-                                                            <li class="menu-item"><a href="blog-full-right-sidebar-with-frame.html">Blog Full Right Sidebar With Frame</a></li>
-                                                            <li class="menu-item"><a href="blog-full-left-sidebar-with-frame.html">Blog Full Left Sidebar With Frame</a></li>
-                                                            <li class="menu-item"><a href="blog-full-both-sidebar-with-frame.html">Blog Full Both Sidebar With Frame</a></li>
-                                                            <li class="menu-item"><a href="blog-full-right-sidebar.html">Blog Full Right Sidebar</a></li>
-                                                            <li class="menu-item"><a href="blog-full-left-sidebar.html">Blog Full Left Sidebar</a></li>
-                                                            <li class="menu-item"><a href="blog-full-both-sidebar.html">Blog Full Both Sidebar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="menu-item menu-item-has-children"><a href="blog-grid-3-columns-no-space.html" class="sf-with-ul-pre">Blog Grid</a>
-                                                        <ul class="sub-menu">
-                                                            <li class="menu-item"><a href="blog-grid-2-columns.html">Blog Grid 2 Columns</a></li>
-                                                            <li class="menu-item"><a href="blog-grid-3-columns.html">Blog Grid 3 Columns</a></li>
-                                                            <li class="menu-item"><a href="blog-grid-4-columns.html">Blog Grid 4 Columns</a></li>
-                                                            <li class="menu-item"><a href="blog-grid-2-columns-no-space.html">Blog Grid 2 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="blog-grid-3-columns-no-space.html">Blog Grid 3 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="blog-grid-4-columns-no-space.html">Blog Grid 4 Columns No Space</a></li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li class="menu-item"><a href="standard-post-type.html">Single Post</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item menu-item-has-children" data-size="60"><a href="#" class="sf-with-ul-pre">Contact</a>
-                                                <ul class="sub-menu">
-                                                    <li class="menu-item"><a href="contact.html">Contact</a></li>
-                                                    <li class="menu-item"><a href="contact-2.html">Contact 2</a></li>
-                                                    <li class="menu-item"><a href="contact-3.html">Contact 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item menu-item-has-children" data-size="60"><a href="portfolio-3-columns.html" class="sf-with-ul-pre">Portfolio</a>
-                                                <ul class="sub-menu">
-                                                    <li class="menu-item menu-item-has-children"><a class="sf-with-ul-pre">Portfolio Grid</a>
-                                                        <ul class="sub-menu">
-                                                            <li class="menu-item"><a href="portfolio-2-columns.html">Portfolio 2 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-3-columns.html">Portfolio 3 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-4-columns.html">Portfolio 4 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-5-columns.html">Portfolio 5 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-2-columns-with-frame.html">Portfolio 2 Columns With Frame</a></li>
-                                                            <li class="menu-item"><a href="portfolio-3-columns-with-frame.html">Portfolio 3 Columns With Frame</a></li>
-                                                            <li class="menu-item"><a href="portfolio-4-columns-with-frame.html">Portfolio 4 Columns With Frame</a></li>
-                                                            <li class="menu-item"><a href="portfolio-2-columns-no-space.html">Portfolio 2 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="portfolio-3-columns-no-space.html">Portfolio 3 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="portfolio-4-columns-no-space.html">Portfolio 4 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="portfolio-5-columns-no-space.html">Portfolio 5 Columns No Space</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="menu-item menu-item-has-children"><a class="sf-with-ul-pre">Portfolio Masonry</a>
-                                                        <ul class="sub-menu">
-                                                            <li class="menu-item"><a href="portfolio-masonry-4-columns.html">Masonry 4 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-masonry-3-columns.html">Masonry 3 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-masonry-2-columns.html">Masonry 2 Columns</a></li>
-                                                            <li class="menu-item"><a href="portfolio-masonry-4-columns-no-space.html">Masonry 4 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="portfolio-masonry-3-columns-no-space.html">Masonry 3 Columns No Space</a></li>
-                                                            <li class="menu-item"><a href="portfolio-masonry-2-columns-no-space.html">Masonry 2 Columns No Space</a></li>
-                                                        </ul>
-                                                    </li>
-
-                                                 <li class="menu-item menu-item-has-children"><a class="sf-with-ul-pre" href="singleportfolio.html">Single Portfolio</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item" data-size="60"><a href="gallery.html">Gallery</a></li>
-                                            <li class="menu-item" data-size="60"><a href="price-table.html">Price Table</a></li>
-                                            <li class="menu-item" data-size="60"><a href="maintenance.html">Maintenance</a></li>
+                                            <li class="menu-item"><a href="{% url 'pages:about-us' %}">À Propos d'IUTESSA</a></li>
+                                            <li class="menu-item"><a href="{% url 'pages:blog' %}">Blog</a></li>
+                                            <li class="menu-item"><a href="{% url 'pages:contact' %}">Contact</a></li>
+                                            <li class="menu-item"><a href="standard-post-type.html">Single Post</a></li>
+                                            <li class="menu-item" data-size="60"><a href="portfolio-masonry-2-columns.html" class="">Portfolio</a></li>
+                                            <!-- <li class="menu-item" data-size="60"><a href="gallery.html">Gallery</a></li> -->
+                                            <li class="menu-item"><a href="{% url 'pages:prices' %}">Pension</a></li>
+                                            <!-- <li class="menu-item" data-size="60"><a href="maintenance.html">Maintenance</a></li>
                                             <li class="menu-item" data-size="60"><a href="coming-soon.html">Coming Soon</a></li>
-                                            <li class="menu-item" data-size="60"><a href="404.html">404 Page</a></li>
+                                            <li class="menu-item" data-size="60"><a href="404.html">404 Page</a></li> -->
                                         </ul>
                                     </li>
                                     <li class="menu-item menu-item-has-children kingster-mega-menu"><a href="bachelor-of-science-in-business-administration.html" class="sf-with-ul-pre">Academics</a>
-                                        <div class="sf-mega sf-mega-full megaimg">
+                                        <div class="sf-mega sf-mega-full ">
                                             <ul class="sub-menu">
-                                                <li class="menu-item menu-item-has-children" data-size="15"><a class="sf-with-ul-pre">Undergraduate</a>
+                                                <li class="menu-item menu-item-has-children" data-size="15"><a class="sf-with-ul-pre">BTS</a>
                                                     <ul class="sub-menu">
                                                         <li class="menu-item"><a href="bachelor-of-science-in-business-administration.html">Business Administration</a></li>
                                                         <li class="menu-item"><a href="school-of-law.html">School Of Law</a></li>
@@ -426,7 +305,7 @@
                                                         <li class="menu-item"><a href="art-science.html">Art &#038; Science</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="menu-item menu-item-has-children" data-size="15"><a href="#" class="sf-with-ul-pre">Graduate Program</a>
+                                                <li class="menu-item menu-item-has-children" data-size="15"><a href="#" class="sf-with-ul-pre">HND</a>
                                                     <ul class="sub-menu">
                                                         <li class="menu-item"><a href="hospitality-management.html">Hospitality Management</a></li>
                                                         <li class="menu-item"><a href="physics.html">Physics</a></li>
@@ -435,7 +314,16 @@
                                                         <li class="menu-item"><a href="#">Computer Science</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="menu-item menu-item-has-children" data-size="15"><a href="#" class="sf-with-ul-pre">Resources</a>
+                                                 <li class="menu-item menu-item-has-children" data-size="15"><a href="#" class="sf-with-ul-pre">License</a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="hospitality-management.html">Hospitality Management</a></li>
+                                                        <li class="menu-item"><a href="physics.html">Physics</a></li>
+                                                        <li class="menu-item"><a href="#">Chemistry</a></li>
+                                                        <li class="menu-item"><a href="#">Music</a></li>
+                                                        <li class="menu-item"><a href="#">Computer Science</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="menu-item menu-item-has-children" data-size="15"><a href="#" class="sf-with-ul-pre">Master</a>
                                                     <ul class="sub-menu">
                                                         <li class="menu-item"><a href="bachelor-of-science-in-business-administration.html">Department Page</a></li>
                                                         <li class="menu-item"><a href="finance.html">Major Page</a></li>
@@ -444,9 +332,14 @@
                                                         <li class="menu-item"><a href="introduction-to-financial-accounting.html">Single Course</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="menu-item" data-size="15">
-                                                    <div class="kingster-mega-menu-section-content"><img src="upload/mega-menu-logo.png" id="img_fd84_0" alt="" /> <span id="span_fd84_0">Academic offerings include 95 majors, 86 minors, and more than 100 in-major specializations</span></div>
-                                                </li>
+                                                <!-- <li class="menu-item" data-size="15">
+                                                    <div class="kingster-mega-menu-section-content">
+                                                        <img src="upload/mega-menu-logo.png" id="img_fd84_0" alt="" />
+                                                        <span id="span_fd84_0">
+                                                            L'IUTESSA propose des formations en BTS, HND, Licence et Master dans de nombreuses spécialités.
+                                                        </span>
+                                                    </div>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </li>
@@ -454,17 +347,17 @@
                                         <ul class="sub-menu">
                                             <li class="menu-item" data-size="60"><a href="apply-to-kingster.html">Apply To Kingster</a></li>
                                             <li class="menu-item" data-size="60"><a href="campus-tour.html">Campus Tour</a></li>
-                                            <li class="menu-item" data-size="60"><a href="scholarships.html">Scholarships</a></li>
+                                            <!-- <li class="menu-item" data-size="60"><a href="scholarships.html">Scholarships</a></li>
                                             <li class="menu-item" data-size="60"><a href="athletics.html">Athletics</a></li>
                                             <li class="menu-item" data-size="60"><a href="give-to-kingster.html">Give To Kingster</a></li>
-                                            <li class="menu-item" data-size="60"><a href="alumni.html">Alumni</a></li>
+                                            <li class="menu-item" data-size="60"><a href="alumni.html">Alumni</a></li> -->
                                             <li class="menu-item" data-size="60"><a href="event-calendar.html">Event Calendar</a></li>
                                         </ul>
                                     </li>
                                     <li class="menu-item menu-item-has-children kingster-normal-menu"><a href="#" class="sf-with-ul-pre">Courses</a>
                                         <ul class="sub-menu">
                                             <li class="menu-item" data-size="60"><a href="course-list-1.html">Course List 1</a></li>
-                                            <li class="menu-item" data-size="60"><a href="course-list-2.html">Course List 2</a></li>
+                                            <!-- <li class="menu-item" data-size="60"><a href="course-list-2.html">Course List 2</a></li> -->
                                         </ul>
                                     </li>
                                     <li class="menu-item kingster-normal-menu"><a href="athletics.html">Athletics</a></li>
@@ -504,17 +397,57 @@
                                         <div id="rev_slider_1_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-source="gallery" style="margin:0px auto;background:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
                                             <div id="rev_slider_1_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.8">
                                                 <ul>
-                                                    <li data-index="rs-3" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="upload/slider-1-2-100x50.jpg" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description=""> <img src="upload/slider-1-2.jpg" alt="" title="slider-1-2" width="1800" height="1119" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-                                                        <div class="tp-caption   tp-resizeme" id="slide-3-layer-1" data-x="38" data-y="center" data-voffset="-146" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 5; white-space: nowrap; font-size: 33px; line-height: 33px; font-weight: 300; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">The Best University Of The State</div>
-                                                        <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-3-layer-4" data-x="33" data-y="center" data-voffset="-44" data-width="['830']" data-height="['118']" data-type="shape" data-responsive_offset="on" data-frames='[{"delay":330,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6;background-color:rgba(24,36,59,0.9);border-radius:3px 3px 3px 3px;"></div>
-                                                        <div class="tp-caption   tp-resizeme" id="slide-3-layer-2" data-x="55" data-y="center" data-voffset="-52" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":360,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 7; white-space: nowrap; font-size: 88px; line-height: 88px; font-weight: 700; color: #ffffff; letter-spacing: 0px;font-family:Playfair Display;">Kingster</div>
-                                                        <div class="tp-caption   tp-resizeme" id="slide-3-layer-3" data-x="423" data-y="center" data-voffset="-51" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":360,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 8; white-space: nowrap; font-size: 88px; line-height: 88px; font-weight: 400; color: #ffffff; letter-spacing: 0px;font-family:Playfair Display;">University</div>
-                                                        <div class="tp-caption rev-btn rev-hiddenicon " id="slide-3-layer-6" data-x="34" data-y="center" data-voffset="80" data-width="['auto']" data-height="['auto']" data-type="button" data-responsive_offset="on" data-frames='[{"delay":660,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(1,61,135);bg:rgba(255,255,255,1);bw:0 0 0 5px;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[19,19,19,19]" data-paddingright="[21,21,21,21]" data-paddingbottom="[19,19,19,19]" data-paddingleft="[21,21,21,21]" style="z-index: 9; white-space: nowrap; font-size: 17px; line-height: 16px; font-weight: 600; color: #2d2d2d; letter-spacing: 0px;font-family:Poppins;background-color:rgb(255,255,255);border-color:rgb(61,177,102);border-style:solid;border-width:0px 0px 0px 5px;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">Take A Tour</div>
+                                                    <!-- Slide 1 -->
+                                                    <li data-index="rs-3" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="upload/slider-1-2-100x50.jpg" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                                                        <img src="upload/slider-1-2.jpg" alt="" title="slider-1-2" width="1800" height="1119" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                                                        
+                                                        <!-- Top caption -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-3-layer-1" data-x="38" data-y="center" data-voffset="-146" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 5; white-space: nowrap; font-size: 28px; line-height: 32px; font-weight: 300; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            La Meilleure Université de la Région
+                                                        </div>
+                                                        
+                                                        <!-- Background shape -->
+                                                        <div class="tp-caption tp-shape tp-shapewrapper tp-resizeme" id="slide-3-layer-4" data-x="33" data-y="center" data-voffset="-44" data-width="['750']" data-height="['118']" data-type="shape" data-responsive_offset="on" data-frames='[{"delay":330,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6;background-color:rgba(24,36,59,0.9);border-radius:3px 3px 3px 3px;"></div>
+                                                        
+                                                        <!-- Main title - IUTESSA -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-3-layer-2" data-x="55" data-y="center" data-voffset="-52" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":360,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 7; white-space: nowrap; font-size: 82px; line-height: 88px; font-weight: 700; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            IUTESSA
+                                                        </div>
+                                                        
+                                                        <!-- Subtitle - Mokolo -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-3-layer-3" data-x="400" data-y="center" data-voffset="-51" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":360,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 8; white-space: nowrap; font-size: 82px; line-height: 88px; font-weight: 400; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            Mokolo
+                                                        </div>
+                                                        
+                                                        <!-- Button -->
+                                                        <div class="tp-caption rev-btn rev-hiddenicon" id="slide-3-layer-6" data-x="34" data-y="center" data-voffset="80" data-width="['auto']" data-height="['auto']" data-type="button" data-responsive_offset="on" data-frames='[{"delay":660,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(1,61,135);bg:rgba(255,255,255,1);bw:0 0 0 5px;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[19,19,19,19]" data-paddingright="[28,28,28,28]" data-paddingbottom="[19,19,19,19]" data-paddingleft="[28,28,28,28]" style="z-index: 9; white-space: nowrap; font-size: 16px; line-height: 16px; font-weight: 600; color: #2d2d2d; letter-spacing: 0px;font-family:Poppins;background-color:rgb(255,255,255);border-color:rgb(61,177,102);border-style:solid;border-width:0px 0px 0px 5px;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+                                                            Découvrir l'IUTESSA
+                                                        </div>
                                                     </li>
-                                                    <li data-index="rs-1" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="upload/slider-2-100x50.jpg" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description=""> <img src="upload/slider-2.jpg" alt="" title="slider-2" width="1800" height="1119" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-                                                        <div class="tp-caption   tp-resizeme" id="slide-1-layer-1" data-x="36" data-y="center" data-voffset="-120" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 5; white-space: nowrap; font-size: 33px; line-height: 33px; font-weight: 300; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">Kingsters has more than</div>
-                                                        <div class="tp-caption   tp-resizeme" id="slide-1-layer-2" data-x="33" data-y="center" data-voffset="-31" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":370,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6; white-space: nowrap; font-size: 83px; line-height: 83px; font-weight: 600; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">180 Majors & Minors</div>
-                                                        <div class="tp-caption rev-btn rev-hiddenicon " id="slide-1-layer-6" data-x="34" data-y="center" data-voffset="80" data-width="['auto']" data-height="['auto']" data-type="button" data-responsive_offset="on" data-frames='[{"delay":740,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(0,64,132);bg:rgba(255,255,255,1);bw:0 0 0 5px;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[19,19,19,19]" data-paddingright="[21,21,21,21]" data-paddingbottom="[19,19,19,19]" data-paddingleft="[21,21,21,21]" style="z-index: 7; white-space: nowrap; font-size: 17px; line-height: 16px; font-weight: 600; color: #2d2d2d; letter-spacing: 0px;font-family:Poppins;background-color:rgb(255,255,255);border-color:rgb(61,177,102);border-style:solid;border-width:0px 0px 0px 5px;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">Take A Tour</div>
+                                                    
+                                                    <!-- Slide 2 -->
+                                                    <li data-index="rs-1" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="upload/slider-2-100x50.jpg" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                                                        <img src="upload/slider-2.jpg" alt="" title="slider-2" width="1800" height="1119" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                                                        
+                                                        <!-- Top caption -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-1-layer-1" data-x="36" data-y="center" data-voffset="-120" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 5; white-space: nowrap; font-size: 28px; line-height: 32px; font-weight: 300; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            L'IUTESSA propose plus de
+                                                        </div>
+                                                        
+                                                        <!-- Main title - Programs (split into two lines for better readability) -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-1-layer-2" data-x="33" data-y="center" data-voffset="-48" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":370,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6; white-space: nowrap; font-size: 68px; line-height: 72px; font-weight: 700; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            20 Filières
+                                                        </div>
+                                                        
+                                                        <!-- Subtitle - Degrees -->
+                                                        <div class="tp-caption tp-resizeme" id="slide-1-layer-3" data-x="33" data-y="center" data-voffset="28" data-width="['auto']" data-height="['auto']" data-type="text" data-responsive_offset="on" data-frames='[{"delay":370,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6; white-space: nowrap; font-size: 36px; line-height: 40px; font-weight: 400; color: #ffffff; letter-spacing: 0px;font-family:Poppins;">
+                                                            BTS, HND, Licence & Master
+                                                        </div>
+                                                        
+                                                        <!-- Button -->
+                                                        <div class="tp-caption rev-btn rev-hiddenicon" id="slide-1-layer-6" data-x="34" data-y="center" data-voffset="110" data-width="['auto']" data-height="['auto']" data-type="button" data-responsive_offset="on" data-frames='[{"delay":740,"speed":300,"frame":"0","from":"x:-50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(0,64,132);bg:rgba(255,255,255,1);bw:0 0 0 5px;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[19,19,19,19]" data-paddingright="[28,28,28,28]" data-paddingbottom="[19,19,19,19]" data-paddingleft="[28,28,28,28]" style="z-index: 7; white-space: nowrap; font-size: 16px; line-height: 16px; font-weight: 600; color: #2d2d2d; letter-spacing: 0px;font-family:Poppins;background-color:rgb(255,255,255);border-color:rgb(61,177,102);border-style:solid;border-width:0px 0px 0px 5px;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+                                                            Voir les formations
+                                                        </div>
                                                     </li>
                                                 </ul>
                                                 <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
@@ -539,8 +472,8 @@
                                                         <div class="gdlr-core-column-service-media gdlr-core-media-image"><img src="upload/icon-1.png" alt="" width="40" height="40" title="icon-1" /></div>
                                                         <div class="gdlr-core-column-service-content-wrapper">
                                                             <div class="gdlr-core-column-service-title-wrap">
-                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_0">University Life</h3>
-                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_3">Overall in here</div>
+                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_0">Vie Universitaire</h3>
+                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_3">L'ensemble ici</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -556,8 +489,8 @@
                                                         <div class="gdlr-core-column-service-media gdlr-core-media-image"><img src="upload/icon-2.png" alt="" width="44" height="40" title="icon-2" /></div>
                                                         <div class="gdlr-core-column-service-content-wrapper">
                                                             <div class="gdlr-core-column-service-title-wrap">
-                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_1">Graduation</h3>
-                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_6">Getting Diploma</div>
+                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_1">Diplômation</h3>
+                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_6">Obtention du Diplôme</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -573,8 +506,8 @@
                                                         <div class="gdlr-core-column-service-media gdlr-core-media-image"><img src="upload/icon-3.png" alt="" width="44" height="39" title="icon-3" /></div>
                                                         <div class="gdlr-core-column-service-content-wrapper">
                                                             <div class="gdlr-core-column-service-title-wrap">
-                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_2">Athletics</h3>
-                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_9">Sport Clubs</div>
+                                                                <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_2">Sports</h3>
+                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_9">Clubs Sportifs</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -591,7 +524,7 @@
                                                         <div class="gdlr-core-column-service-content-wrapper">
                                                             <div class="gdlr-core-column-service-title-wrap">
                                                                 <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_3">Social</h3>
-                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_12">Overall in here</div>
+                                                                <div class="gdlr-core-column-service-caption gdlr-core-info-font gdlr-core-skin-caption" id="div_1dd7_12">Vie Sociale</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -661,7 +594,7 @@
                                             <div class="gdlr-core-pbf-element">
                                                 <div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-left-align gdlr-core-title-item-caption-bottom gdlr-core-item-pdlr" id="div_1dd7_25">
                                                     <div class="gdlr-core-title-item-title-wrap clearfix">
-                                                        <h3 class="gdlr-core-title-item-title gdlr-core-skin-title " id="h3_1dd7_5">About Our University</h3></div>
+                                                        <h3 class="gdlr-core-title-item-title gdlr-core-skin-title " id="h3_1dd7_5">À Propos de Notre Université</h3></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -673,14 +606,14 @@
                                             <div class="gdlr-core-pbf-element">
                                                 <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align" id="div_1dd7_26">
                                                     <div class="gdlr-core-text-box-item-content" id="div_1dd7_27">
-                                                        <p>We are one of the largest, most diverse universities in the USA with over 90,000 students in USA, and a further 30,000 studying across 180 countries for Kingster University.</p>
+                                                        <p>Nous sommes l'un des instituts les plus diversifiés avec des programmes adaptés aux réalités du Sahel. IUTESSA forme les leaders de demain.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="gdlr-core-pbf-element">
                                                 <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align" id="div_1dd7_28">
                                                     <div class="gdlr-core-text-box-item-content" id="div_1dd7_29">
-                                                        <p>Kingster University was established by John Smith in 1920 for the public benefit and it is recognized globally. Throughout our great history, Kingster has offered access to a wide range of academic opportunities. As a world leader in higher education, the University has pioneered change in the sector.</p>
+                                                        <p>L'Institut Universitaire de Technologies et des Sciences du Sahel (IUTESSA) a été créé pour répondre aux besoins en formation supérieure de la région. Notre histoire est marquée par l'excellence académique et l'innovation.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -705,9 +638,9 @@
                                                     <div class="gdlr-core-column-service-media gdlr-core-media-image" id="div_1dd7_33"><img src="upload/col-icon-1.png" alt="" width="41" height="41" title="col-icon-1" /></div>
                                                     <div class="gdlr-core-column-service-content-wrapper">
                                                         <div class="gdlr-core-column-service-title-wrap">
-                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_6">Education Services</h3></div>
+                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_6">Services Éducatifs</h3></div>
                                                         <div class="gdlr-core-column-service-content" id="div_1dd7_34">
-                                                            <p>Kingster University was established by John Smith in 1920 for the public benefit and it is recognized.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_1">Learn More</a></div>
+                                                            <p>IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_1">Learn More</a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -722,9 +655,9 @@
                                                     <div class="gdlr-core-column-service-media gdlr-core-media-image" id="div_1dd7_36"><img src="upload/col-icon-2.png" alt="" width="43" height="45" title="col-icon-2" /></div>
                                                     <div class="gdlr-core-column-service-content-wrapper">
                                                         <div class="gdlr-core-column-service-title-wrap">
-                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_7">International Hubs</h3></div>
+                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_7">Hubs Internationaux</h3></div>
                                                         <div class="gdlr-core-column-service-content" id="div_1dd7_37">
-                                                            <p>Kingster University was established by John Smith in 1920 for the public benefit and it is recognized.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_2">Learn More</a></div>
+                                                            <p>IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_2">Learn More</a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -739,9 +672,9 @@
                                                     <div class="gdlr-core-column-service-media gdlr-core-media-image" id="div_1dd7_39"><img src="upload/col-icon-3.png" alt="" width="40" height="43" title="col-icon-3" /></div>
                                                     <div class="gdlr-core-column-service-content-wrapper">
                                                         <div class="gdlr-core-column-service-title-wrap">
-                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_8">Bachelor’s and Master’s</h3></div>
+                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_8">Licence & Master</h3></div>
                                                         <div class="gdlr-core-column-service-content" id="div_1dd7_40">
-                                                            <p>Kingster University was established by John Smith in 1920 for the public benefit and it is recognized.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_3">Learn More</a></div>
+                                                            <p>IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_3">Learn More</a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -756,9 +689,9 @@
                                                     <div class="gdlr-core-column-service-media gdlr-core-media-image" id="div_1dd7_42"><img src="upload/col-icon-4.png" alt="" width="47" height="47" title="col-icon-4" /></div>
                                                     <div class="gdlr-core-column-service-content-wrapper">
                                                         <div class="gdlr-core-column-service-title-wrap">
-                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_9">University Life</h3></div>
+                                                            <h3 class="gdlr-core-column-service-title gdlr-core-skin-title" id="h3_1dd7_9">Vie Universitaire</h3></div>
                                                         <div class="gdlr-core-column-service-content" id="div_1dd7_43">
-                                                            <p>Kingster University was established by John Smith in 1920 for the public benefit and it is recognized.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_4">Learn More</a></div>
+                                                            <p>IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p> <a class="gdlr-core-column-service-read-more gdlr-core-info-font" href="#" id="a_1dd7_4">Learn More</a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1540,18 +1473,12 @@
                     <div class="kingster-footer-container kingster-container clearfix">
                         <div class="kingster-footer-column kingster-item-pdlr kingster-column-15">
                             <div id="text-2" class="widget widget_text kingster-widget">
-                                <div class="textwidget">
-                                    <p><img src="upload/footer-logo.png" alt="" />
-                                        <br /> <span class="gdlr-core-space-shortcode" id="span_1dd7_10"></span>
-                                        <br /> Box 35300
-                                        <br /> 1810 Campus Way NE
-                                        <br /> Bothell, WA 98011-8246</p>
-                                    <p><span id="span_1dd7_11">+1-2534-4456-345</span>
-                                        <br /> <span class="gdlr-core-space-shortcode" id="span_1dd7_12"></span>
-                                        <br /> <a id="a_1dd7_8" href="mailto:admin@kingsteruni.edu">admin@kingsteruni.edu</a></p>
-                                    <div class="gdlr-core-divider-item gdlr-core-divider-item-normal gdlr-core-left-align">
-                                        <div class="gdlr-core-divider-line gdlr-core-skin-divider" id="div_1dd7_111"></div>
-                                    </div>
+                               <div class="textwidget">
+                                    <p><img src="{% static 'images/footer-logo.png' %}" alt="" />
+                                    <br /> BP 35300
+                                    <br /> Yaoundé, Cameroun</p>
+                                    <p><span>+237 677 55 44 33</span>
+                                    <br /> <a href="mailto:contact@iutessa.cm">contact@iutessa.cm</a></p>
                                 </div>
                             </div>
                         </div>
@@ -1560,12 +1487,11 @@
                                 <h3 class="kingster-widget-title">Our Campus</h3><span class="clear"></span>
                                 <div class="menu-our-campus-container">
                                     <ul id="menu-our-campus" class="gdlr-core-custom-menu-widget gdlr-core-menu-style-plain">
-                                        <li class="menu-item"><a href="#">Acedemic</a></li>
-                                        <li class="menu-item"><a href="#">Planning &#038; Administration</a></li>
-                                        <li class="menu-item"><a href="#">Campus Safety</a></li>
-                                        <li class="menu-item"><a href="#">Office of the Chancellor</a></li>
-                                        <li class="menu-item"><a href="#">Facility Services</a></li>
-                                        <li class="menu-item"><a href="#">Human Resources</a></li>
+                                         <li><a href="#">Académique</a></li>
+                                        <li><a href="#">Planification & Administration</a></li>
+                                        <li><a href="#">Sécurité du Campus</a></li>
+                                        <li><a href="#">Services aux Installations</a></li>
+                                        <li><a href="#">Ressources Humaines</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1575,12 +1501,12 @@
                                 <h3 class="kingster-widget-title">Campus Life</h3><span class="clear"></span>
                                 <div class="menu-campus-life-container">
                                     <ul id="menu-campus-life" class="gdlr-core-custom-menu-widget gdlr-core-menu-style-plain">
-                                        <li class="menu-item"><a href="#">Accessibility</a></li>
-                                        <li class="menu-item"><a href="#">Financial Aid</a></li>
-                                        <li class="menu-item"><a href="#">Food Services</a></li>
-                                        <li class="menu-item"><a href="#">Housing</a></li>
-                                        <li class="menu-item"><a href="#">Information Technologies</a></li>
-                                        <li class="menu-item"><a href="#">Student Life</a></li>
+                                         <li><a href="#">Accessibilité</a></li>
+                                        <li><a href="#">Aide Financière</a></li>
+                                        <li><a href="#">Services de Restauration</a></li>
+                                        <li><a href="#">Logement</a></li>
+                                        <li><a href="#">Technologies de l'Information</a></li>
+                                        <li><a href="#">Vie Étudiante</a></li>
                                     </ul>
                                 </div>
                             </div>
