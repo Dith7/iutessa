@@ -124,7 +124,7 @@ dmypy.json
 
 # Django specific
 media/
-# static_root/
+static_root/
 settings_local.py
 settings_prod.py
 
@@ -159,8 +159,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Tailwind CSS
-# theme/static/
-# theme/static_src/node_modules/
+theme/static/
+theme/static_src/node_modules/
 
 # Backup files
 *.backup
