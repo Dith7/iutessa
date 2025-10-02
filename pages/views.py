@@ -11,13 +11,13 @@ def home_view(request):
     })
 
 def about_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/home/about-us.html', {
         'title': 'À Propos d\'IUTESSA',
         'page_type': 'about'
     })
 
 def contact_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/home/home.html', {
         'title': 'Contact - IUTESSA',
         'page_type': 'contact'
     })
