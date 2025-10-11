@@ -49,50 +49,89 @@
     .video-lightbox.active {
         display: flex;
     }
-</style>
-
-<style>
-  .hero-slide-bg {
-    background-image: url("{% static 'images/slider-1-2.jpg' %}");
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .hero-slide-2-bg {
-    background-image: url("{% static 'images/slider-2.jpg' %}");
-  }
-  
-  .apply-bg {
-    background-image: url("{% static 'images/apply-bg.jpg' %}");
-  }
-  
-  .video-bg {
-    background-image: url("{% static 'images/video-bg.jpg' %}");
-  }
+    
+    /* Background Images in CSS */
+    .hero-slide-1-bg {
+        background-image: url("{% static 'images/slider-1-2.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .hero-slide-2-bg {
+        background-image: url("{% static 'images/slider-2.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .apply-bg {
+        background-image: url("{% static 'images/apply-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .video-bg {
+        background-image: url("{% static 'images/video-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        .section-padding {
+            padding: 80px 0;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .section-padding {
+            padding: 60px 0;
+        }
+        
+        .hero-title {
+            font-size: 48px !important;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .section-padding {
+            padding: 40px 0;
+        }
+        
+        .hero-title {
+            font-size: 36px !important;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px !important;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 
 <!-- Hero Slider -->
-<section class="relative bg-[#192f59] h-[600px] overflow-hidden">
+<section class="relative bg-[#192f59] h-[500px] md:h-[600px] overflow-hidden">
     <!-- Slide 1 -->
-    
-<div class="hero-slide active absolute inset-0 bg-cover bg-center hero-slide-bg">
+    <div class="hero-slide hero-slide-1-bg active absolute inset-0">
         <div class="absolute inset-0 bg-[#192f59]/40"></div>
         <div class="relative h-full flex items-center">
-            <div class="max-w-[1140px] mx-auto px-4 w-full">
+            <div class="max-w-[1140px] mx-auto px-4 md:px-6 w-full">
                 <div class="max-w-[800px]">
-                    <p class="animate-fade-in text-white text-[28px] font-light mb-8">
+                    <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
                         La Meilleure Université de la Région
                     </p>
-                    <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-10 py-8 rounded mb-10">
-                        <h1 class="text-white text-[82px] font-bold leading-tight m-0">
+                    <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
+                        <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
                             IUTESSA <span class="font-normal">Mokolo</span>
                         </h1>
                     </div>
                     <div class="animate-fade-in-up-delay">
-                        <a href="{% url 'pages:about-us' %}" class="inline-block bg-white text-gray-800 px-7 py-5 text-base font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                        <a href="{% url 'pages:about-us' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
                             Découvrir l'IUTESSA
                         </a>
                     </div>
@@ -102,22 +141,22 @@
     </div>
     
     <!-- Slide 2 -->
-    <div class="hero-slide hero-slide-2-bg absolute inset-0 bg-cover bg-center">
+    <div class="hero-slide hero-slide-2-bg absolute inset-0">
         <div class="absolute inset-0 bg-[#192f59]/40"></div>
         <div class="relative h-full flex items-center">
-            <div class="max-w-[1140px] mx-auto px-4 w-full">
-                <div class="max-w-[800px]">
-                    <p class="animate-fade-in text-white text-[28px] font-light mb-5">
+            <div class="max-w-[1140px] mx-auto px-6 md:px-8 lg:px-12 w-full">
+                <div class="max-w-[800px] pl-4 md:pl-0">
+                    <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-3 md:mb-4 leading-relaxed hero-subtitle">
                         IUTESSA propose plus de
                     </p>
-                    <h1 class="animate-fade-in-up text-white text-[82px] font-bold leading-tight m-0 mb-5">
+                    <h1 class="animate-fade-in-up text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 mb-4 md:mb-6 hero-title">
                         20+ Filières
                     </h1>
-                    <p class="animate-fade-in-up text-white text-4xl font-normal mb-10">
+                    <p class="animate-fade-in-up text-white text-[24px] md:text-[28px] lg:text-[32px] font-normal mb-8 md:mb-12 leading-relaxed">
                         BTS, HND, Licence & Master
                     </p>
                     <div class="animate-fade-in-up-delay">
-                        <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-7 py-5 text-base font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                        <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
                             Voir les Formations
                         </a>
                     </div>
@@ -129,48 +168,50 @@
 
 <!-- Services Bar -->
 <section class="bg-white shadow-md">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        <div class="flex items-center gap-4 px-9 py-10 border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300">
-            <img src="{% static 'images/icon-1.png' %}" alt="" class="w-10 h-10">
-            <div>
-                <h3 class="text-base font-semibold text-[#192f59] mb-1">Vie Universitaire</h3>
-                <p class="text-[13px] text-gray-600 m-0">L'ensemble ici</p>
+    <div class="max-w-[1140px] mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 sm:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
+                <img src="{% static 'images/icon-1.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                <div>
+                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Vie Universitaire</h3>
+                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">L'ensemble ici</p>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center gap-4 px-9 py-10 border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300">
-            <img src="{% static 'images/icon-2.png' %}" alt="" class="w-11 h-10">
-            <div>
-                <h3 class="text-base font-semibold text-[#192f59] mb-1">Diplômation</h3>
-                <p class="text-[13px] text-gray-600 m-0">Obtention du Diplôme</p>
+            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 lg:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
+                <img src="{% static 'images/icon-2.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                <div>
+                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Diplômation</h3>
+                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Obtention du Diplôme</p>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center gap-4 px-9 py-10 border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300">
-            <img src="{% static 'images/icon-3.png' %}" alt="" class="w-11 h-10">
-            <div>
-                <h3 class="text-base font-semibold text-[#192f59] mb-1">Sports</h3>
-                <p class="text-[13px] text-gray-600 m-0">Clubs Sportifs</p>
+            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 sm:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
+                <img src="{% static 'images/icon-3.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                <div>
+                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Sports</h3>
+                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Clubs Sportifs</p>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center gap-4 px-9 py-10 hover:-translate-y-1 transition-transform duration-300">
-            <img src="{% static 'images/icon-4.png' %}" alt="" class="w-10 h-10">
-            <div>
-                <h3 class="text-base font-semibold text-[#192f59] mb-1">Social</h3>
-                <p class="text-[13px] text-gray-600 m-0">Vie Sociale</p>
+            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
+                <img src="{% static 'images/icon-4.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                <div>
+                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Social</h3>
+                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Vie Sociale</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Apply for Admission -->
-<section class="py-24">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
-            <div class="apply-bg bg-cover bg-center min-h-[500px]"></div>
-            <div class="bg-[#192f59] text-white p-20 flex flex-col justify-center">
-                <h2 class="text-4xl font-semibold mb-5">Postuler aux Admissions</h2>
-                <p class="text-[#a8b5c7] text-sm mb-6">Les candidatures pour l'année 2025 sont maintenant ouvertes</p>
-                <p class="leading-relaxed mb-9">Nous ne nous contentons pas de donner aux étudiants une éducation et des expériences qui les préparent au succès dans une carrière. Nous les aidons à réussir dans leur carrière.</p>
-                <a href="{% url 'pages:apply' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-4 text-base font-semibold no-underline rounded transition-colors">
+<section class="py-16 md:py-24 lg:py-28">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 shadow-xl">
+            <div class="apply-bg min-h-[300px] md:min-h-[400px] lg:min-h-[500px]"></div>
+            <div class="bg-[#192f59] text-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                <h2 class="text-[28px] md:text-[34px] lg:text-[38px] font-semibold mb-4 md:mb-6 leading-tight">Postuler aux Admissions</h2>
+                <p class="text-[#a8b5c7] text-[13px] md:text-[14px] mb-6 md:mb-8 leading-relaxed">Les candidatures pour l'année 2025 sont maintenant ouvertes</p>
+                <p class="leading-[1.8] mb-8 md:mb-10 text-[14px] md:text-[15px]">Nous ne nous contentons pas de donner aux étudiants une éducation et des expériences qui les préparent au succès dans une carrière. Nous les aidons à réussir dans leur carrière.</p>
+                <a href="{% url 'pages:apply' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 md:px-10 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline rounded transition-colors self-start">
                     Postuler Maintenant
                 </a>
             </div>
@@ -179,21 +220,21 @@
 </section>
 
 <!-- About Section -->
-<section class="bg-[#192f59] text-white py-24">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-20 items-start">
+<section class="bg-[#192f59] text-white py-16 md:py-24 lg:py-28">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 lg:gap-20 items-start">
             <div>
-                <img src="{% static 'images/logo-white.png' %}" alt="" class="h-9 mb-10">
-                <h2 class="text-4xl font-semibold m-0">À Propos de Notre Université</h2>
+                <img src="{% static 'images/logo-white.png' %}" alt="" class="h-8 md:h-10 mb-8 md:mb-12">
+                <h2 class="text-[28px] md:text-[34px] lg:text-[38px] font-semibold leading-tight m-0">À Propos de Notre Université</h2>
             </div>
             <div class="md:col-span-2">
-                <p class="text-base leading-relaxed mb-6">
+                <p class="text-[15px] md:text-[16px] lg:text-[17px] leading-[1.8] mb-6 md:mb-8">
                     Nous sommes l'un des instituts les plus diversifiés avec des programmes adaptés aux réalités du Sahel. IUTESSA forme les leaders de demain.
                 </p>
-                <p class="text-[15px] leading-relaxed mb-8">
+                <p class="text-[14px] md:text-[15px] leading-[1.8] mb-8 md:mb-10 text-[#b8c5d6]">
                     L'Institut Universitaire de Technologies et des Sciences du Sahel (IUTESSA) a été créé pour répondre aux besoins en formation supérieure de la région. Notre histoire est marquée par l'excellence académique et l'innovation.
                 </p>
-                <a href="{% url 'pages:about-us' %}" class="inline-flex items-center gap-3 text-white text-[15px] font-semibold no-underline hover:text-[#3db166] transition-colors">
+                <a href="{% url 'pages:about-us' %}" class="inline-flex items-center gap-3 text-white text-[14px] md:text-[15px] font-semibold no-underline hover:text-[#3db166] transition-colors">
                     En Savoir Plus <i class="fas fa-long-arrow-right"></i>
                 </a>
             </div>
@@ -202,81 +243,81 @@
 </section>
 
 <!-- Services Grid -->
-<section class="py-24 bg-white">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+<section class="py-16 md:py-24 lg:py-28 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 lg:gap-14">
             <div class="text-center">
-                <img src="{% static 'images/col-icon-1.png' %}" alt="" class="w-10 h-10 mx-auto mb-8">
-                <h3 class="text-xl font-semibold text-[#192f59] mb-5">Services Éducatifs</h3>
-                <p class="text-gray-600 leading-relaxed mb-4">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-sm font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <img src="{% static 'images/col-icon-1.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Services Éducatifs</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
             </div>
             <div class="text-center">
-                <img src="{% static 'images/col-icon-2.png' %}" alt="" class="w-11 h-11 mx-auto mb-8">
-                <h3 class="text-xl font-semibold text-[#192f59] mb-5">Hubs Internationaux</h3>
-                <p class="text-gray-600 leading-relaxed mb-4">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-sm font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <img src="{% static 'images/col-icon-2.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Hubs Internationaux</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
             </div>
             <div class="text-center">
-                <img src="{% static 'images/col-icon-3.png' %}" alt="" class="w-10 h-11 mx-auto mb-8">
-                <h3 class="text-xl font-semibold text-[#192f59] mb-5">Licence & Master</h3>
-                <p class="text-gray-600 leading-relaxed mb-4">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-sm font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <img src="{% static 'images/col-icon-3.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Licence & Master</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
             </div>
             <div class="text-center">
-                <img src="{% static 'images/col-icon-4.png' %}" alt="" class="w-12 h-12 mx-auto mb-8">
-                <h3 class="text-xl font-semibold text-[#192f59] mb-5">Vie Universitaire</h3>
-                <p class="text-gray-600 leading-relaxed mb-4">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-sm font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <img src="{% static 'images/col-icon-4.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Vie Universitaire</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- News & Quick Links -->
-<section class="py-24 bg-[#f5f5f5]">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+<section class="py-16 md:py-24 lg:py-28 bg-[#f5f5f5]">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-16">
             <!-- News -->
             <div class="lg:col-span-2">
-                <div class="flex justify-between items-center mb-12">
-                    <h2 class="text-3xl font-semibold text-[#192f59] m-0">Actualités & Mises à Jour</h2>
-                    <a href="{% url 'pages:blog' %}" class="text-[#3db166] font-medium no-underline hover:text-[#35a05c] transition-colors">Toutes les Actualités</a>
+                <div class="flex justify-between items-center mb-10 md:mb-14">
+                    <h2 class="text-[24px] md:text-[28px] lg:text-[32px] font-semibold text-[#192f59] m-0 leading-tight">Actualités & Mises à Jour</h2>
+                    <a href="{% url 'pages:blog' %}" class="text-[#3db166] font-medium no-underline hover:text-[#35a05c] transition-colors text-[14px] md:text-[15px]">Toutes les Actualités</a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300">
                         <div class="overflow-hidden">
-                            <img src="{% static 'images/news-1.jpg' %}" alt="" class="w-full h-60 object-cover hover:scale-105 transition-transform duration-400">
+                            <img src="{% static 'images/news-1.jpg' %}" alt="" class="w-full h-48 md:h-64 object-cover hover:scale-105 transition-transform duration-500">
                         </div>
-                        <div class="p-6">
-                            <div class="flex gap-4 text-[13px] text-gray-400 mb-4">
+                        <div class="p-6 md:p-8">
+                            <div class="flex gap-4 md:gap-5 text-[12px] md:text-[13px] text-gray-400 mb-4 md:mb-5">
                                 <span>6 Juin, 2024</span>
                                 <span>Admission</span>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-800 leading-snug m-0 hover:text-[#3db166] transition-colors">
+                            <h3 class="text-[16px] md:text-[18px] font-semibold text-gray-800 leading-snug m-0 hover:text-[#3db166] transition-colors">
                                 <a href="#" class="no-underline text-inherit">Le Professeur Albert participe à une recherche conjointe</a>
                             </h3>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-5">
-                        <div class="flex gap-5 bg-white p-5 rounded-lg shadow-sm hover:shadow-lg transition-shadow">
-                            <div class="overflow-hidden rounded">
-                                <img src="{% static 'images/news-2.jpg' %}" alt="" class="w-36 h-36 object-cover flex-shrink-0 hover:scale-105 transition-transform duration-400">
+                    <div class="flex flex-col gap-5 md:gap-6">
+                        <div class="flex gap-4 md:gap-6 bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
+                            <div class="overflow-hidden rounded flex-shrink-0">
+                                <img src="{% static 'images/news-2.jpg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
                             </div>
-                            <div>
-                                <div class="text-xs text-gray-400 mb-2">6 Juin, 2024 • Actualités</div>
-                                <h4 class="text-[15px] font-semibold leading-relaxed m-0 hover:text-[#3db166] transition-colors">
+                            <div class="flex flex-col justify-center">
+                                <div class="text-[11px] md:text-[12px] text-gray-400 mb-2 md:mb-3">6 Juin, 2024 • Actualités</div>
+                                <h4 class="text-[14px] md:text-[16px] font-semibold leading-relaxed m-0 hover:text-[#3db166] transition-colors">
                                     <a href="#" class="text-gray-800 no-underline">Un MBA mondial pour la nouvelle génération</a>
                                 </h4>
                             </div>
                         </div>
-                        <div class="flex gap-5 bg-white p-5 rounded-lg shadow-sm hover:shadow-lg transition-shadow">
-                            <div class="overflow-hidden rounded">
-                                <img src="{% static 'images/news-3.jpg' %}" alt="" class="w-36 h-36 object-cover flex-shrink-0 hover:scale-105 transition-transform duration-400">
+                        <div class="flex gap-4 md:gap-6 bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
+                            <div class="overflow-hidden rounded flex-shrink-0">
+                                <img src="{% static 'images/news-3.jpg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
                             </div>
-                            <div>
-                                <div class="text-xs text-gray-400 mb-2">6 Juin, 2024 • Événement</div>
-                                <h4 class="text-[15px] font-semibold leading-relaxed m-0 hover:text-[#3db166] transition-colors">
+                            <div class="flex flex-col justify-center">
+                                <div class="text-[11px] md:text-[12px] text-gray-400 mb-2 md:mb-3">6 Juin, 2024 • Événement</div>
+                                <h4 class="text-[14px] md:text-[16px] font-semibold leading-relaxed m-0 hover:text-[#3db166] transition-colors">
                                     <a href="#" class="text-gray-800 no-underline">Commentaires sur les rappels volontaires</a>
                                 </h4>
                             </div>
@@ -286,18 +327,18 @@
             </div>
 
             <!-- Quick Links -->
-            <div class="bg-white p-10 rounded">
-                <div class="flex items-center gap-4 mb-8">
-                    <i class="fas fa-link text-[#3db166] text-xl"></i>
-                    <h3 class="text-[22px] font-semibold text-[#192f59] m-0">Liens Rapides</h3>
+            <div class="bg-white p-8 md:p-12 rounded shadow-sm">
+                <div class="flex items-center gap-3 md:gap-4 mb-8 md:mb-10">
+                    <i class="fas fa-link text-[#3db166] text-[18px] md:text-[22px]"></i>
+                    <h3 class="text-[20px] md:text-[24px] font-semibold text-[#192f59] m-0">Liens Rapides</h3>
                 </div>
                 <div>
-                    <a href="#" class="block text-gray-800 font-medium py-4 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors">Anciens Élèves</a>
-                    <a href="#" class="block text-gray-800 font-medium py-4 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors">Calendrier Sportif</a>
-                    <a href="{% url 'pages:events' %}" class="block text-gray-800 font-medium py-4 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors">Tous les Événements</a>
-                    <a href="#" class="block text-gray-800 font-medium py-4 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors">Partenariats</a>
-                    <a href="{% url 'pages:courses' %}" class="block text-gray-800 font-medium py-4 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors">Programmes Académiques</a>
-                    <a href="{% url 'pages:prices' %}" class="block text-gray-800 font-medium py-4 no-underline hover:text-[#3db166] transition-colors">Frais de Scolarité</a>
+                    <a href="#" class="block text-gray-800 font-medium py-4 md:py-5 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Anciens Élèves</a>
+                    <a href="#" class="block text-gray-800 font-medium py-4 md:py-5 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Calendrier Sportif</a>
+                    <a href="{% url 'pages:events' %}" class="block text-gray-800 font-medium py-4 md:py-5 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Tous les Événements</a>
+                    <a href="#" class="block text-gray-800 font-medium py-4 md:py-5 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Partenariats</a>
+                    <a href="{% url 'pages:courses' %}" class="block text-gray-800 font-medium py-4 md:py-5 border-b border-gray-200 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Programmes Académiques</a>
+                    <a href="{% url 'pages:prices' %}" class="block text-gray-800 font-medium py-4 md:py-5 no-underline hover:text-[#3db166] transition-colors text-[14px] md:text-[15px]">Frais de Scolarité</a>
                 </div>
             </div>
         </div>
@@ -305,97 +346,97 @@
 </section>
 
 <!-- Video Tour -->
-<section class="video-bg bg-cover bg-center py-36 relative">
+<section class="video-bg py-24 md:py-32 lg:py-40 relative">
     <div class="absolute inset-0 bg-[#192f59]/85"></div>
-    <div class="max-w-[1140px] mx-auto px-4 relative text-center text-white">
-        <a href="#" onclick="openVideoLightbox('https://www.youtube.com/embed/C5pKtnmHTxg?autoplay=1'); return false;" class="inline-block mb-9 hover:scale-110 transition-transform">
-            <img src="{% static 'images/icon-play.png' %}" alt="" class="w-20 h-20">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6 relative text-center text-white">
+        <a href="#" onclick="openVideoLightbox('https://www.youtube.com/embed/C5pKtnmHTxg?autoplay=1'); return false;" class="inline-block mb-8 md:mb-12 hover:scale-110 transition-transform duration-300">
+            <img src="{% static 'images/icon-play.png' %}" alt="" class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
         </a>
-        <h2 class="text-[42px] font-semibold mb-5">Visite Vidéo de l'IUTESSA</h2>
-        <p class="text-lg max-w-2xl mx-auto leading-relaxed">Faites une visite à IUTESSA et vous découvrirez la meilleure université de la région.</p>
+        <h2 class="text-[28px] md:text-[36px] lg:text-[44px] font-semibold mb-5 md:mb-7 leading-tight">Visite Vidéo de l'IUTESSA</h2>
+        <p class="text-[15px] md:text-[16px] lg:text-[17px] max-w-2xl mx-auto leading-[1.8]">Faites une visite à IUTESSA et vous découvrirez la meilleure université de la région.</p>
     </div>
 </section>
 
 <!-- Programs -->
-<section class="py-24 bg-white">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div class="bg-[#f7f7f7] p-16 text-center rounded">
-                <h3 class="text-[28px] font-semibold text-[#192f59] mb-5">BTS & HND</h3>
-                <p class="text-gray-600 leading-relaxed m-0">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
+<section class="py-16 md:py-24 lg:py-28 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+            <div class="bg-[#f7f7f7] p-12 md:p-16 lg:p-20 text-center rounded hover:shadow-lg transition-shadow duration-300">
+                <h3 class="text-[24px] md:text-[28px] lg:text-[30px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">BTS & HND</h3>
+                <p class="text-gray-600 leading-[1.8] m-0 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
             </div>
-            <div class="bg-[#192f59] p-16 text-center rounded text-white">
-                <h3 class="text-[28px] font-semibold mb-5">Licence & Master</h3>
-                <p class="leading-relaxed m-0">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
+            <div class="bg-[#192f59] p-12 md:p-16 lg:p-20 text-center rounded text-white hover:shadow-lg transition-shadow duration-300">
+                <h3 class="text-[24px] md:text-[28px] lg:text-[30px] font-semibold mb-4 md:mb-6 leading-tight">Licence & Master</h3>
+                <p class="leading-[1.8] m-0 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
             </div>
-            <div class="bg-[#f7f7f7] p-16 text-center rounded">
-                <h3 class="text-[28px] font-semibold text-[#192f59] mb-5">Bourses & Aides</h3>
-                <p class="text-gray-600 leading-relaxed m-0">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
+            <div class="bg-[#f7f7f7] p-12 md:p-16 lg:p-20 text-center rounded hover:shadow-lg transition-shadow duration-300">
+                <h3 class="text-[24px] md:text-[28px] lg:text-[30px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Bourses & Aides</h3>
+                <p class="text-gray-600 leading-[1.8] m-0 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu internationalement.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Bottom Section -->
-<section class="py-24 bg-[#f5f5f5]">
-    <div class="max-w-[1140px] mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<section class="py-16 md:py-24 lg:py-28 bg-[#f5f5f5]">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 lg:gap-14">
             <!-- Donation -->
             <div>
-                <img src="{% static 'images/donation.jpg' %}" alt="" class="w-full h-52 object-cover rounded mb-8">
-                <h3 class="text-[26px] font-semibold text-[#192f59] mb-5">Les Dons Nous Aident</h3>
-                <p class="text-gray-600 leading-relaxed mb-6">
+                <img src="{% static 'images/donation.jpg' %}" alt="" class="w-full h-48 md:h-56 object-cover rounded mb-8 md:mb-10 shadow-md">
+                <h3 class="text-[22px] md:text-[26px] lg:text-[28px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Les Dons Nous Aident</h3>
+                <p class="text-gray-600 leading-[1.8] mb-6 md:mb-8 text-[14px] md:text-[15px]">
                     La campagne pour l'IUTESSA est la <strong class="text-gray-800">plus grande campagne de collecte de fonds</strong> de notre histoire.
                 </p>
-                <a href="#" class="inline-flex items-center gap-3 bg-[#3db166] hover:bg-[#35a05c] text-white px-7 py-4 text-[15px] font-semibold no-underline rounded transition-colors">
+                <a href="#" class="inline-flex items-center gap-3 bg-[#3db166] hover:bg-[#35a05c] text-white px-7 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline rounded transition-colors">
                     <i class="fas fa-heart"></i> Devenir Donateur
                 </a>
             </div>
 
             <!-- Events -->
             <div>
-                <h3 class="text-[26px] font-semibold text-[#192f59] mb-9">Événements à Venir</h3>
-                <div class="flex flex-col gap-8">
-                    <div class="flex gap-5">
-                        <div class="w-20 h-20 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
-                            <div class="text-[32px] font-bold leading-none">07</div>
-                            <div class="text-sm mt-1">Jan</div>
+                <h3 class="text-[22px] md:text-[26px] lg:text-[28px] font-semibold text-[#192f59] mb-8 md:mb-12 leading-tight">Événements à Venir</h3>
+                <div class="flex flex-col gap-8 md:gap-10">
+                    <div class="flex gap-4 md:gap-6">
+                        <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 md:p-4 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
+                            <div class="text-[28px] md:text-[36px] font-bold leading-none">07</div>
+                            <div class="text-[11px] md:text-[13px] mt-1 md:mt-2">Jan</div>
                         </div>
-                        <div>
-                            <h4 class="text-base font-semibold mb-2">
+                        <div class="flex-1">
+                            <h4 class="text-[15px] md:text-[17px] font-semibold mb-2 md:mb-3 leading-tight">
                                 <a href="#" class="text-gray-800 no-underline hover:text-[#3db166] transition-colors">Événement : Tour de Golf</a>
                             </h4>
-                            <p class="text-[13px] text-gray-600 mb-1"><i class="far fa-clock mr-2"></i>7:00 am - 11:30 pm</p>
-                            <p class="text-[13px] text-gray-600 m-0"><i class="fas fa-map-marker-alt mr-2"></i>Grand Hall IUTESSA</p>
+                            <p class="text-[12px] md:text-[13px] text-gray-600 mb-1 md:mb-2 flex items-center gap-2"><i class="far fa-clock"></i>7:00 am - 11:30 pm</p>
+                            <p class="text-[12px] md:text-[13px] text-gray-600 m-0 flex items-center gap-2"><i class="fas fa-map-marker-alt"></i>Grand Hall IUTESSA</p>
                         </div>
                     </div>
-                    <div class="flex gap-5">
-                        <div class="w-20 h-20 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
-                            <div class="text-[32px] font-bold leading-none">15</div>
-                            <div class="text-sm mt-1">Jan</div>
+                    <div class="flex gap-4 md:gap-6">
+                        <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 md:p-4 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
+                            <div class="text-[28px] md:text-[36px] font-bold leading-none">15</div>
+                            <div class="text-[11px] md:text-[13px] mt-1 md:mt-2">Jan</div>
                         </div>
-                        <div>
-                            <h4 class="text-base font-semibold mb-2">
+                        <div class="flex-1">
+                            <h4 class="text-[15px] md:text-[17px] font-semibold mb-2 md:mb-3 leading-tight">
                                 <a href="#" class="text-gray-800 no-underline hover:text-[#3db166] transition-colors">Conférence Fintech</a>
                             </h4>
-                            <p class="text-[13px] text-gray-600 mb-1"><i class="far fa-clock mr-2"></i>1:00 pm - 5:00 pm</p>
-                            <p class="text-[13px] text-gray-600 m-0"><i class="fas fa-map-marker-alt mr-2"></i>Grand Hall IUTESSA</p>
+                            <p class="text-[12px] md:text-[13px] text-gray-600 mb-1 md:mb-2 flex items-center gap-2"><i class="far fa-clock"></i>1:00 pm - 5:00 pm</p>
+                            <p class="text-[12px] md:text-[13px] text-gray-600 m-0 flex items-center gap-2"><i class="fas fa-map-marker-alt"></i>Grand Hall IUTESSA</p>
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'pages:events' %}" class="inline-flex items-center gap-3 text-[#3db166] text-[15px] font-semibold no-underline mt-6 hover:text-[#35a05c] transition-colors">
+                <a href="{% url 'pages:events' %}" class="inline-flex items-center gap-3 text-[#3db166] text-[14px] md:text-[15px] font-semibold no-underline mt-6 md:mt-8 hover:text-[#35a05c] transition-colors">
                     Voir Tous les Événements <i class="fas fa-long-arrow-right"></i>
                 </a>
             </div>
 
             <!-- Newsletter -->
-            <div class="bg-[#192f59] p-12 text-center rounded text-white">
-                <img src="{% static 'images/icon-envelope.png' %}" alt="" class="w-20 h-15 mx-auto mb-8">
-                <h3 class="text-2xl font-semibold mb-3">S'abonner à la Newsletter</h3>
-                <p class="text-[#a8b5c7] text-sm mb-8">Recevez les actualités & événements</p>
-                <form class="flex flex-col gap-4">
-                    <input type="email" placeholder="Votre Adresse Email" class="w-full px-5 py-4 border-0 rounded text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#3db166]">
-                    <button type="submit" class="w-full bg-[#3db166] hover:bg-[#35a05c] text-white px-5 py-4 border-0 rounded text-[15px] font-semibold cursor-pointer transition-colors">
+            <div class="bg-[#192f59] p-10 md:p-12 lg:p-14 text-center rounded text-white shadow-md">
+                <img src="{% static 'images/icon-envelope.png' %}" alt="" class="w-20 h-15 md:w-24 md:h-18 mx-auto mb-8 md:mb-10">
+                <h3 class="text-[22px] md:text-[24px] lg:text-[26px] font-semibold mb-3 md:mb-4 leading-tight">S'abonner à la Newsletter</h3>
+                <p class="text-[#a8b5c7] text-[13px] md:text-[14px] mb-8 md:mb-10">Recevez les actualités & événements</p>
+                <form class="flex flex-col gap-4 md:gap-5">
+                    <input type="email" placeholder="Votre Adresse Email" class="w-full px-5 md:px-6 py-4 md:py-5 border-0 rounded text-[13px] md:text-[14px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#3db166]">
+                    <button type="submit" class="w-full bg-[#3db166] hover:bg-[#35a05c] text-white px-5 md:px-6 py-4 md:py-5 border-0 rounded text-[14px] md:text-[15px] font-semibold cursor-pointer transition-colors">
                         S'abonner
                     </button>
                 </form>
@@ -405,9 +446,9 @@
 </section>
 
 <!-- Video Lightbox -->
-<div id="video-lightbox" class="video-lightbox fixed inset-0 bg-black/95 z-[9999] items-center justify-center">
-    <button onclick="closeLightbox()" class="absolute top-8 right-8 bg-transparent border-0 text-white text-5xl cursor-pointer z-[10000] leading-none font-light hover:text-[#3db166] transition-colors">&times;</button>
-    <div class="w-[90%] max-w-[1000px] aspect-video">
+<div id="video-lightbox" class="video-lightbox fixed inset-0 bg-black/95 z-[9999] items-center justify-center p-4">
+    <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 bg-transparent border-0 text-white text-4xl md:text-5xl cursor-pointer z-[10000] leading-none font-light hover:text-[#3db166] transition-colors">&times;</button>
+    <div class="w-full max-w-[1000px] aspect-video">
         <div id="video-container-inner" class="w-full h-full"></div>
     </div>
 </div>

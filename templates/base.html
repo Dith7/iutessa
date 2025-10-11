@@ -28,10 +28,29 @@
             font-family: 'Poppins', sans-serif;
         }
         
-        /* Top Bar - exact from original */
+        /* Top Bar */
         .top-bar { 
             background-color: #192f59;
             padding: 10px 0;
+        }
+        
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .top-bar-left {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .top-bar-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
         }
         
         /* Header Navigation */
@@ -49,11 +68,41 @@
             padding: 0 15px;
         }
         
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
         .logo-wrap {
             padding: 20px 0;
         }
         
-        /* Main Menu */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            height: 64px;
+            width: 64px;
+        }
+        
+        .logo-text {
+            font-size: 30px;
+            font-weight: 600;
+            color: #192f59;
+        }
+        
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
         .main-menu {
             display: flex;
             align-items: center;
@@ -122,7 +171,7 @@
             background: #f8f8f8;
         }
         
-        /* Mega Menu - Matching the image exactly */
+        /* Mega Menu */
         .sf-mega {
             display: none;
             position: absolute;
@@ -151,7 +200,6 @@
             background: transparent;
         }
 
-        /* Vertical dividers between columns */
         .sf-mega .menu-item-has-children {
             padding: 0 40px;
             border-right: 1px solid #ddd;
@@ -161,7 +209,6 @@
             border-right: none;
         }
 
-        /* Headers - no indentation */
         .sf-mega .menu-item-has-children > a {
             font-size: 18px;
             font-weight: 600;
@@ -170,7 +217,6 @@
             display: block;
         }
 
-        /* Items - no indentation */
         .sf-mega .sub-menu .sub-menu {
             display: block;
             position: static;
@@ -202,29 +248,217 @@
             color: #3db166;
         }
         
-        /* Mobile menu hidden on desktop */
-        .mobile-header { display: none; }
-        
-        @media (max-width: 991px) {
-            .main-menu { display: none; }
-            .mobile-header { display: block; }
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #192f59;
+            cursor: pointer;
+            padding: 10px;
         }
         
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+        }
         
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #192f59;
+            cursor: pointer;
+        }
+        
+        .mobile-menu-nav {
+            padding: 0;
+        }
+        
+        .mobile-menu-nav > li {
+            list-style: none;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .mobile-menu-nav > li > a {
+            display: block;
+            padding: 15px 20px;
+            color: #232323;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .mobile-menu-nav .submenu-toggle {
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            color: #232323;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mobile-menu-nav .submenu {
+            display: none;
+            background: #f7f7f7;
+            padding: 10px 0;
+        }
+        
+        .mobile-menu-nav .submenu.active {
+            display: block;
+        }
+        
+        .mobile-menu-nav .submenu li {
+            list-style: none;
+        }
+        
+        .mobile-menu-nav .submenu a {
+            display: block;
+            padding: 10px 20px 10px 40px;
+            color: #5a5a5a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .main-menu > li {
+                margin-right: 20px;
+            }
+            
+            .main-menu > li > a {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 991px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .top-bar-left span {
+                font-size: 12px;
+            }
+            
+            .top-bar-right a {
+                font-size: 12px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .logo-img {
+                height: 48px;
+                width: 48px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar-left {
+                gap: 12px;
+            }
+            
+            .top-bar-right {
+                gap: 10px;
+            }
+            
+            .top-bar-left span {
+                font-size: 11px;
+            }
+            
+            .top-bar-right a:not(:last-child) {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0 10px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .logo-img {
+                height: 40px;
+                width: 40px;
+            }
+            
+            .top-bar-left span:first-child {
+                display: none;
+            }
+        }
+        
+       
     </style>
-    {% block extra_css %}{% endblock %}
+     {% block extra_css %}{% endblock %}
 </head>
 <body>
     
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="header-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; color: white; font-size: 13px;">
-                <div style="display: flex; gap: 24px;">
+            <div class="top-bar-content">
+                <div class="top-bar-left">
                     <span><i class="far fa-envelope-open"></i> contact@iutessa.cm</span>
                     <span><i class="fas fa-phone"></i> +237 677 55 44 33</span>
                 </div>
-                <div style="display: flex; gap: 20px; align-items: center;">
+                <div class="top-bar-right">
                     <a href="#" style="color: white; text-decoration: none;">Anciens Élèves</a>
                     <a href="#" style="color: white; text-decoration: none;">Calendrier</a>
                     <a href="#" style="color: white; text-decoration: none;">Portail</a>
@@ -237,18 +471,18 @@
     <!-- Header Navigation -->
     <header class="header-wrap">
         <div class="header-container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="header-content">
                 
                 <!-- Logo -->
                 <div class="logo-wrap">
-                    <a href="{% url 'pages:home' %}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                        <img src="{% static 'images/logo-iutessa.svg' %}" alt="IUTESSA" style="height: 64px; width: 64px;">
-                        <span style="font-size: 30px; font-weight: 600; color: #192f59;">IUTESSA</span>
+                    <a href="{% url 'pages:home' %}" class="logo-link">
+                        <img src="{% static 'images/logo-iutessa.svg' %}" alt="IUTESSA" class="logo-img">
+                        <span class="logo-text">IUTESSA</span>
                     </a>
                 </div>
 
                 <!-- Desktop Navigation -->
-                <div style="display: flex; align-items: center; gap: 0;">
+                <div class="desktop-nav">
                     <ul class="main-menu">
                         <li class="current-menu-item">
                             <a href="{% url 'pages:home' %}">Home</a>
@@ -340,9 +574,79 @@
                         <i class="fas fa-search"></i>
                     </span>
                 </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <span style="font-size: 20px; font-weight: 600; color: #192f59;">Menu</span>
+            <button class="mobile-menu-close" id="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu-nav">
+            <li>
+                <a href="{% url 'pages:home' %}">Home</a>
+            </li>
+            <li>
+                <button class="submenu-toggle" data-submenu="pages">
+                    Pages <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="submenu" id="submenu-pages">
+                    <li><a href="{% url 'pages:about-us' %}">À Propos d'IUTESSA</a></li>
+                    <li><a href="{% url 'pages:blog' %}">Blog</a></li>
+                    <li><a href="{% url 'pages:contact' %}">Contact</a></li>
+                    <li><a href="{% url 'pages:portfolio' %}">Portfolio</a></li>
+                    <li><a href="{% url 'pages:gallery' %}">Galerie</a></li>
+                    <li><a href="{% url 'pages:prices' %}">Pension</a></li>
+                </ul>
+            </li>
+            <li>
+                <button class="submenu-toggle" data-submenu="academics">
+                    Academics <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="submenu" id="submenu-academics">
+                    <li><a href="#">Business Administration</a></li>
+                    <li><a href="#">School Of Law</a></li>
+                    <li><a href="#">Engineering</a></li>
+                    <li><a href="#">Medicine</a></li>
+                    <li><a href="#">Art & Science</a></li>
+                    <li><a href="#">Hospitality Management</a></li>
+                    <li><a href="#">Physics</a></li>
+                    <li><a href="#">Chemistry</a></li>
+                </ul>
+            </li>
+            <li>
+                <button class="submenu-toggle" data-submenu="admissions">
+                    Admissions <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="submenu" id="submenu-admissions">
+                    <li><a href="{% url 'pages:apply' %}">Apply To IUTESSA</a></li>
+                    <li><a href="{% url 'pages:campus-tour' %}">Campus Tour</a></li>
+                    <li><a href="{% url 'pages:events' %}">Event Calendar</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'pages:courses' %}">Courses</a>
+            </li>
+            <li>
+                <a href="#">Athletics</a>
+            </li>
+            <li>
+                <a href="#">University Life</a>
+            </li>
+        </ul>
+    </div>
 
     <main>
         {% block content %}{% endblock %}
@@ -351,7 +655,7 @@
     <!-- Footer matching original -->
     <footer style="background: #1a1a1a; color: #ababab; padding: 60px 0 30px;">
         <div class="header-container">
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px;">
                 <div>
                     <img src="{% static 'images/footer-logo.png' %}" alt="" style="height: 35px; margin-bottom: 25px;">
                     <p style="font-size: 14px; line-height: 1.8;">BP 35300<br>Mokolo, Yaoundé<br>Cameroun</p>
@@ -382,7 +686,7 @@
                     </ul>
                 </div>
             </div>
-            <div style="border-top: 1px solid #333; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+            <div style="border-top: 1px solid #333; padding-top: 30px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 13px; gap: 20px;">
                 <p>© 2025 IUTESSA. Tous droits réservés.</p>
                 <div style="display: flex; gap: 12px;">
                     <a href="#" style="width: 38px; height: 38px; background: #2a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ababab;"><i class="fab fa-facebook-f"></i></a>
@@ -393,6 +697,50 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        mobileMenuToggle.addEventListener('click', openMobileMenu);
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+        
+        // Submenu Toggle
+        const submenuToggles = document.querySelectorAll('.submenu-toggle');
+        
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const submenuId = 'submenu-' + this.dataset.submenu;
+                const submenu = document.getElementById(submenuId);
+                const icon = this.querySelector('i');
+                
+                submenu.classList.toggle('active');
+                
+                if (submenu.classList.contains('active')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>
