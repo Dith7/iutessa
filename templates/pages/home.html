@@ -117,53 +117,69 @@
 <!-- Hero Slider -->
 <section class="relative bg-[#192f59] h-[500px] md:h-[600px] overflow-hidden">
     <!-- Slide 1 -->
-    <div class="hero-slide hero-slide-1-bg active absolute inset-0">
-        <div class="absolute inset-0 bg-[#192f59]/40"></div>
-        <div class="relative h-full flex items-center">
-            <div class="max-w-[1140px] mx-auto px-4 md:px-6 w-full">
-                <div class="max-w-[800px]">
-                    <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
-                        La Meilleure Université de la Région
-                    </p>
-                    <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
-                        <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
-                            IUTESSA <span class="font-normal">Mokolo</span>
-                        </h1>
-                    </div>
-                    <div class="animate-fade-in-up-delay">
-                        <a href="{% url 'pages:about-us' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
-                            Découvrir l'IUTESSA
-                        </a>
-                    </div>
+<div class="hero-slide hero-slide-1-bg active absolute inset-0 flex items-center justify-center">
+    <div class="absolute inset-0 bg-[#192f59]/40"></div>
+    <div class="relative z-10 w-full px-4 md:px-6">
+        <div class="max-w-[1140px] mx-auto flex justify-center">
+            <div class="max-w-[800px] text-center md:text-left translate-y-[-2%] md:translate-y-[-5%]">
+                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
+                    La Meilleure Université de la Région
+                </p>
+                <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
+                    <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
+                        IUTESSA <span class="font-normal">Mokolo</span>
+                    </h1>
+                </div>
+                <div class="animate-fade-in-up-delay">
+                    <a href="{% url 'pages:about-us' %}" class="w-46  h-auto inline-flex bg-white text-gray-800 px-8 md:px-12 py-8 md:py-12 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                       <span class="ml-4">Découvrir l'IUTESSA</span> 
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
     
-    <!-- Slide 2 -->
-    <div class="hero-slide hero-slide-2-bg absolute inset-0">
-        <div class="absolute inset-0 bg-[#192f59]/40"></div>
-        <div class="relative h-full flex items-center">
-            <div class="max-w-[1140px] mx-auto px-6 md:px-8 lg:px-12 w-full">
-                <div class="max-w-[800px] pl-4 md:pl-0">
-                    <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-3 md:mb-4 leading-relaxed hero-subtitle">
-                        IUTESSA propose plus de
-                    </p>
-                    <h1 class="animate-fade-in-up text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 mb-4 md:mb-6 hero-title">
+<!-- Slide 2 -->
+<div class="hero-slide hero-slide-2-bg absolute inset-0 flex items-center justify-center">
+    <div class="absolute inset-0 bg-[#192f59]/40"></div>
+    <div class="relative z-10 w-full px-4 md:px-6">
+        <div class="max-w-[1140px] mx-auto flex justify-center">
+            <div class="max-w-[800px] text-center md:text-left translate-y-[-2%] md:translate-y-[-5%]">
+                
+                <!-- Subtitle (same as Slide 1) -->
+                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
+                    IUTESSA propose plus de
+                </p>
+
+                <!-- Title Block (same spacing as Slide 1) -->
+                <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
+                    <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
                         20+ Filières
                     </h1>
-                    <p class="animate-fade-in-up text-white text-[24px] md:text-[28px] lg:text-[32px] font-normal mb-8 md:mb-12 leading-relaxed">
-                        BTS, HND, Licence & Master
-                    </p>
-                    <div class="animate-fade-in-up-delay">
-                        <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
-                            Voir les Formations
-                        </a>
-                    </div>
                 </div>
+
+                <!-- Remove extra spacing for "BTS, HND..." to keep vertical alignment -->
+                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-0 leading-relaxed hero-subtitle">
+                    BTS, HND, Licence & Master
+                </p>
+
+                <!-- Button -->
+                <div class="animate-fade-in-up-delay mt-6">
+                    <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                        Voir les Formations
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
+
+
+
+
 </section>
 
 <!-- Services Bar -->
