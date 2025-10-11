@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Portfolio - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Masonry Grid */
+    .masonry-grid {
+        column-count: 2;
+        column-gap: 30px;
+    }
+    
+    @media (max-width: 768px) {
+        .masonry-grid {
+            column-count: 1;
+        }
+    }
+    
+    .masonry-item {
+        break-inside: avoid;
+        margin-bottom: 30px;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    /* Portfolio Item Hover Effects */
+    .portfolio-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+    
+    .portfolio-item img {
+        transition: transform 0.5s ease;
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    
+    .portfolio-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .portfolio-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(25, 47, 89, 0.95), rgba(25, 47, 89, 0.7));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    
+    .portfolio-item:hover .portfolio-overlay {
+        opacity: 1;
+    }
+    
+    .portfolio-title {
+        transform: translateY(20px);
+        transition: transform 0.4s ease 0.1s;
+    }
+    
+    .portfolio-item:hover .portfolio-title {
+        transform: translateY(0);
+    }
+    
+    .portfolio-icon {
+        transform: scale(0);
+        transition: transform 0.3s ease 0.2s;
+    }
+    
+    .portfolio-item:hover .portfolio-icon {
+        transform: scale(1);
+    }
+    
+    /* Lightbox */
+    .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .lightbox.active {
+        display: flex;
+    }
+    
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Load More Button Animation */
+    .load-more-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .load-more-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(61, 177, 102, 0.3);
+    }
+    
+    /* Hidden items for load more */
+    .hidden-items {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Title Section -->
+<section class="relative bg-[#192f59] py-20">
+    <div class="max-w-[1140px] mx-auto px-4 text-center text-white">
+        <p class="text-sm uppercase tracking-wider mb-3">Réalisations & Projets</p>
+        <h1 class="text-5xl font-bold">Portfolio IUTESSA</h1>
+    </div>
+</section>
+
+<!-- Portfolio Masonry Grid -->
+<section class="py-16 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="masonry-grid" id="portfolioGrid">
+            <!-- Portfolio Item 1 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-1.jpg' %}" alt="Projet Communautaire">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Projet de Développement Communautaire</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-1.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 2 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-2.jpg' %}" alt="Recherche Médicale">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Innovation en Recherche Médicale</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-2.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 3 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-3.jpg' %}" alt="Conseil Juridique">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Clinique Juridique Étudiante</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-3.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 4 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-4.jpg' %}" alt="Formation Sport">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme Sport pour Seniors</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-4.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 5 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-5.jpg' %}" alt="Spectacle Théâtral">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Production Théâtrale Étudiante</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-5.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 6 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-6.jpg' %}" alt="Concert Caritatif">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Concert Caritatif Annuel</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-6.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 7 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-7.jpg' %}" alt="Tutorat Gratuit">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme de Tutorat Gratuit</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-7.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 8 -->
+            <div class="masonry-item portfolio-card">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-8.jpg' %}" alt="Showcase Business">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Salon de l'Entrepreneuriat Étudiant</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-8.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Items for Load More (Initially Hidden) -->
+            <div class="masonry-item portfolio-card hidden-items">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-9.jpg' %}" alt="Projet 9">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Hackathon Technologique</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-9.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="masonry-item portfolio-card hidden-items">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-10.jpg' %}" alt="Projet 10">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Conférence Internationale</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-10.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="masonry-item portfolio-card hidden-items">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-11.jpg' %}" alt="Projet 11">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Incubateur de Startups</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-11.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="masonry-item portfolio-card hidden-items">
+                <div class="portfolio-item">
+                    <img src="{% static 'images/portfolio/portfolio-12.jpg' %}" alt="Projet 12">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme d'Échange International</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-12.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-10">
+            <button id="loadMoreBtn" onclick="loadMore()" class="load-more-btn bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded font-semibold inline-flex items-center gap-2">
+                <span>Charger Plus</span>
+                <i class="fas fa-arrow-down"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox items-center justify-center">
+    <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white text-5xl font-light hover:text-[#3db166] z-10 transition-colors">&times;</button>
+    <button onclick="prevLightboxImage()" class="absolute left-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <img id="lightboxImg" src="" alt="" class="max-w-[90%] max-h-[90%] object-contain">
+    <button onclick="nextLightboxImage()" class="absolute right-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Portfolio images for lightbox navigation
+    const portfolioImages = [
+        '{% static "images/portfolio/portfolio-1.jpg" %}',
+        '{% static "images/portfolio/portfolio-2.jpg" %}',
+        '{% static "images/portfolio/portfolio-3.jpg" %}',
+        '{% static "images/portfolio/portfolio-4.jpg" %}',
+        '{% static "images/portfolio/portfolio-5.jpg" %}',
+        '{% static "images/portfolio/portfolio-6.jpg" %}',
+        '{% static "images/portfolio/portfolio-7.jpg" %}',
+        '{% static "images/portfolio/portfolio-8.jpg" %}',
+        '{% static "images/portfolio/portfolio-9.jpg" %}',
+        '{% static "images/portfolio/portfolio-10.jpg" %}',
+        '{% static "images/portfolio/portfolio-11.jpg" %}',
+        '{% static "images/portfolio/portfolio-12.jpg" %}'
+    ];
+    
+    let currentLightboxIndex = 0;
+    
+    // Lightbox Functions
+    function openLightbox(imageSrc) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        lightboxImg.src = imageSrc;
+        currentLightboxIndex = portfolioImages.indexOf(imageSrc);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    function nextLightboxImage() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % portfolioImages.length;
+        document.getElementById('lightboxImg').src = portfolioImages[currentLightboxIndex];
+    }
+    
+    function prevLightboxImage() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + portfolioImages.length) % portfolioImages.length;
+        document.getElementById('lightboxImg').src = portfolioImages[currentLightboxIndex];
+    }
+    
+    // Close lightbox on background click
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeLightbox();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+            if (e.key === 'ArrowRight') {
+                nextLightboxImage();
+            }
+            if (e.key === 'ArrowLeft') {
+                prevLightboxImage();
+            }
+        }
+    });
+    
+    // Load More Functionality
+    let itemsLoaded = false;
+    
+    function loadMore() {
+        const hiddenItems = document.querySelectorAll('.hidden-items');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        if (!itemsLoaded) {
+            // Show hidden items with animation
+            hiddenItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.display = 'inline-block';
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'all 0.5s ease';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+            
+            itemsLoaded = true;
+            
+            // Change button text
+            setTimeout(() => {
+                loadMoreBtn.innerHTML = '<span>Tous les Projets Chargés</span> <i class="fas fa-check"></i>';
+                loadMoreBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                loadMoreBtn.classList.remove('bg-[#3db166]', 'hover:bg-[#35a05c]');
+                loadMoreBtn.disabled = true;
+            }, 500);
+        }
+    }
+    
+    // Smooth scroll animation on load more
+    document.getElementById('loadMoreBtn')?.addEventListener('click', function() {
+        if (!itemsLoaded) {
+            setTimeout(() => {
+                const lastHiddenItem = document.querySelector('.hidden-items:last-of-type');
+                if (lastHiddenItem) {
+                    lastHiddenItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 600);
+        }
+    });
+</script>
+{% endblock %}

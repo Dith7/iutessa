@@ -1,0 +1,530 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Galerie - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Lightbox */
+    .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .lightbox.active {
+        display: flex;
+    }
+    
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+    
+    /* Horizontal Scroll */
+    .horizontal-scroll {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: #3db166 #e5e5e5;
+    }
+    
+    .horizontal-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .horizontal-scroll::-webkit-scrollbar-track {
+        background: #e5e5e5;
+    }
+    
+    .horizontal-scroll::-webkit-scrollbar-thumb {
+        background: #3db166;
+        border-radius: 4px;
+    }
+    
+    .horizontal-scroll-item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+    
+    /* Slider */
+    .slider {
+        position: relative;
+    }
+    
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    
+    .slider-item {
+        flex: 0 0 100%;
+    }
+    
+    /* Thumbnails */
+    .thumbnail-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+    
+    .thumbnail {
+        flex: 0 0 auto;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .thumbnail.active,
+    .thumbnail:hover {
+        opacity: 1;
+        border-color: #3db166;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Title -->
+<section class="relative bg-[#192f59] py-20">
+    <div class="max-w-[1140px] mx-auto px-4 text-center text-white">
+        <h1 class="text-5xl font-bold">Galerie</h1>
+    </div>
+</section>
+
+<!-- Grid Style With Space -->
+<section class="py-24 bg-white">
+    <div class="max-w-full px-5">
+        <div class="text-center mb-16">
+            <h3 class="text-4xl font-semibold text-[#192f59] mb-2">Style Grille</h3>
+            <p class="text-gray-600">Avec Espacement</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[1240px] mx-auto">
+            <div class="group cursor-pointer overflow-hidden rounded" onclick="openLightbox('{% static 'images/gallery/gallery-1.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-1.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden rounded" onclick="openLightbox('{% static 'images/gallery/gallery-2.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-2.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden rounded" onclick="openLightbox('{% static 'images/gallery/gallery-3.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-3.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden rounded" onclick="openLightbox('{% static 'images/gallery/gallery-4.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-4.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Grid Style Without Space -->
+<section class="py-16 bg-white">
+    <div class="max-w-full">
+        <div class="text-center mb-16">
+            <h3 class="text-4xl font-semibold text-[#192f59] mb-2">Style Grille</h3>
+            <p class="text-gray-600">Sans Espacement</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+            <div class="group cursor-pointer overflow-hidden" onclick="openLightbox('{% static 'images/gallery/gallery-5.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-5.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden" onclick="openLightbox('{% static 'images/gallery/gallery-6.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-6.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden" onclick="openLightbox('{% static 'images/gallery/gallery-7.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-7.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="group cursor-pointer overflow-hidden" onclick="openLightbox('{% static 'images/gallery/gallery-8.jpg' %}')">
+                <div class="relative overflow-hidden">
+                    <img src="{% static 'images/gallery/gallery-8.jpg' %}" alt="" class="w-full h-[377px] object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Horizontal Scrolling -->
+<section class="py-24 bg-white">
+    <div class="max-w-full px-5">
+        <div class="text-center mb-16">
+            <h3 class="text-4xl font-semibold text-[#192f59] mb-2">Défilement Horizontal</h3>
+            <p class="text-gray-600">Survol avec Icône</p>
+        </div>
+        
+        <div class="horizontal-scroll gap-6 px-4">
+            <div class="horizontal-scroll-item group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-9.jpg' %}')">
+                <div class="relative overflow-hidden" style="width: 800px; height: 500px;">
+                    <img src="{% static 'images/gallery/gallery-9.jpg' %}" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontal-scroll-item group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-10.jpg' %}')">
+                <div class="relative overflow-hidden" style="width: 800px; height: 500px;">
+                    <img src="{% static 'images/gallery/gallery-10.jpg' %}" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontal-scroll-item group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-11.jpg' %}')">
+                <div class="relative overflow-hidden" style="width: 800px; height: 500px;">
+                    <img src="{% static 'images/gallery/gallery-11.jpg' %}" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontal-scroll-item group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-12.jpg' %}')">
+                <div class="relative overflow-hidden" style="width: 800px; height: 500px;">
+                    <img src="{% static 'images/gallery/gallery-12.jpg' %}" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Carousel -->
+<section class="relative py-28 bg-cover bg-center" style="background-image: url('{% static 'images/coming-soon.jpg' %}');">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative max-w-[1140px] mx-auto px-4">
+        <div class="text-center mb-16 text-white">
+            <h3 class="text-4xl font-semibold mb-2">Carrousel Simple</h3>
+            <p class="text-gray-300">Survol avec Titre</p>
+        </div>
+        
+        <div class="slider" id="carousel1">
+            <div class="overflow-hidden">
+                <div class="slider-track">
+                    <div class="slider-item">
+                        <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-13.jpg' %}')">
+                            <div class="relative">
+                                <img src="{% static 'images/gallery/gallery-13.jpg' %}" alt="" class="w-full h-[600px] object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
+                                    <div class="text-white">
+                                        <h4 class="text-2xl font-bold mb-2">Étudiants</h4>
+                                        <p class="text-gray-200">Vie de Campus</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-14.jpg' %}')">
+                            <div class="relative">
+                                <img src="{% static 'images/gallery/gallery-14.jpg' %}" alt="" class="w-full h-[600px] object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
+                                    <div class="text-white">
+                                        <h4 class="text-2xl font-bold mb-2">Bibliothèque</h4>
+                                        <p class="text-gray-200">Espace d'Étude</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-15.jpg' %}')">
+                            <div class="relative">
+                                <img src="{% static 'images/gallery/gallery-15.jpg' %}" alt="" class="w-full h-[600px] object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
+                                    <div class="text-white">
+                                        <h4 class="text-2xl font-bold mb-2">Laboratoire</h4>
+                                        <p class="text-gray-200">Recherche</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="prevSlide('carousel1')" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#192f59] w-12 h-12 rounded-full flex items-center justify-center transition-all">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button onclick="nextSlide('carousel1')" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#192f59] w-12 h-12 rounded-full flex items-center justify-center transition-all">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery With Thumbnails -->
+<section class="py-28 bg-[#f7f7f7]">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="text-center mb-16">
+            <h3 class="text-4xl font-semibold text-[#192f59] mb-2">Galerie avec Miniatures</h3>
+            <p class="text-gray-600">Navigation par Miniatures</p>
+        </div>
+        
+        <div id="thumbnailGallery">
+            <!-- Main Image -->
+            <div class="mb-6">
+                <div class="group cursor-pointer" onclick="openLightbox(document.getElementById('mainGalleryImg').src)">
+                    <div class="relative overflow-hidden rounded">
+                        <img id="mainGalleryImg" src="{% static 'images/gallery/gallery-16.jpg' %}" alt="" class="w-full h-[600px] object-cover">
+                        <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                            <div class="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <h4 class="text-2xl font-bold mb-2" id="mainGalleryTitle">Campus</h4>
+                                <p class="text-gray-200" id="mainGalleryCaption">Vue Aérienne</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Thumbnails -->
+            <div class="thumbnail-nav">
+                <div class="thumbnail active rounded overflow-hidden w-[200px] h-[120px]" onclick="changeMainImage('{% static 'images/gallery/gallery-16.jpg' %}', 'Campus', 'Vue Aérienne', this)">
+                    <img src="{% static 'images/gallery/gallery-16.jpg' %}" alt="" class="w-full h-full object-cover">
+                </div>
+                <div class="thumbnail rounded overflow-hidden w-[200px] h-[120px]" onclick="changeMainImage('{% static 'images/gallery/gallery-17.jpg' %}', 'Amphithéâtre', 'Cours Magistral', this)">
+                    <img src="{% static 'images/gallery/gallery-17.jpg' %}" alt="" class="w-full h-full object-cover">
+                </div>
+                <div class="thumbnail rounded overflow-hidden w-[200px] h-[120px]" onclick="changeMainImage('{% static 'images/gallery/gallery-18.jpg' %}', 'Cafétéria', 'Espace Détente', this)">
+                    <img src="{% static 'images/gallery/gallery-18.jpg' %}" alt="" class="w-full h-full object-cover">
+                </div>
+                <div class="thumbnail rounded overflow-hidden w-[200px] h-[120px]" onclick="changeMainImage('{% static 'images/gallery/gallery-19.jpg' %}', 'Sport', 'Terrain de Jeu', this)">
+                    <img src="{% static 'images/gallery/gallery-19.jpg' %}" alt="" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Vertical -->
+<section class="py-28 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="text-center mb-16">
+            <h3 class="text-4xl font-semibold text-[#192f59] mb-2">Galerie Verticale</h3>
+            <p class="text-gray-600">Légende en Dessous</p>
+        </div>
+        
+        <div class="space-y-8">
+            <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-20.jpg' %}')">
+                <div class="relative overflow-hidden rounded">
+                    <img src="{% static 'images/gallery/gallery-20.jpg' %}" alt="" class="w-full h-[400px] object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+                <p class="text-center text-gray-700 mt-4 text-sm">Bâtiment Principal</p>
+            </div>
+            <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-21.jpg' %}')">
+                <div class="relative overflow-hidden rounded">
+                    <img src="{% static 'images/gallery/gallery-21.jpg' %}" alt="" class="w-full h-[534px] object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+                <p class="text-center text-gray-700 mt-4 text-sm">Salle Informatique</p>
+            </div>
+            <div class="group cursor-pointer" onclick="openLightbox('{% static 'images/gallery/gallery-22.jpg' %}')">
+                <div class="relative overflow-hidden rounded">
+                    <img src="{% static 'images/gallery/gallery-22.jpg' %}" alt="" class="w-full h-[533px] object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-[#192f59]/0 group-hover:bg-[#192f59]/80 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                    </div>
+                </div>
+                <p class="text-center text-gray-700 mt-4 text-sm">Cérémonie de Remise des Diplômes</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox items-center justify-center">
+    <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white text-5xl font-light hover:text-[#3db166] z-10 transition-colors">&times;</button>
+    <button onclick="prevLightboxImage()" class="absolute left-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <img id="lightboxImg" src="" alt="" class="max-w-[90%] max-h-[90%] object-contain">
+    <button onclick="nextLightboxImage()" class="absolute right-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Gallery images array for lightbox navigation
+    const galleryImages = [
+        '{% static "images/gallery/gallery-1.jpg" %}',
+        '{% static "images/gallery/gallery-2.jpg" %}',
+        '{% static "images/gallery/gallery-3.jpg" %}',
+        '{% static "images/gallery/gallery-4.jpg" %}',
+        '{% static "images/gallery/gallery-5.jpg" %}',
+        '{% static "images/gallery/gallery-6.jpg" %}',
+        '{% static "images/gallery/gallery-7.jpg" %}',
+        '{% static "images/gallery/gallery-8.jpg" %}',
+        '{% static "images/gallery/gallery-9.jpg" %}',
+        '{% static "images/gallery/gallery-10.jpg" %}',
+        '{% static "images/gallery/gallery-11.jpg" %}',
+        '{% static "images/gallery/gallery-12.jpg" %}',
+        '{% static "images/gallery/gallery-13.jpg" %}',
+        '{% static "images/gallery/gallery-14.jpg" %}',
+        '{% static "images/gallery/gallery-15.jpg" %}',
+        '{% static "images/gallery/gallery-16.jpg" %}',
+        '{% static "images/gallery/gallery-17.jpg" %}',
+        '{% static "images/gallery/gallery-18.jpg" %}',
+        '{% static "images/gallery/gallery-19.jpg" %}',
+        '{% static "images/gallery/gallery-20.jpg" %}',
+        '{% static "images/gallery/gallery-21.jpg" %}',
+        '{% static "images/gallery/gallery-22.jpg" %}'
+    ];
+    
+    let currentLightboxIndex = 0;
+    
+    // Lightbox Functions
+    function openLightbox(imageSrc) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        lightboxImg.src = imageSrc;
+        currentLightboxIndex = galleryImages.indexOf(imageSrc);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    function nextLightboxImage() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % galleryImages.length;
+        document.getElementById('lightboxImg').src = galleryImages[currentLightboxIndex];
+    }
+    
+    function prevLightboxImage() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + galleryImages.length) % galleryImages.length;
+        document.getElementById('lightboxImg').src = galleryImages[currentLightboxIndex];
+    }
+    
+    // Close lightbox on background click
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeLightbox();
+        }
+    });
+    
+    // Close lightbox on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+        if (e.key === 'ArrowRight') {
+            nextLightboxImage();
+        }
+        if (e.key === 'ArrowLeft') {
+            prevLightboxImage();
+        }
+    });
+    
+    // Carousel Functions
+    const carousels = {};
+    
+    function initCarousel(id) {
+        if (!carousels[id]) {
+            carousels[id] = {
+                currentIndex: 0,
+                track: document.querySelector(`#${id} .slider-track`),
+                items: document.querySelectorAll(`#${id} .slider-item`)
+            };
+        }
+    }
+    
+    function updateCarousel(id) {
+        const carousel = carousels[id];
+        carousel.track.style.transform = `translateX(-${carousel.currentIndex * 100}%)`;
+    }
+    
+    function nextSlide(id) {
+        initCarousel(id);
+        const carousel = carousels[id];
+        carousel.currentIndex = (carousel.currentIndex + 1) % carousel.items.length;
+        updateCarousel(id);
+    }
+    
+    function prevSlide(id) {
+        initCarousel(id);
+        const carousel = carousels[id];
+        carousel.currentIndex = (carousel.currentIndex - 1 + carousel.items.length) % carousel.items.length;
+        updateCarousel(id);
+    }
+    
+    // Auto-play carousel
+    setInterval(() => {
+        if (document.querySelector('#carousel1')) {
+            nextSlide('carousel1');
+        }
+    }, 5000);
+    
+    // Thumbnail Gallery Functions
+    function changeMainImage(src, title, caption, thumbnailElement) {
+        document.getElementById('mainGalleryImg').src = src;
+        document.getElementById('mainGalleryTitle').textContent = title;
+        document.getElementById('mainGalleryCaption').textContent = caption;
+        
+        // Update active thumbnail
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.classList.remove('active');
+        });
+        thumbnailElement.classList.add('active');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page Introuvable - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* 404 number animation */
+    .error-number {
+        animation: fadeInScale 0.8s ease-out;
+    }
+    
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    /* Content fade in */
+    .error-content {
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Search form styling */
+    .search-404 {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .search-404 input[type="text"] {
+        width: 100%;
+        padding: 18px 60px 18px 25px;
+        border: 2px solid #e5e5e5;
+        border-radius: 50px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .search-404 input[type="text"]:focus {
+        outline: none;
+        border-color: #3db166;
+        box-shadow: 0 0 0 4px rgba(61, 177, 102, 0.1);
+    }
+    
+    .search-404 button {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #3db166;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .search-404 button:hover {
+        background: #35a05c;
+        transform: translateY(-50%) scale(1.05);
+    }
+    
+    /* Background decoration */
+    .error-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        z-index: 0;
+    }
+    
+    .error-bg::before,
+    .error-bg::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(61, 177, 102, 0.1), rgba(25, 47, 89, 0.05));
+    }
+    
+    .error-bg::before {
+        width: 400px;
+        height: 400px;
+        top: -100px;
+        right: -100px;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .error-bg::after {
+        width: 300px;
+        height: 300px;
+        bottom: -80px;
+        left: -80px;
+        animation: float 8s ease-in-out infinite reverse;
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- 404 Error Section -->
+<section class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white py-20">
+    <!-- Background Decoration -->
+    <div class="error-bg"></div>
+    
+    <!-- Content -->
+    <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
+        <!-- Large 404 Number -->
+        <div class="error-number mb-8">
+            <h1 class="text-[200px] md:text-[280px] font-bold leading-none bg-gradient-to-br from-[#192f59] to-[#3db166] bg-clip-text text-transparent">
+                404
+            </h1>
+        </div>
+        
+        <!-- Error Content -->
+        <div class="error-content space-y-6">
+            <h3 class="text-4xl md:text-5xl font-bold text-[#192f59]">
+                Page Introuvable
+            </h3>
+            
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Désolé, nous n'avons pas pu trouver la page que vous recherchez. Elle a peut-être été déplacée ou n'existe plus.
+            </p>
+            
+            <!-- Search Form -->
+            <div class="mt-10 mb-8">
+                <form action="{% url 'pages:search' %}" method="GET" class="search-404">
+                    <input 
+                        type="text" 
+                        name="q" 
+                        placeholder="Rechercher sur le site..."
+                        required
+                    >
+                    <button type="submit">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Back to Home Button -->
+            <div class="mt-12">
+                <a 
+                    href="{% url 'pages:home' %}" 
+                    class="inline-flex items-center gap-3 bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:scale-105"
+                >
+                    <i class="fas fa-home"></i>
+                    <span>Retour à l'Accueil</span>
+                </a>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="mt-16 pt-12 border-t border-gray-200">
+                <p class="text-gray-600 mb-6">Ou explorez ces pages populaires :</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="{% url 'pages:about' %}" class="px-6 py-3 bg-white border-2 border-gray-200 hover:border-[#3db166] rounded-full text-gray-700 hover:text-[#3db166] transition-colors">
+                        À Propos
+                    </a>
+                    <a href="{% url 'pages:programs' %}" class="px-6 py-3 bg-white border-2 border-gray-200 hover:border-[#3db166] rounded-full text-gray-700 hover:text-[#3db166] transition-colors">
+                        Programmes
+                    </a>
+                    <a href="{% url 'blog:list' %}" class="px-6 py-3 bg-white border-2 border-gray-200 hover:border-[#3db166] rounded-full text-gray-700 hover:text-[#3db166] transition-colors">
+                        Actualités
+                    </a>
+                    <a href="{% url 'pages:contact' %}" class="px-6 py-3 bg-white border-2 border-gray-200 hover:border-[#3db166] rounded-full text-gray-700 hover:text-[#3db166] transition-colors">
+                        Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Optional: Add some interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+        // Track 404 error (optional analytics)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_not_found', {
+                'page_location': window.location.href,
+                'page_referrer': document.referrer
+            });
+        }
+        
+        // Focus on search input
+        const searchInput = document.querySelector('.search-404 input[type="text"]');
+        if (searchInput) {
+            setTimeout(() => {
+                searchInput.focus();
+            }, 800);
+        }
+    });
+</script>
+{% endblock %}

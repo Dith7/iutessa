@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Featured image parallax effect */
+    .post-hero {
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    /* Date badge styling */
+    .date-badge {
+        background: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Article content typography */
+    .article-content h5,
+    .article-content h6 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .article-content p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-content blockquote {
+        border-left: 4px solid #3db166;
+        padding-left: 2rem;
+        margin: 2rem 0;
+        font-style: italic;
+        color: #555;
+    }
+    
+    .article-content ul {
+        list-style: disc;
+        margin-left: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-content ul li {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Social share buttons */
+    .share-button {
+        transition: all 0.3s ease;
+    }
+    
+    .share-button:hover {
+        transform: translateY(-3px);
+    }
+    
+    /* Comment styling */
+    .comment-avatar {
+        flex-shrink: 0;
+    }
+    
+    .comment-form textarea,
+    .comment-form input[type="text"],
+    .comment-form input[type="email"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .comment-form textarea:focus,
+    .comment-form input:focus {
+        outline: none;
+        border-color: #3db166;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section with Featured Image -->
+<section class="post-hero relative bg-cover bg-center" style="background-image: url('{% static 'images/blog/post-hero.jpg' %}');">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 to-black/70"></div>
+    <div class="relative max-w-[1140px] mx-auto px-4 pt-96 pb-20">
+        <div class="flex gap-6 items-start">
+            <!-- Date Badge -->
+            <div class="date-badge text-center rounded-lg p-4 w-24">
+                <div class="text-4xl font-bold text-[#192f59]">06</div>
+                <div class="text-sm text-gray-600 uppercase">Juin</div>
+            </div>
+            
+            <!-- Post Title & Meta -->
+            <div class="flex-1">
+                <h1 class="text-5xl font-bold text-white mb-6">Article Standard - Projet de Développement Communautaire</h1>
+                <div class="flex flex-wrap gap-4 text-white text-sm">
+                    <span><span class="opacity-70">Par</span> <a href="#" class="hover:text-[#3db166]">Dr. Jean Kamga</a></span>
+                    <span><a href="#" class="hover:text-[#3db166]">Actualités</a>, <a href="#" class="hover:text-[#3db166]">Recherche</a></span>
+                    <span><a href="#" class="hover:text-[#3db166]">#Innovation</a></span>
+                    <span><i class="far fa-comments mr-1"></i> 2 Commentaires</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<div class="bg-white border-b border-gray-200">
+    <div class="max-w-[1140px] mx-auto px-4 py-4">
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166]">Accueil</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <a href="{% url 'blog:list' %}" class="hover:text-[#3db166]">Blog</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span class="text-gray-800">Article Standard</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<section class="bg-white py-16">
+    <div class="max-w-[900px] mx-auto px-4">
+        <!-- Article Content -->
+        <article class="article-content prose max-w-none">
+            <p>
+                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, <strong>qui a été créé pour la félicité d'âmes comme la mienne</strong>. Je suis si heureux, mon cher ami, tellement absorbé dans le sentiment exquis de la simple existence tranquille, que je néglige mes talents.
+            </p>
+
+            <h5 class="text-2xl font-bold text-[#192f59]">Quand, pendant que la charmante vallée</h5>
+            
+            <p>
+                La vapeur autour de moi, et le soleil de midi frappe la surface supérieure du feuillage impénétrable de mes arbres, et seulement quelques rayons égarés se glissent dans le sanctuaire intérieur, je me jette dans l'herbe haute près du ruisseau qui coule; et, alors que je me trouve près de la terre, un millier de plantes inconnues sont remarquées par moi.
+            </p>
+
+            <blockquote>
+                <p>
+                    Je m'effondre sous le poids de la splendeur de ces visions! Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps.
+                </p>
+            </blockquote>
+
+            <p>
+                Je m'effondre sous le poids de la splendeur de ces visions! Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, qui a été créé pour la félicité d'âmes comme la mienne.
+            </p>
+
+            <h6 class="text-xl font-bold text-[#192f59]">Je me jette dans l'herbe haute</h6>
+            
+            <p>
+                Je serais incapable de dessiner un seul trait en ce moment; et pourtant je sens que je n'ai jamais été un plus grand artiste qu'aujourd'hui. Quand, pendant que la charmante vallée regorge de vapeur autour de moi, et le soleil de midi frappe la surface supérieure du feuillage impénétrable de mes arbres.
+            </p>
+
+            <div class="my-8">
+                <img src="{% static 'images/blog/post-content.jpg' %}" alt="Image de l'article" class="w-full rounded-lg shadow-md">
+            </div>
+
+            <h6 class="text-xl font-bold text-[#192f59]">Texte, d'où il vient</h6>
+            
+            <p>
+                Loin, très loin, derrière les montagnes de mots, loin des pays de Vokalia et Consonantia, vivent les textes aveugles. Séparés, ils vivent à Bookmarksgrove, juste à la côte de la Semantics, un grand océan de langue. Un petit ruisseau nommé Duden coule près de leur lieu et le fournit avec la règlementation nécessaire.
+            </p>
+
+            <ul>
+                <li>Loin, très loin, derrière les montagnes de mots</li>
+                <li>Quand elle a atteint les premières collines</li>
+                <li>Un petit ruisseau nommé Duden coule</li>
+                <li>Un petit ruisseau nommé Duden coule près de leur lieu</li>
+                <li>Loin, très loin, derrière les montagnes de mots</li>
+            </ul>
+
+            <p>
+                Les rédacteurs l'ont embusquée, l'ont rendue ivre avec Longe et Parole et l'ont traînée dans leur agence, où ils l'ont abusée pour leurs projets encore et encore. Et si elle n'a pas été réécrite, alors ils l'utilisent toujours. Loin, très loin, derrière les montagnes de mots.
+            </p>
+        </article>
+
+        <!-- Social Share -->
+        <div class="border-t border-b border-gray-200 py-8 my-10">
+            <div class="flex items-center justify-center gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-[#192f59]">0</div>
+                    <div class="text-sm text-gray-600">Partages</div>
+                </div>
+                <div class="h-12 w-px bg-gray-300"></div>
+                <div class="flex gap-4">
+                    <a href="#" class="share-button w-12 h-12 bg-[#3b5998] text-white rounded-full flex items-center justify-center hover:bg-[#344e86]">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="share-button w-12 h-12 bg-[#1da1f2] text-white rounded-full flex items-center justify-center hover:bg-[#1a91da]">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="share-button w-12 h-12 bg-[#bd081c] text-white rounded-full flex items-center justify-center hover:bg-[#a50718]">
+                        <i class="fab fa-pinterest-p"></i>
+                    </a>
+                    <a href="#" class="share-button w-12 h-12 bg-[#0077b5] text-white rounded-full flex items-center justify-center hover:bg-[#006399]">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Author Bio -->
+        <div class="bg-gray-50 p-8 rounded-lg mb-10">
+            <div class="flex gap-6">
+                <div class="comment-avatar">
+                    <img src="{% static 'images/avatar.jpg' %}" alt="Dr. Jean Kamga" class="w-24 h-24 rounded-full">
+                </div>
+                <div>
+                    <div class="text-sm text-gray-600 uppercase mb-2">À propos de l'auteur</div>
+                    <h4 class="text-2xl font-bold text-[#192f59] mb-3">
+                        <a href="#" class="hover:text-[#3db166]">Dr. Jean Kamga</a>
+                    </h4>
+                    <p class="text-gray-700">
+                        Loin, très loin, derrière les montagnes de mots, loin des pays de Vokalia et Consonantia, vivent les textes aveugles. Expert en développement communautaire et recherche sociale.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Navigation -->
+        <div class="flex justify-between items-center py-8 border-t border-b border-gray-200 mb-10">
+            <a href="#" class="flex items-center gap-3 text-[#192f59] hover:text-[#3db166] transition-colors">
+                <i class="fas fa-arrow-left"></i>
+                <span class="font-semibold">Précédent</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 text-[#192f59] hover:text-[#3db166] transition-colors">
+                <span class="font-semibold">Suivant</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3 class="text-3xl font-bold text-[#192f59] mb-8">2 Commentaires</h3>
+
+            <!-- Comment List -->
+            <div class="space-y-8 mb-12">
+                <!-- Comment 1 -->
+                <div class="flex gap-6">
+                    <div class="comment-avatar">
+                        <img src="{% static 'images/avatar.jpg' %}" alt="" class="w-20 h-20 rounded-full">
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h5 class="font-bold text-[#192f59] text-lg">Marie Dubois</h5>
+                                    <div class="text-sm text-gray-600">26 Novembre 2024 à 15h04</div>
+                                </div>
+                                <button class="text-[#3db166] hover:text-[#35a05c] text-sm font-semibold">Répondre</button>
+                            </div>
+                            <p class="text-gray-700">
+                                Excellent article! J'apprécie particulièrement votre approche du développement communautaire. Les exemples pratiques sont très utiles pour comprendre les concepts théoriques.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comment 2 -->
+                <div class="flex gap-6">
+                    <div class="comment-avatar">
+                        <img src="{% static 'images/avatar.jpg' %}" alt="" class="w-20 h-20 rounded-full">
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h5 class="font-bold text-[#192f59] text-lg">Paul Ekani</h5>
+                                    <div class="text-sm text-gray-600">26 Novembre 2024 à 15h05</div>
+                                </div>
+                                <button class="text-[#3db166] hover:text-[#35a05c] text-sm font-semibold">Répondre</button>
+                            </div>
+                            <p class="text-gray-700">
+                                Merci pour ce partage d'expérience. Cela m'inspire pour mon propre projet de développement local.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comment Form -->
+            <div class="bg-white border border-gray-200 rounded-lg p-8">
+                <h4 class="text-2xl font-bold text-[#192f59] mb-6">Laisser un Commentaire</h4>
+                
+                <form class="comment-form space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <textarea 
+                            name="comment" 
+                            rows="6" 
+                            placeholder="Votre commentaire*" 
+                            required
+                            class="w-full"
+                        ></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <input 
+                                type="text" 
+                                name="name" 
+                                placeholder="Nom*" 
+                                required
+                            >
+                        </div>
+                        <div>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="Email*" 
+                                required
+                            >
+                        </div>
+                        <div>
+                            <input 
+                                type="text" 
+                                name="website" 
+                                placeholder="Site Web"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input 
+                            type="checkbox" 
+                            id="save-info" 
+                            name="save-info"
+                            class="w-4 h-4 text-[#3db166] rounded"
+                        >
+                        <label for="save-info" class="text-sm text-gray-700">
+                            Enregistrer mon nom, email et site web pour la prochaine fois
+                        </label>
+                    </div>
+
+                    <div>
+                        <button 
+                            type="submit" 
+                            class="bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded font-semibold transition-colors"
+                        >
+                            Publier le Commentaire
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

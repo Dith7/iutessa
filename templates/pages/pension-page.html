@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Frais de Scolarité - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Featured pricing card highlight */
+    .featured-card {
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba(61, 177, 102, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+        .featured-card {
+            transform: scale(1);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Title Section -->
+<section class="relative bg-[#192f59] py-32">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#192f59] to-[#2c3e68]"></div>
+    <div class="max-w-[1140px] mx-auto px-4 relative text-white text-center">
+        <p class="text-sm uppercase tracking-wider mb-3">Éléments du Thème</p>
+        <h1 class="text-5xl font-bold">Frais de Scolarité</h1>
+    </div>
+</section>
+
+<!-- Featured Pricing Section -->
+<section class="py-24 bg-[#f1f1f1]">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <!-- Section Header -->
+        <div class="text-left mb-12">
+            <p class="text-[#3db166] text-lg mb-3">Exemple de tableau des frais</p>
+            <h3 class="text-[45px] font-semibold text-[#192f59] mb-6">Frais de Scolarité par Cycle</h3>
+            <p class="text-base text-gray-700 leading-relaxed max-w-4xl">
+                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, qui a été créé pour la félicité d'âmes comme la mienne.
+            </p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- BTS Card -->
+            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div class="bg-[#192f59] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6">
+                        <i class="fa fa-lightbulb-o text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">BTS</h3>
+                    <p class="text-sm text-gray-300">Brevet de Technicien Supérieur</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 450,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Formation théorique et pratique</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Stage en entreprise inclus</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Accès à la bibliothèque</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Certificat reconnu par l'État</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#192f59] hover:bg-[#2c3e68] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- HND Card (Featured) -->
+            <div class="bg-white rounded-lg overflow-hidden featured-card relative">
+                <div class="absolute top-0 right-0 bg-[#3db166] text-white px-4 py-2 text-sm font-semibold rounded-bl-lg">
+                    POPULAIRE
+                </div>
+                <div class="bg-[#3db166] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6">
+                        <i class="fa fa-codepen text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">HND</h3>
+                    <p class="text-sm text-gray-100">Higher National Diploma</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 550,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Formation professionnelle avancée</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Stages en entreprise multiples</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Accès laboratoires et ateliers</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Diplôme international reconnu</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#3db166] hover:bg-[#35a05c] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- License Card -->
+            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div class="bg-[#192f59] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6">
+                        <i class="fa fa-connectdevelop text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Licence</h3>
+                    <p class="text-sm text-gray-300">Licence Professionnelle</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 650,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Formation universitaire complète</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Projet de fin d'études</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Accès à toutes les ressources</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Diplôme niveau BAC+3</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#192f59] hover:bg-[#2c3e68] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Plain Pricing Section with Background -->
+<section class="relative py-28 bg-cover bg-center" style="background-image: url('{% static 'images/image-bg-3.jpg' %}');">
+    <div class="absolute inset-0 bg-[#192f59]/90"></div>
+    <div class="max-w-[1140px] mx-auto px-4 relative">
+        <!-- Section Header -->
+        <div class="text-left text-white mb-16">
+            <p class="text-[#cccccc] text-lg mb-3">Cycles Supérieurs</p>
+            <h3 class="text-[47px] font-semibold mb-6">Frais Master & Doctorat</h3>
+            <p class="text-base text-gray-200 leading-relaxed max-w-4xl">
+                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit.
+            </p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Master 1 Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 hover:bg-white">
+                <div class="bg-[#192f59] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6">
+                        <i class="fa fa-graduation-cap text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Master 1</h3>
+                    <p class="text-sm text-gray-300">Première année de Master</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 750,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Cours magistraux et TD</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Séminaires spécialisés</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Accès bibliothèque numérique</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Suivi personnalisé</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#192f59] hover:bg-[#2c3e68] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- Master 2 Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 hover:bg-white">
+                <div class="bg-[#192f59] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6">
+                        <i class="fa fa-user-md text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Master 2</h3>
+                    <p class="text-sm text-gray-300">Deuxième année - Recherche</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 850,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Mémoire de recherche</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Encadrement doctoral</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Publications scientifiques</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Conférences internationales</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#192f59] hover:bg-[#2c3e68] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- Doctorat Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 hover:bg-white">
+                <div class="bg-[#192f59] text-white text-center py-12 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6">
+                        <i class="fa fa-flask text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Doctorat</h3>
+                    <p class="text-sm text-gray-300">Programme doctoral (PhD)</p>
+                </div>
+                <div class="text-center py-8 px-6 border-b border-gray-200">
+                    <span class="text-2xl font-light">FCFA</span>
+                    <span class="text-5xl font-bold text-[#192f59]"> 950,000</span>
+                    <span class="text-lg text-gray-600"> / AN</span>
+                </div>
+                <div class="p-8">
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Thèse de doctorat</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Laboratoire de recherche</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Bourses de recherche possibles</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa fa-check text-[#3db166] mt-1"></i>
+                            <span class="text-gray-700">Réseau international</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'pages:apply' %}" class="block w-full bg-[#192f59] hover:bg-[#2c3e68] text-white text-center py-4 rounded font-semibold transition-colors">
+                        En Savoir Plus
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Info Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="bg-[#f7f7f7] rounded-lg p-12 text-center">
+            <h3 class="text-3xl font-semibold text-[#192f59] mb-6">Modalités de Paiement</h3>
+            <p class="text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
+                Les frais de scolarité peuvent être payés en plusieurs tranches. IUTESSA offre également des bourses d'études basées sur le mérite académique et la situation financière. Contactez notre service des admissions pour plus d'informations sur les options de financement disponibles.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="{% url 'pages:apply' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-4 rounded font-semibold transition-colors">
+                    Postuler Maintenant
+                </a>
+                <a href="{% url 'pages:contact' %}" class="inline-block bg-white hover:bg-gray-50 text-[#192f59] border-2 border-[#192f59] px-8 py-4 rounded font-semibold transition-colors">
+                    Nous Contacter
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

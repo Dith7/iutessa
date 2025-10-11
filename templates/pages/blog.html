@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Actualités - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Sticky badge */
+    .sticky-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #3db166;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    /* Blog card hover effect */
+    .blog-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Image overlay on hover */
+    .blog-image-wrap {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .blog-image-wrap img {
+        transition: transform 0.5s ease, opacity 0.3s ease;
+    }
+    
+    .blog-image-wrap:hover img {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    
+    /* Tag cloud styles */
+    .tag-cloud a {
+        display: inline-block;
+        padding: 6px 14px;
+        margin: 4px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #666;
+        transition: all 0.3s ease;
+        font-size: 13px;
+    }
+    
+    .tag-cloud a:hover {
+        background: #3db166;
+        color: white;
+    }
+    
+    /* Recent work grid */
+    .recent-work-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+    
+    .recent-work-item img {
+        transition: transform 0.3s ease;
+    }
+    
+    .recent-work-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .recent-work-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(25, 47, 89, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .recent-work-item:hover .recent-work-overlay {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Title Section -->
+<section class="relative bg-[#192f59] py-16">
+    <div class="max-w-[1140px] mx-auto px-4 text-white">
+        <p class="text-sm uppercase tracking-wider mb-3">Actualités et Événements</p>
+        <h1 class="text-5xl font-bold">Blog IUTESSA</h1>
+    </div>
+</section>
+
+<!-- Main Content with Sidebar -->
+<section class="bg-[#f7f7f7] py-16">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content Area (Left - 2/3) -->
+            <div class="lg:w-2/3">
+                <div class="space-y-10">
+                    <!-- Blog Post 1 (Sticky) -->
+                    <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="blog-image-wrap relative">
+                            <div class="sticky-badge">
+                                <i class="fas fa-bolt"></i>
+                                <span>Article Épinglé</span>
+                            </div>
+                            <a href="{% url 'blog:post_detail' %}">
+                                <img src="{% static 'images/blog/blog-1.jpg' %}" alt="" class="w-full h-[400px] object-cover">
+                            </a>
+                        </div>
+                        <div class="p-10">
+                            <h3 class="text-3xl font-bold text-[#192f59] mb-4 hover:text-[#3db166] transition-colors">
+                                <a href="{% url 'blog:post_detail' %}">Projet de Développement: Aider les Communautés Locales</a>
+                            </h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                                <span><i class="far fa-calendar mr-2"></i>15 Janvier 2025</span>
+                                <span><i class="far fa-user mr-2"></i>Par Dr. Jean Kamga</span>
+                                <span><i class="far fa-folder mr-2"></i>Actualités</span>
+                                <span><i class="far fa-comments mr-2"></i>3 Commentaires</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, qui a été créé pour la félicité d'âmes comme la mienne. Je suis si heureux, mon cher ami, tellement absorbé...
+                            </p>
+                            <a href="{% url 'blog:post_detail' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-3 rounded font-semibold transition-colors">
+                                Lire Plus
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 2 -->
+                    <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="blog-image-wrap">
+                            <a href="{% url 'blog:post_detail' %}">
+                                <img src="{% static 'images/blog/blog-2.jpg' %}" alt="" class="w-full h-[400px] object-cover">
+                            </a>
+                        </div>
+                        <div class="p-10">
+                            <h3 class="text-3xl font-bold text-[#192f59] mb-4 hover:text-[#3db166] transition-colors">
+                                <a href="{% url 'blog:post_detail' %}">Recherche Conjointe du Professeur Albert sur le Mobile Money</a>
+                            </h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                                <span><i class="far fa-calendar mr-2"></i>12 Janvier 2025</span>
+                                <span><i class="far fa-user mr-2"></i>Par Prof. Albert Nkono</span>
+                                <span><i class="far fa-folder mr-2"></i>Recherche</span>
+                                <span><i class="far fa-comments mr-2"></i>2 Commentaires</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, qui a été créé pour la félicité d'âmes comme la mienne...
+                            </p>
+                            <a href="{% url 'blog:post_detail' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-3 rounded font-semibold transition-colors">
+                                Lire Plus
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 3 -->
+                    <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="blog-image-wrap">
+                            <a href="{% url 'blog:post_detail' %}">
+                                <img src="{% static 'images/blog/blog-3.jpg' %}" alt="" class="w-full h-[400px] object-cover">
+                            </a>
+                        </div>
+                        <div class="p-10">
+                            <h3 class="text-3xl font-bold text-[#192f59] mb-4 hover:text-[#3db166] transition-colors">
+                                <a href="{% url 'blog:post_detail' %}">Un MBA Global pour la Nouvelle Génération de Leaders</a>
+                            </h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                                <span><i class="far fa-calendar mr-2"></i>10 Janvier 2025</span>
+                                <span><i class="far fa-user mr-2"></i>Par Dr. Marie Foko</span>
+                                <span><i class="far fa-folder mr-2"></i>Programmes</span>
+                                <span><i class="far fa-comments mr-2"></i>1 Commentaire</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit...
+                            </p>
+                            <a href="{% url 'blog:post_detail' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-3 rounded font-semibold transition-colors">
+                                Lire Plus
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 4 -->
+                    <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="blog-image-wrap">
+                            <a href="{% url 'blog:post_detail' %}">
+                                <img src="{% static 'images/blog/blog-4.jpg' %}" alt="" class="w-full h-[400px] object-cover">
+                            </a>
+                        </div>
+                        <div class="p-10">
+                            <h3 class="text-3xl font-bold text-[#192f59] mb-4 hover:text-[#3db166] transition-colors">
+                                <a href="{% url 'blog:post_detail' %}">Le Professeur Tom Commente les Rappels Volontaires</a>
+                            </h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                                <span><i class="far fa-calendar mr-2"></i>8 Janvier 2025</span>
+                                <span><i class="far fa-user mr-2"></i>Par Prof. Tom Mbella</span>
+                                <span><i class="far fa-folder mr-2"></i>Actualités</span>
+                                <span><i class="far fa-comments mr-2"></i>1 Commentaire</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence...
+                            </p>
+                            <a href="{% url 'blog:post_detail' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-3 rounded font-semibold transition-colors">
+                                Lire Plus
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center items-center gap-2 mt-12">
+                    <span class="w-10 h-10 bg-[#3db166] text-white rounded-full flex items-center justify-center font-semibold">1</span>
+                    <a href="#" class="w-10 h-10 bg-white hover:bg-[#3db166] hover:text-white text-gray-700 rounded-full flex items-center justify-center font-semibold transition-colors">2</a>
+                    <a href="#" class="w-10 h-10 bg-white hover:bg-[#3db166] hover:text-white text-gray-700 rounded-full flex items-center justify-center font-semibold transition-colors">3</a>
+                    <a href="#" class="w-10 h-10 bg-white hover:bg-[#3db166] hover:text-white text-gray-700 rounded-full flex items-center justify-center transition-colors">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar (Right - 1/3) -->
+            <aside class="lg:w-1/3">
+                <div class="space-y-10">
+                    <!-- Text Widget -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-[#192f59] mb-6 pb-4 border-b-2 border-[#3db166]">À Propos</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            IUTESSA est un institut universitaire d'excellence dédié à la formation de la prochaine génération de leaders africains. Découvrez nos actualités et événements.
+                        </p>
+                    </div>
+
+                    <!-- Recent News Widget -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-[#192f59] mb-6 pb-4 border-b-2 border-[#3db166]">Articles Récents</h3>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <img src="{% static 'images/blog/blog-thumb-1.jpg' %}" alt="" class="w-20 h-20 object-cover rounded flex-shrink-0">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[#192f59] hover:text-[#3db166] mb-2 leading-tight">
+                                        <a href="#">Recherche sur le Mobile Money en Tanzanie</a>
+                                    </h4>
+                                    <div class="text-xs text-gray-600">
+                                        <span class="block">15 Jan 2025</span>
+                                        <span>Par Dr. Jean Kamga</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <img src="{% static 'images/blog/blog-thumb-2.jpg' %}" alt="" class="w-20 h-20 object-cover rounded flex-shrink-0">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[#192f59] hover:text-[#3db166] mb-2 leading-tight">
+                                        <a href="#">MBA Global pour Leaders</a>
+                                    </h4>
+                                    <div class="text-xs text-gray-600">
+                                        <span class="block">12 Jan 2025</span>
+                                        <span>Par Prof. Albert</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <img src="{% static 'images/blog/blog-thumb-3.jpg' %}" alt="" class="w-20 h-20 object-cover rounded flex-shrink-0">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[#192f59] hover:text-[#3db166] mb-2 leading-tight">
+                                        <a href="#">Commentaires du Professeur Tom</a>
+                                    </h4>
+                                    <div class="text-xs text-gray-600">
+                                        <span class="block">10 Jan 2025</span>
+                                        <span>Par Prof. Tom</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag Cloud Widget -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-[#192f59] mb-6 pb-4 border-b-2 border-[#3db166]">Tags Populaires</h3>
+                        <div class="tag-cloud">
+                            <a href="#">Admission</a>
+                            <a href="#">Recherche</a>
+                            <a href="#">Événements</a>
+                            <a href="#">Actualités</a>
+                            <a href="#">Étudiants</a>
+                            <a href="#">Innovation</a>
+                            <a href="#">Campus</a>
+                            <a href="#">Sport</a>
+                            <a href="#">Culture</a>
+                            <a href="#">Technologies</a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Works Widget -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-[#192f59] mb-6 pb-4 border-b-2 border-[#3db166]">Projets Récents</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-1.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-2.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-3.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-4.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-5.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="recent-work-item block">
+                                <img src="{% static 'images/portfolio/portfolio-thumb-6.jpg' %}" alt="" class="w-full h-24 object-cover rounded">
+                                <div class="recent-work-overlay rounded">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

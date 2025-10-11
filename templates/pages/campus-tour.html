@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Visite du Campus - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Accordion styling */
+    .accordion-item {
+        border-bottom: 1px solid #e5e5e5;
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-header {
+        cursor: pointer;
+        background: #f7f7f7;
+        padding: 18px 60px 18px 25px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-header:hover {
+        background: #efefef;
+    }
+    
+    .accordion-header.active {
+        background: #3db166;
+        color: white;
+    }
+    
+    .accordion-icon {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease;
+    }
+    
+    .accordion-header.active .accordion-icon {
+        transform: translateY(-50%) rotate(180deg);
+    }
+    
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: white;
+    }
+    
+    .accordion-content.active {
+        max-height: 500px;
+    }
+    
+    .accordion-content-inner {
+        padding: 25px;
+    }
+    
+    /* Form styling */
+    .tour-form input,
+    .tour-form select,
+    .tour-form textarea {
+        width: 100%;
+        padding: 15px 20px;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        background: white;
+        transition: border-color 0.3s ease;
+    }
+    
+    .tour-form input:focus,
+    .tour-form select:focus,
+    .tour-form textarea:focus {
+        outline: none;
+        border-color: #3db166;
+    }
+    
+    .tour-form input::placeholder,
+    .tour-form textarea::placeholder {
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative bg-cover bg-center" style="background-image: url('{% static 'images/campus-tour-hero.jpg' %}');">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70"></div>
+    <div class="relative max-w-[1140px] mx-auto px-4 pt-[550px] pb-16">
+        <p class="text-white text-xl mb-4 uppercase tracking-wide">Rendez-vous pour</p>
+        <h1 class="text-5xl font-bold text-white">Visite du Campus</h1>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<div class="bg-white border-b border-gray-200">
+    <div class="max-w-[1140px] mx-auto px-4 py-4">
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166]">Accueil</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span class="text-gray-800">Visite du Campus</span>
+        </div>
+    </div>
+</div>
+
+<!-- Special Campus Tour Section (Green Background) -->
+<section class="bg-[#3db166]">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Left Content -->
+            <div class="py-24 pr-0 lg:pr-12 text-white">
+                <img src="{% static 'images/icons/campus-logo.png' %}" alt="Campus" class="w-16 h-16 mb-8">
+                <h3 class="text-4xl font-bold mb-6">Visite Spéciale du Campus</h3>
+                <p class="text-lg leading-relaxed">
+                    Visitez le campus lors d'une visite conçue pour les futurs étudiants diplômés et professionnels. Vous verrez à quoi ressemble notre université, les installations, les étudiants et la vie dans cette université. Rencontrez notre représentant des admissions pour en savoir plus sur nos programmes d'études supérieures et décider de ce qui est le mieux pour vous.
+                </p>
+            </div>
+            
+            <!-- Right Image -->
+            <div class="h-[400px] lg:h-auto bg-cover bg-center" style="background-image: url('{% static 'images/campus-tour-students.jpg' %}');"></div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ & Info Section -->
+<section class="bg-white py-20">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Left Column - FAQ -->
+            <div>
+                <h3 class="text-2xl font-semibold text-[#1a1a1a] mb-8">Questions Fréquemment Posées</h3>
+                
+                <div class="space-y-2">
+                    <!-- Accordion Item 1 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header active" onclick="toggleAccordion(this)">
+                            <h4 class="font-semibold pr-8">Combien de temps durera la visite?</h4>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-content active">
+                            <div class="accordion-content-inner text-gray-700">
+                                <p class="mb-3">
+                                    Fourni par l'Institut d'éducation d'IUTESSA, ce programme est disponible par apprentissage à distance, vous permettant d'étudier de manière flexible tout en équilibrant travail et vie personnelle.
+                                </p>
+                                <p>
+                                    La visite complète dure environ 90 minutes et vous emmène à travers les principales installations académiques et les espaces de vie étudiante.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4 class="font-semibold pr-8">Y a-t-il un parking à proximité?</h4>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner text-gray-700">
+                                <p class="mb-3">
+                                    Oui, nous disposons d'un parking gratuit pour les visiteurs situé près du centre d'admission. Des panneaux vous guideront vers les places de stationnement réservées aux visiteurs.
+                                </p>
+                                <p>
+                                    Nous recommandons d'arriver 15 minutes avant l'heure de début de votre visite pour vous assurer d'avoir suffisamment de temps pour vous garer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 3 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4 class="font-semibold pr-8">Puis-je laisser mes sacs au point de rencontre?</h4>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner text-gray-700">
+                                <p class="mb-3">
+                                    Pour des raisons de sécurité, nous ne pouvons pas garder les bagages des visiteurs. Nous vous recommandons de voyager léger et d'apporter seulement l'essentiel.
+                                </p>
+                                <p>
+                                    Si vous avez des bagages volumineux, veuillez nous contacter à l'avance pour discuter des options possibles.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 4 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4 class="font-semibold pr-8">La visite sera-t-elle annulée en cas de mauvais temps?</h4>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner text-gray-700">
+                                <p class="mb-3">
+                                    Les visites ont lieu beau temps, mauvais temps. En cas de conditions météorologiques extrêmes, nous ajusterons l'itinéraire pour inclure davantage de visites intérieures.
+                                </p>
+                                <p>
+                                    Nous vous contacterons par email ou téléphone si des changements importants sont nécessaires.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Information -->
+            <div class="space-y-8">
+                <!-- Undergraduate Visitors -->
+                <div>
+                    <h3 class="text-lg font-semibold text-[#192f59] mb-4">Visiteurs de Premier Cycle</h3>
+                    <p class="text-gray-600 text-[15px] leading-relaxed">
+                        Cette visite est destinée aux futurs étudiants diplômés et professionnels. Tous sont les bienvenus, mais les étudiants intéressés par les programmes de premier cycle peuvent souhaiter visiter la page des admissions de premier cycle d'IUTESSA pour une expérience de visite plus appropriée.
+                    </p>
+                </div>
+
+                <!-- Complete Your Visit -->
+                <div>
+                    <h3 class="text-lg font-semibold text-[#192f59] mb-4">Complétez Votre Visite</h3>
+                    <p class="text-gray-600 text-[15px] leading-relaxed">
+                        Pour en savoir plus sur le processus d'admission spécifique à votre programme, nous vous recommandons de visiter une école supérieure ou professionnelle spécifique. Nous vous suggérons de prendre contact avec votre école ou département d'intérêt spécifique à l'avance.
+                    </p>
+                </div>
+
+                <!-- Foreign Visitors -->
+                <div>
+                    <h3 class="text-lg font-semibold text-[#192f59] mb-4">Visiteurs Étrangers</h3>
+                    <p class="text-gray-600 text-[15px] leading-relaxed">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence dans cet endroit, qui a été créé pour la félicité d'âmes comme la mienne. Nous accueillons les visiteurs internationaux et pouvons organiser des visites en plusieurs langues sur demande préalable.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Divider -->
+<div class="max-w-[1140px] mx-auto px-4">
+    <div class="border-t-4 border-[#3db166] w-full"></div>
+</div>
+
+<!-- Tour Time & Appointment Form Section -->
+<section class="bg-white py-16">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Left Column - Tour Time Info -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#1a1a1a] mb-8">Horaires de Visite du Campus</h3>
+                
+                <p class="text-[#414141] text-lg mb-8">
+                    Nous sommes ouverts du lundi au vendredi à 11h et 15h, sauf jours fériés.
+                </p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-bold text-[#414141] mb-2">Centre d'Admission IUTESSA</h4>
+                        <p class="text-gray-600">
+                            Campus IUTESSA
+                            <br />Rue de l'Université
+                            <br />Yaoundé, Cameroun
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-[#414141]">Téléphone : +237 6 78 90 12 34</h4>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-[#414141]">Email : admission@iutessa.cm</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Appointment Form -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#1a1a1a] mb-8">Prendre Rendez-vous</h3>
+                
+                <form class="tour-form space-y-5" id="tourForm">
+                    {% csrf_token %}
+                    
+                    <div>
+                        <input 
+                            type="text" 
+                            name="full_name" 
+                            placeholder="Nom complet*" 
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <input 
+                            type="date" 
+                            name="tour_date" 
+                            required
+                            min="{{ today }}"
+                        >
+                    </div>
+                    
+                    <div>
+                        <select name="tour_time" required>
+                            <option value="">Sélectionner l'heure*</option>
+                            <option value="11h00">11h00</option>
+                            <option value="15h00">15h00</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <input 
+                            type="tel" 
+                            name="phone" 
+                            placeholder="Téléphone*" 
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            placeholder="Email*" 
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <textarea 
+                            name="special_request" 
+                            rows="5" 
+                            placeholder="Demande Spéciale"
+                        ></textarea>
+                    </div>
+                    
+                    <div>
+                        <button 
+                            type="submit" 
+                            class="w-full bg-[#3db166] hover:bg-[#35a05c] text-white py-4 rounded font-semibold transition-colors"
+                        >
+                            Soumettre Maintenant
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Accordion functionality
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const allHeaders = document.querySelectorAll('.accordion-header');
+        const allContents = document.querySelectorAll('.accordion-content');
+        
+        // Close all other accordions
+        allHeaders.forEach(h => {
+            if (h !== header) {
+                h.classList.remove('active');
+            }
+        });
+        
+        allContents.forEach(c => {
+            if (c !== content) {
+                c.classList.remove('active');
+            }
+        });
+        
+        // Toggle current accordion
+        header.classList.toggle('active');
+        content.classList.toggle('active');
+    }
+    
+    // Form submission
+    document.getElementById('tourForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Envoi en cours...';
+        
+        // Simulate form submission (replace with actual AJAX call)
+        setTimeout(() => {
+            alert('Votre demande de visite a été soumise avec succès! Nous vous contacterons bientôt.');
+            this.reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }, 1500);
+        
+        // For actual Django form submission with AJAX:
+        /*
+        fetch('{% url "pages:campus_tour" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Votre demande de visite a été soumise avec succès!');
+                this.reset();
+            } else {
+                alert('Une erreur s\'est produite. Veuillez réessayer.');
+            }
+        })
+        .catch(error => {
+            alert('Une erreur s\'est produite. Veuillez réessayer.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        });
+        */
+    });
+    
+    // Set minimum date to today
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    }
+</script>
+{% endblock %}

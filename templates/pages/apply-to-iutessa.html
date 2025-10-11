@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Candidature - IUTESSA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Parallax effect */
+    .parallax-section {
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    /* Number styling for steps */
+    .step-number {
+        color: #3db166;
+        font-size: 45px;
+        font-weight: 700;
+        line-height: 1;
+        margin-right: 25px;
+        flex-shrink: 0;
+    }
+    
+    /* Table styling */
+    .admission-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .admission-table th,
+    .admission-table td {
+        padding: 15px 20px;
+        text-align: left;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .admission-table th {
+        background: #f7f7f7;
+        font-weight: 700;
+        color: #192f59;
+    }
+    
+    .admission-table tbody tr:hover {
+        background: #f9f9f9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative bg-cover bg-center" style="background-image: url('{% static 'images/apply-hero.jpg' %}');">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70"></div>
+    <div class="relative max-w-[1140px] mx-auto px-4 pt-96 pb-16">
+        <p class="text-white text-xl mb-4 uppercase tracking-wide">Admission</p>
+        <h1 class="text-5xl font-bold text-white">Postuler à IUTESSA</h1>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<div class="bg-white border-b border-gray-200">
+    <div class="max-w-[1140px] mx-auto px-4 py-4">
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166]">Accueil</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span class="text-gray-800">Postuler à IUTESSA</span>
+        </div>
+    </div>
+</div>
+
+<!-- Introduction Section -->
+<section class="bg-white py-16">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <h3 class="text-3xl font-bold text-[#192f59] mb-8">Détails sur Comment Postuler</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Si vous souhaitez étudier dans une université au cœur de la ville qui se concentre sur le changement du monde pour un meilleur demain, vous faites le bon choix. Nous n'utilisons pas de formules spéciales pour sélectionner les étudiants. Nous examinons chaque candidature individuelle, académique et personnelle, pour sélectionner des étudiants qui correspondent à notre communauté avec une gamme complète de parcours.
+                </p>
+            </div>
+            <div>
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Si vous souhaitez étudier dans une université au cœur de la ville qui se concentre sur le changement du monde pour un meilleur demain, vous faites le bon choix. Nous examinons chaque candidature d'étudiant, académique et personnelle, pour sélectionner des étudiants qui correspondent à notre communauté.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section (Dark Background) -->
+<section class="bg-[#1b2945] py-20">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Service 1 -->
+            <div class="text-white">
+                <div class="mb-8">
+                    <img src="{% static 'images/icons/education.png' %}" alt="Services Éducatifs" class="w-12 h-12">
+                </div>
+                <h3 class="text-xl font-bold mb-4">Services Éducatifs</h3>
+                <p class="text-gray-300">
+                    IUTESSA a été établi en 1920 pour le bénéfice public et il est reconnu pour son excellence académique.
+                </p>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="text-white">
+                <div class="mb-8">
+                    <img src="{% static 'images/icons/international.png' %}" alt="Hubs Internationaux" class="w-12 h-12">
+                </div>
+                <h3 class="text-xl font-bold mb-4">Hubs Internationaux</h3>
+                <p class="text-gray-300">
+                    IUTESSA a été établi en 1920 pour le bénéfice public et il est reconnu pour son excellence académique.
+                </p>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="text-white">
+                <div class="mb-8">
+                    <img src="{% static 'images/icons/degree.png' %}" alt="Licence et Master" class="w-12 h-12">
+                </div>
+                <h3 class="text-xl font-bold mb-4">Licence et Master</h3>
+                <p class="text-gray-300">
+                    IUTESSA a été établi en 1920 pour le bénéfice public et il est reconnu pour son excellence académique.
+                </p>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="text-white">
+                <div class="mb-8">
+                    <img src="{% static 'images/icons/campus-life.png' %}" alt="Vie Universitaire" class="w-12 h-12">
+                </div>
+                <h3 class="text-xl font-bold mb-4">Vie Universitaire</h3>
+                <p class="text-gray-300">
+                    IUTESSA a été établi en 1920 pour le bénéfice public et il est reconnu pour son excellence académique.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Parallax Image Section -->
+<section class="parallax-section h-[660px]" style="background-image: url('{% static 'images/campus-parallax.jpg' %}');"></section>
+
+<!-- Application Process Section -->
+<section class="bg-white py-20">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <h3 class="text-3xl font-bold text-[#192f59] mb-12">Le Processus de Candidature</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <!-- Step 1 -->
+            <div class="flex gap-4">
+                <div class="step-number">1</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Démarrer la Soumission en Ligne</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex gap-4">
+                <div class="step-number">2</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Soumettre le Formulaire</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex gap-4">
+                <div class="step-number">3</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Révision de la Soumission</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="flex gap-4">
+                <div class="step-number">4</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Rassembler les Documents Nécessaires</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="flex gap-4">
+                <div class="step-number">5</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Processus d'Entretien</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="flex gap-4">
+                <div class="step-number">6</div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#192f59] mb-3">Décision Finale</h4>
+                    <p class="text-gray-700">
+                        Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Divider -->
+<div class="max-w-[1140px] mx-auto px-4">
+    <div class="border-t-4 border-[#50bd77] w-full"></div>
+</div>
+
+<!-- Information Section -->
+<section class="bg-white py-16">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Left Column - Things to Know -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#192f59] mb-8">Choses à Savoir en Premier</h3>
+                
+                <p class="text-gray-700 text-lg mb-4">
+                    La candidature commune est requise pour les étudiants qui postulent à l'un ou à tous les trois diplômes d'IUTESSA. Vous pourrez choisir votre campus et les programmes qui vous intéressent.
+                </p>
+                
+                <p class="text-gray-700 text-lg mb-6">Vous aurez besoin de :</p>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex gap-4">
+                        <i class="far fa-dot-circle text-[#50bd77] text-xl mt-1"></i>
+                        <span class="text-gray-700 text-lg">
+                            Coordonnées du conseiller ou autre représentant de l'école qui complétera votre rapport scolaire et soumettra votre relevé de notes officiel.
+                        </span>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="far fa-dot-circle text-[#50bd77] text-xl mt-1"></i>
+                        <span class="text-gray-700 text-lg">
+                            Coordonnées d'un enseignant (ou deux maximum) qui complétera le formulaire d'évaluation de l'enseignant.
+                        </span>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="far fa-dot-circle text-[#50bd77] text-xl mt-1"></i>
+                        <span class="text-gray-700 text-lg">
+                            Frais de candidature non remboursables de 25 000 FCFA. Les étudiants incapables de payer peuvent demander une exonération.
+                        </span>
+                    </li>
+                </ul>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#" class="bg-[#3db166] hover:bg-[#35a05c] text-white px-8 py-4 rounded font-semibold transition-colors">
+                        Demander une Visite du Campus
+                    </a>
+                    <a href="#" class="bg-[#192f59] hover:bg-[#152240] text-white px-8 py-4 rounded font-semibold transition-colors">
+                        Demander des Informations
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column - When to Apply -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#192f59] mb-8">Quand Postuler?</h3>
+                
+                <div class="overflow-x-auto mb-10">
+                    <table class="admission-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Date Limite de Candidature</th>
+                                <th>Décision</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Décision Précoce 1</td>
+                                <td>1er Novembre</td>
+                                <td>15 Décembre</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Décision Précoce 2</td>
+                                <td>1er Janvier</td>
+                                <td>15 Février</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Décision Régulière</td>
+                                <td>1er Janvier</td>
+                                <td>1er Avril</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-[#192f59] mb-6">Où Soumettre les Documents Nécessaires?</h3>
+                
+                <p class="text-gray-700 text-lg mb-4">
+                    Les documents non soumis par voie électronique peuvent être envoyés par courrier à :
+                </p>
+                
+                <div class="bg-gray-50 p-6 rounded-lg text-gray-600">
+                    <p>Campus IUTESSA</p>
+                    <p>Rue de l'Université</p>
+                    <p>Yaoundé, Cameroun</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

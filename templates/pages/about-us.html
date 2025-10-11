@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}À Propos d'IUTESSA{% endblock %}
+
+{% block content %}
+
+<!-- Page Title Section -->
+<section class="relative bg-cover bg-center py-32" style="background-image: url('{% static 'images/about-bg.jpg' %}');">
+    <div class="absolute inset-0 bg-[#192f59]/70"></div>
+    <div class="max-w-[1140px] mx-auto px-4 relative text-white">
+        <p class="text-sm uppercase tracking-wider mb-3">Nous Connaître Mieux</p>
+        <h1 class="text-5xl font-bold">À Propos d'IUTESSA</h1>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<div class="bg-[#f8f8f8] py-4">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="text-sm text-gray-600">
+            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166]">Home</a>
+            <span class="mx-2">&gt;</span>
+            <span>À Propos</span>
+        </div>
+    </div>
+</div>
+
+<!-- History Section -->
+<section class="py-24 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <h3 class="text-3xl font-semibold text-[#192f59] mb-6">Histoire d'IUTESSA</h3>
+                <div class="w-20 h-1 bg-[#3db166] mb-8"></div>
+            </div>
+            <div>
+                <p class="text-gray-700 leading-relaxed">
+                    Si vous souhaitez étudier dans une université au cœur de la région qui se concentre sur le changement du monde pour un meilleur demain, vous choisissez le bon endroit. Nous n'utilisons pas de formules spéciales pour sélectionner les étudiants. Nous examinons chaque candidature d'étudiant, académique et personnelle, pour sélectionner les étudiants qui conviennent à notre communauté avec un large éventail de parcours.
+                </p>
+            </div>
+            <div>
+                <p class="text-gray-700 leading-relaxed">
+                    Si vous souhaitez étudier dans une université au cœur de la région qui se concentre sur le changement du monde pour un meilleur demain, vous choisissez le bon endroit. Nous examinons chaque candidature d'étudiant, académique et personnelle, pour sélectionner les étudiants qui conviennent à notre communauté.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Philosophy/Principles Section -->
+<section class="py-24 bg-[#f7f7f7]">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Our Philosophy -->
+            <div>
+                <img src="{% static 'images/col-icon-3.png' %}" alt="" class="w-10 h-11 mb-8">
+                <h3 class="text-2xl font-semibold text-[#192f59] mb-5">Notre Philosophie</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence.
+                </p>
+            </div>
+            
+            <!-- Kingster's Principle -->
+            <div>
+                <img src="{% static 'images/col-icon-4.png' %}" alt="" class="w-12 h-12 mb-8">
+                <h3 class="text-2xl font-semibold text-[#192f59] mb-5">Principes d'IUTESSA</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence.
+                </p>
+            </div>
+            
+            <!-- Key Of Success -->
+            <div>
+                <img src="{% static 'images/col-icon-2.png' %}" alt="" class="w-11 h-11 mb-8">
+                <h3 class="text-2xl font-semibold text-[#192f59] mb-5">Clés du Succès</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Une sérénité merveilleuse a pris possession de toute mon âme, comme ces douces matinées de printemps dont je jouis de tout mon cœur. Je suis seul et je ressens le charme de l'existence.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Special Campus Tour -->
+<section class="py-24 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="bg-[#f8f8f8] p-16 flex flex-col justify-center">
+                <img src="{% static 'images/about-icon-1.png' %}" alt="" class="w-16 h-16 mb-8">
+                <h3 class="text-3xl font-semibold text-[#192f59] mb-6">Visite Spéciale du Campus</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Campus lors d'une visite conçue pour les futurs étudiants diplômés et professionnels. Vous verrez à quoi ressemble notre université, ses installations, ses étudiants et la vie dans cette université. Rencontrez notre représentant des admissions des cycles supérieurs pour en savoir plus sur nos programmes d'études supérieures et décider ce qui est le mieux pour vous.
+                </p>
+            </div>
+            <div class="bg-cover bg-center min-h-[500px]" style="background-image: url('{% static 'images/about-tour.jpg' %}');"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Graduation Section -->
+<section class="py-24 bg-[#f7f7f7]">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="bg-cover bg-center min-h-[500px]" style="background-image: url('{% static 'images/about-graduation.jpg' %}');"></div>
+            <div class="bg-white p-16 flex flex-col justify-center">
+                <img src="{% static 'images/about-icon-2.png' %}" alt="" class="w-16 h-14 mb-8">
+                <h3 class="text-3xl font-semibold text-[#192f59] mb-6">Diplômation</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Campus lors d'une visite conçue pour les futurs étudiants diplômés et professionnels. Vous verrez à quoi ressemble notre université, ses installations, ses étudiants et la vie dans cette université. Rencontrez notre représentant des admissions des cycles supérieurs pour en savoir plus sur nos programmes d'études supérieures et décider ce qui est le mieux pour vous.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Powerful Alumni -->
+<section class="py-24 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="bg-[#f8f8f8] p-16 flex flex-col justify-center">
+                <img src="{% static 'images/about-icon-3.png' %}" alt="" class="w-16 h-16 mb-8">
+                <h3 class="text-3xl font-semibold text-[#192f59] mb-6">Anciens Élèves Puissants</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Campus lors d'une visite conçue pour les futurs étudiants diplômés et professionnels. Vous verrez à quoi ressemble notre université, ses installations, ses étudiants et la vie dans cette université. Rencontrez notre représentant des admissions des cycles supérieurs pour en savoir plus sur nos programmes d'études supérieures et décider ce qui est le mieux pour vous.
+                </p>
+            </div>
+            <div class="bg-cover bg-center min-h-[500px]" style="background-image: url('{% static 'images/about-alumni.jpg' %}');"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Partner Logos -->
+<section class="py-20 bg-white">
+    <div class="max-w-[1240px] mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+            <div class="flex justify-center">
+                <img src="{% static 'images/banner-1.png' %}" alt="" class="max-w-full h-auto opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+            <div class="flex justify-center">
+                <img src="{% static 'images/banner-2.png' %}" alt="" class="max-w-full h-auto opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+            <div class="flex justify-center">
+                <img src="{% static 'images/banner-3.png' %}" alt="" class="max-w-full h-auto opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+            <div class="flex justify-center">
+                <img src="{% static 'images/banner-4-1.png' %}" alt="" class="max-w-full h-auto opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+            <div class="flex justify-center">
+                <img src="{% static 'images/banner-5.png' %}" alt="" class="max-w-full h-auto opacity-60 hover:opacity-100 transition-opacity">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
