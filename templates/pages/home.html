@@ -50,6 +50,26 @@
         display: flex;
     }
 </style>
+
+<style>
+  .hero-slide-bg {
+    background-image: url("{% static 'images/slider-1-2.jpg' %}");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .hero-slide-2-bg {
+    background-image: url("{% static 'images/slider-2.jpg' %}");
+  }
+  
+  .apply-bg {
+    background-image: url("{% static 'images/apply-bg.jpg' %}");
+  }
+  
+  .video-bg {
+    background-image: url("{% static 'images/video-bg.jpg' %}");
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -57,7 +77,8 @@
 <!-- Hero Slider -->
 <section class="relative bg-[#192f59] h-[600px] overflow-hidden">
     <!-- Slide 1 -->
-    <div class="hero-slide active absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/slider-1-2.jpg' %}');">
+    
+<div class="hero-slide active absolute inset-0 bg-cover bg-center hero-slide-bg">
         <div class="absolute inset-0 bg-[#192f59]/40"></div>
         <div class="relative h-full flex items-center">
             <div class="max-w-[1140px] mx-auto px-4 w-full">
@@ -81,7 +102,7 @@
     </div>
     
     <!-- Slide 2 -->
-    <div class="hero-slide absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/slider-2.jpg' %}');">
+    <div class="hero-slide hero-slide-2-bg absolute inset-0 bg-cover bg-center">
         <div class="absolute inset-0 bg-[#192f59]/40"></div>
         <div class="relative h-full flex items-center">
             <div class="max-w-[1140px] mx-auto px-4 w-full">
@@ -144,7 +165,7 @@
 <section class="py-24">
     <div class="max-w-[1140px] mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
-            <div class="bg-cover bg-center min-h-[500px]" style="background-image: url('{% static 'images/apply-bg.jpg' %}');"></div>
+            <div class="apply-bg bg-cover bg-center min-h-[500px]"></div>
             <div class="bg-[#192f59] text-white p-20 flex flex-col justify-center">
                 <h2 class="text-4xl font-semibold mb-5">Postuler aux Admissions</h2>
                 <p class="text-[#a8b5c7] text-sm mb-6">Les candidatures pour l'année 2025 sont maintenant ouvertes</p>
@@ -284,7 +305,7 @@
 </section>
 
 <!-- Video Tour -->
-<section class="bg-cover bg-center py-36 relative" style="background-image: url('{% static 'images/video-bg.jpg' %}');">
+<section class="video-bg bg-cover bg-center py-36 relative">
     <div class="absolute inset-0 bg-[#192f59]/85"></div>
     <div class="max-w-[1140px] mx-auto px-4 relative text-center text-white">
         <a href="#" onclick="openVideoLightbox('https://www.youtube.com/embed/C5pKtnmHTxg?autoplay=1'); return false;" class="inline-block mb-9 hover:scale-110 transition-transform">

@@ -12,7 +12,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            background-color: #ffffff;
+            color: #232323;
+            min-height: 100vh;
+        }
+        
+        body { 
+            font-family: 'Poppins', sans-serif;
+        }
         
         /* Top Bar - exact from original */
         .top-bar { 
@@ -195,7 +209,10 @@
             .main-menu { display: none; }
             .mobile-header { display: block; }
         }
+        
+        
     </style>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     
