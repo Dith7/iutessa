@@ -5,30 +5,49 @@
 
 {% block extra_css %}
 <style>
-    /* Masonry Grid */
     .masonry-grid {
-        column-count: 2;
-        column-gap: 30px;
+        column-count: 1;
+        column-gap: 16px;
     }
     
-    @media (max-width: 768px) {
+    @media (min-width: 640px) {
         .masonry-grid {
-            column-count: 1;
+            column-count: 2;
+            column-gap: 20px;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 30px;
         }
     }
     
     .masonry-item {
         break-inside: avoid;
-        margin-bottom: 30px;
+        margin-bottom: 16px;
         display: inline-block;
         width: 100%;
     }
     
-    /* Portfolio Item Hover Effects */
+    @media (min-width: 640px) {
+        .masonry-item {
+            margin-bottom: 20px;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .masonry-item {
+            margin-bottom: 30px;
+        }
+    }
+    
     .portfolio-item {
         position: relative;
         overflow: hidden;
-        border-radius: 4px;
+        border-radius: 8px;
+        cursor: pointer;
     }
     
     .portfolio-item img {
@@ -52,10 +71,23 @@
         justify-content: center;
         opacity: 0;
         transition: opacity 0.4s ease;
+        padding: 16px;
+    }
+    
+    @media (min-width: 768px) {
+        .portfolio-overlay {
+            padding: 20px;
+        }
     }
     
     .portfolio-item:hover .portfolio-overlay {
         opacity: 1;
+    }
+    
+    @media (max-width: 767px) {
+        .portfolio-item:active .portfolio-overlay {
+            opacity: 1;
+        }
     }
     
     .portfolio-title {
@@ -67,6 +99,12 @@
         transform: translateY(0);
     }
     
+    @media (max-width: 767px) {
+        .portfolio-item:active .portfolio-title {
+            transform: translateY(0);
+        }
+    }
+    
     .portfolio-icon {
         transform: scale(0);
         transition: transform 0.3s ease 0.2s;
@@ -76,7 +114,12 @@
         transform: scale(1);
     }
     
-    /* Lightbox */
+    @media (max-width: 767px) {
+        .portfolio-item:active .portfolio-icon {
+            transform: scale(1);
+        }
+    }
+    
     .lightbox {
         display: none;
         position: fixed;
@@ -84,6 +127,13 @@
         background: rgba(0, 0, 0, 0.95);
         z-index: 9999;
         animation: fadeIn 0.3s ease;
+        padding: 10px;
+    }
+    
+    @media (min-width: 768px) {
+        .lightbox {
+            padding: 20px;
+        }
     }
     
     .lightbox.active {
@@ -91,9 +141,10 @@
     }
     
     .lightbox img {
-        max-width: 90%;
-        max-height: 90%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
+        margin: auto;
     }
     
     @keyframes fadeIn {
@@ -101,17 +152,19 @@
         to { opacity: 1; }
     }
     
-    /* Load More Button Animation */
     .load-more-btn {
         transition: all 0.3s ease;
     }
     
-    .load-more-btn:hover {
+    .load-more-btn:hover:not(:disabled) {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(61, 177, 102, 0.3);
     }
     
-    /* Hidden items for load more */
+    .load-more-btn:active:not(:disabled) {
+        transform: translateY(0);
+    }
+    
     .hidden-items {
         display: none;
     }
@@ -121,25 +174,27 @@
 {% block content %}
 
 <!-- Page Title Section -->
-<section class="relative bg-[#192f59] py-20">
-    <div class="max-w-[1140px] mx-auto px-4 text-center text-white">
-        <p class="text-sm uppercase tracking-wider mb-3">Réalisations & Projets</p>
-        <h1 class="text-5xl font-bold">Portfolio IUTESSA</h1>
+<section class="relative bg-[#192f59] py-12 sm:py-16 md:py-20">
+    <div class="max-w-[1140px] mx-auto px-4 sm:px-6 text-center text-white">
+        <p class="text-xs sm:text-sm uppercase tracking-wider mb-2 md:mb-3">Réalisations & Projets</p>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">Portfolio IUTESSA</h1>
     </div>
 </section>
 
 <!-- Portfolio Masonry Grid -->
-<section class="py-16 bg-white">
-    <div class="max-w-[1140px] mx-auto px-4">
+<section class="py-8 sm:py-12 md:py-16 bg-white">
+    <div class="max-w-[1140px] mx-auto px-4 sm:px-6">
         <div class="masonry-grid" id="portfolioGrid">
             <!-- Portfolio Item 1 -->
             <div class="masonry-item portfolio-card">
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-1.jpg' %}" alt="Projet Communautaire">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Projet de Développement Communautaire</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-1.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Projet de Développement Communautaire</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-1.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -150,9 +205,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-2.jpg' %}" alt="Recherche Médicale">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Innovation en Recherche Médicale</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-2.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Innovation en Recherche Médicale</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-2.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -163,9 +220,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-3.jpg' %}" alt="Conseil Juridique">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Clinique Juridique Étudiante</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-3.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Clinique Juridique Étudiante</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-3.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -176,9 +235,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-4.jpg' %}" alt="Formation Sport">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme Sport pour Seniors</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-4.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Programme Sport pour Seniors</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-4.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -189,9 +250,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-5.jpg' %}" alt="Spectacle Théâtral">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Production Théâtrale Étudiante</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-5.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Production Théâtrale Étudiante</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-5.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -202,9 +265,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-6.jpg' %}" alt="Concert Caritatif">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Concert Caritatif Annuel</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-6.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Concert Caritatif Annuel</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-6.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -215,9 +280,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-7.jpg' %}" alt="Tutorat Gratuit">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme de Tutorat Gratuit</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-7.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Programme de Tutorat Gratuit</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-7.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -228,22 +295,26 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-8.jpg' %}" alt="Showcase Business">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Salon de l'Entrepreneuriat Étudiant</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-8.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Salon de l'Entrepreneuriat Étudiant</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-8.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Hidden Items for Load More (Initially Hidden) -->
+            <!-- Hidden Items -->
             <div class="masonry-item portfolio-card hidden-items">
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-9.jpg' %}" alt="Projet 9">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Hackathon Technologique</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-9.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Hackathon Technologique</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-9.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -253,9 +324,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-10.jpg' %}" alt="Projet 10">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Conférence Internationale</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-10.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Conférence Internationale</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-10.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -265,9 +338,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-11.jpg' %}" alt="Projet 11">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Incubateur de Startups</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-11.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Incubateur de Startups</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-11.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -277,9 +352,11 @@
                 <div class="portfolio-item">
                     <img src="{% static 'images/portfolio/portfolio-12.jpg' %}" alt="Projet 12">
                     <div class="portfolio-overlay">
-                        <h3 class="portfolio-title text-white text-2xl font-semibold mb-4 px-6 text-center">Programme d'Échange International</h3>
-                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-12.jpg' %}')" class="portfolio-icon w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-expand-alt text-white text-lg"></i>
+                        <h3 class="portfolio-title text-white text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-4 text-center">Programme d'Échange International</h3>
+                        <button onclick="openLightbox('{% static 'images/portfolio/portfolio-12.jpg' %}')" class="portfolio-icon w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -287,10 +364,12 @@
         </div>
 
         <!-- Load More Button -->
-        <div class="text-center mt-10">
-            <button id="loadMoreBtn" onclick="loadMore()" class="load-more-btn bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded font-semibold inline-flex items-center gap-2">
+        <div class="text-center mt-6 sm:mt-8 md:mt-10">
+            <button id="loadMoreBtn" onclick="loadMore()" class="load-more-btn bg-[#3db166] hover:bg-[#35a05c] text-white px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 rounded font-semibold inline-flex items-center gap-2 text-sm sm:text-base">
                 <span>Charger Plus</span>
-                <i class="fas fa-arrow-down"></i>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
             </button>
         </div>
     </div>
@@ -298,13 +377,17 @@
 
 <!-- Lightbox Modal -->
 <div id="lightbox" class="lightbox items-center justify-center">
-    <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white text-5xl font-light hover:text-[#3db166] z-10 transition-colors">&times;</button>
-    <button onclick="prevLightboxImage()" class="absolute left-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
-        <i class="fas fa-chevron-left"></i>
+    <button onclick="closeLightbox()" class="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 text-white text-3xl sm:text-4xl md:text-5xl font-light hover:text-[#3db166] z-10 transition-colors w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">&times;</button>
+    <button onclick="prevLightboxImage()" class="absolute left-1 sm:left-2 md:left-8 top-1/2 -translate-y-1/2 text-white hover:text-[#3db166] transition-colors">
+        <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
     </button>
-    <img id="lightboxImg" src="" alt="" class="max-w-[90%] max-h-[90%] object-contain">
-    <button onclick="nextLightboxImage()" class="absolute right-8 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#3db166] transition-colors">
-        <i class="fas fa-chevron-right"></i>
+    <img id="lightboxImg" src="" alt="" class="max-w-[calc(100%-60px)] sm:max-w-[calc(100%-80px)] md:max-w-[calc(100%-120px)]">
+    <button onclick="nextLightboxImage()" class="absolute right-1 sm:right-2 md:right-8 top-1/2 -translate-y-1/2 text-white hover:text-[#3db166] transition-colors">
+        <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
     </button>
 </div>
 
@@ -312,7 +395,6 @@
 
 {% block extra_js %}
 <script>
-    // Portfolio images for lightbox navigation
     const portfolioImages = [
         '{% static "images/portfolio/portfolio-1.jpg" %}',
         '{% static "images/portfolio/portfolio-2.jpg" %}',
@@ -330,7 +412,6 @@
     
     let currentLightboxIndex = 0;
     
-    // Lightbox Functions
     function openLightbox(imageSrc) {
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
@@ -356,30 +437,37 @@
         document.getElementById('lightboxImg').src = portfolioImages[currentLightboxIndex];
     }
     
-    // Close lightbox on background click
     document.getElementById('lightbox').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeLightbox();
-        }
+        if (e.target === this) closeLightbox();
     });
     
-    // Keyboard navigation
     document.addEventListener('keydown', function(e) {
         const lightbox = document.getElementById('lightbox');
         if (lightbox.classList.contains('active')) {
-            if (e.key === 'Escape') {
-                closeLightbox();
-            }
-            if (e.key === 'ArrowRight') {
-                nextLightboxImage();
-            }
-            if (e.key === 'ArrowLeft') {
-                prevLightboxImage();
-            }
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextLightboxImage();
+            if (e.key === 'ArrowLeft') prevLightboxImage();
         }
     });
     
-    // Load More Functionality
+    // Touch support for mobile lightbox navigation
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.getElementById('lightbox').addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    document.getElementById('lightbox').addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) nextLightboxImage();
+        if (touchEndX > touchStartX + 50) prevLightboxImage();
+    }
+    
     let itemsLoaded = false;
     
     function loadMore() {
@@ -387,7 +475,6 @@
         const loadMoreBtn = document.getElementById('loadMoreBtn');
         
         if (!itemsLoaded) {
-            // Show hidden items with animation
             hiddenItems.forEach((item, index) => {
                 setTimeout(() => {
                     item.style.display = 'inline-block';
@@ -404,26 +491,13 @@
             
             itemsLoaded = true;
             
-            // Change button text
             setTimeout(() => {
-                loadMoreBtn.innerHTML = '<span>Tous les Projets Chargés</span> <i class="fas fa-check"></i>';
+                loadMoreBtn.innerHTML = '<span>Tous les Projets Chargés</span> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
                 loadMoreBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
                 loadMoreBtn.classList.remove('bg-[#3db166]', 'hover:bg-[#35a05c]');
                 loadMoreBtn.disabled = true;
             }, 500);
         }
     }
-    
-    // Smooth scroll animation on load more
-    document.getElementById('loadMoreBtn')?.addEventListener('click', function() {
-        if (!itemsLoaded) {
-            setTimeout(() => {
-                const lastHiddenItem = document.querySelector('.hidden-items:last-of-type');
-                if (lastHiddenItem) {
-                    lastHiddenItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 600);
-        }
-    });
 </script>
 {% endblock %}
