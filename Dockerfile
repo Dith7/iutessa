@@ -1,6 +1,3 @@
-# ===============================
-# Base image
-# ===============================
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -8,9 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# ===============================
 # Dépendances système
-# ===============================
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -20,20 +15,14 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# ===============================
 # Dépendances Python
-# ===============================
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ===============================
-# Copier le code source
-# ===============================
+# Copier le code
 COPY . .
 
-# ===============================
-# Créer les dossiers nécessaires
-# ===============================
+# Créer dossiers
 RUN mkdir -p \
     /app/media/blog/featured \
     /app/media/blog/images \
@@ -45,32 +34,19 @@ RUN mkdir -p \
     /app/media/courses \
     /app/staticfiles/css/dist
 
-# ===============================
-# Permissions
-# ===============================
-RUN chown -R www-data:www-data /app/media /app/staticfiles
-
-# ===============================
-# Build Tailwind directement dans staticfiles
-# ===============================
+# Tailwind
 WORKDIR /app/theme/static_src
 RUN npm install
 RUN npx tailwindcss -i ./src/styles.css -o ../../staticfiles/css/dist/styles.css --minify
 
-# ===============================
-# Collectstatic pour s'assurer que tout est dans /staticfiles
-# ===============================
+# Collectstatic
 WORKDIR /app
 RUN python manage.py collectstatic --noinput
 
-# ===============================
-# Passer à l'utilisateur www-data
-# ===============================
-USER www-data
+# Copier entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 
-# ===============================
-# Commande de lancement
-# ===============================
-CMD ["uvicorn", "iuttessa.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["/entrypoint.sh"]
