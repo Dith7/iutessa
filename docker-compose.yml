@@ -1,11 +1,19 @@
+version: "3.9"
+
 services:
   iuttessa:
     build: .
     container_name: iuttessa
     ports:
-      - "8002:8000"                 # ton mapping actuel
+      - "8002:8000"
     volumes:
-      - /srv/iuttessa/staticfiles:/app/staticfiles
-      - /srv/iuttessa/media:/app/media
+      - .:/app:cached          # Suffit - inclut déjà media/
+      - static_volume:/app/staticfiles
+    restart: always
+    env_file:
+      - .env
     environment:
-      - DJANGO_SETTINGS_MODULE=iuttessa.settings.production
+      - DJANGO_SETTINGS_MODULE=iuttessa.settings
+
+volumes:
+  static_volume:
