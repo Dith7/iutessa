@@ -159,8 +159,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Tailwind CSS
-theme/static/
-theme/static_src/node_modules/
 
 # Backup files
 *.backup
