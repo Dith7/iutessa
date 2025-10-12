@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   iuttessa:
     build: .
@@ -5,16 +7,14 @@ services:
     ports:
       - "8002:8000"
     volumes:
+      # Monte tout le projet pour voir le code
       - .:/app:cached
+      # Fichiers statiques buildés
       - ./staticfiles:/app/staticfiles
+      # Fichiers media uploadés via formulaire
       - ./media:/app/media
-
     restart: always
     env_file:
       - .env
     environment:
       - DJANGO_SETTINGS_MODULE=iuttessa.settings
-
-volumes:
-  static_volume:
-  media_volume:
