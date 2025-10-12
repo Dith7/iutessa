@@ -10,4 +10,4 @@ echo "===> Rebuilding and restarting containers..."
 docker-compose down
 docker-compose up -d --build
 
-echo "===> Deployment complete!"
+echo "===> Deployment complete! "
