@@ -112,7 +112,7 @@ if python manage.py showmigrations pages | grep -q "\[ \]"; then
     echo -e "${YELLOW}⚠️  Migrations en attente détectées${NC}"
     echo "Appliquer avec: python manage.py migrate"
 else
-    echo -e "${GREEN}✅ Migrations à jour${NC}"
+    echo -e "${GREEN}✅ Migrations à jour${NC} "
 fi
 
 # 5. Test du serveur
