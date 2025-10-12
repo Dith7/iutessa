@@ -186,11 +186,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# 👉 On pointe vers le bon dossier "theme/static"
 STATICFILES_DIRS = [
-    BASE_DIR / "iutessa" / "static",  # global static folder (you created)
+    BASE_DIR / "theme" / "static",
 ]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Taille maximale des fichiers
 FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
