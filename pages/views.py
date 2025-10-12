@@ -34,11 +34,8 @@ def prices_view(request):
         'page_type': 'prices'
     })
 
-def page_404_view(request):
-    return render(request, 'pages/404.html', {
-        'title': 'Page Non Trouvée',
-        'page_type': '404'
-    })
+def page_404_view(request, exception):
+    return render(request, 'pages/404.html', status=404)
 
 # ============================================
 # BLOG & POSTS

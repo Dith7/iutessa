@@ -295,3 +295,4 @@ if IS_PRODUCTION:
     }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+handler404 = 'pages.views.page_404_view'
