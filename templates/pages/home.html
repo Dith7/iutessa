@@ -52,19 +52,19 @@
     
     /* Background Images in CSS */
     .hero-slide-1-bg {
-        background-image: url("{% static 'images/slider-1-2.jpg' %}");
+        background-image: url("{% static 'images/slider-1-2.jpeg' %}");
         background-size: cover;
         background-position: center;
     }
     
     .hero-slide-2-bg {
-        background-image: url("{% static 'images/slider-2.jpg' %}");
+        background-image: url("{% static 'images/slider-2.jpeg' %}");
         background-size: cover;
         background-position: center;
     }
     
     .apply-bg {
-        background-image: url("{% static 'images/apply-bg.jpg' %}");
+        background-image: url("{% static 'images/apply_bg.jpeg' %}");
         background-size: cover;
         background-position: center;
     }
@@ -117,117 +117,123 @@
 <!-- Hero Slider -->
 <section class="relative bg-[#192f59] h-[500px] md:h-[600px] overflow-hidden">
     <!-- Slide 1 -->
-<div class="hero-slide hero-slide-1-bg active absolute inset-0 flex items-center justify-center">
-    <div class="absolute inset-0 bg-[#192f59]/40"></div>
-    <div class="relative z-10 w-full px-4 md:px-6">
-        <div class="max-w-[1140px] mx-auto flex justify-center">
-            <div class="max-w-[800px] text-center md:text-left translate-y-[-2%] md:translate-y-[-5%]">
-                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
-                    La Meilleure Université de la Région
-                </p>
-                <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
-                    <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
-                        IUTESSA <span class="font-normal">Mokolo</span>
-                    </h1>
-                </div>
-                <div class="animate-fade-in-up-delay">
-                    <a href="{% url 'pages:about-us' %}" class="w-46  h-auto inline-flex bg-white text-gray-800 px-8 md:px-12 py-8 md:py-12 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
-                       <span class="ml-4">Découvrir l'IUTESSA</span> 
-                    </a>
+    <div class="hero-slide hero-slide-1-bg active absolute inset-0">
+        <div class="absolute inset-0 bg-[#192f59]/40"></div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-[1140px] mx-auto px-6 md:px-8 lg:px-12 w-full">
+                <div class="max-w-[700px] pl-4 md:pl-0">
+                    <p class="animate-fade-in text-white text-[20px] md:text-[24px] font-light mb-5 leading-relaxed">
+                        La Meilleure Université de la Région
+                    </p>
+                    <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-8 md:px-10 py-4 md:py-5 rounded mb-8">
+                        <h1 class="text-white text-[48px] md:text-[64px] font-bold leading-tight m-0">
+                            IUTESSA <span class="font-normal">Mokolo</span>
+                        </h1>
+                    </div>
+                    <div class="animate-fade-in-up-delay">
+                        <a href="{% url 'pages:about-us' %}" class="inline-block bg-white text-gray-800 px-8 py-4 text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                            Découvrir l'IUTESSA
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
     
-<!-- Slide 2 -->
-<div class="hero-slide hero-slide-2-bg absolute inset-0 flex items-center justify-center">
-    <div class="absolute inset-0 bg-[#192f59]/40"></div>
-    <div class="relative z-10 w-full px-4 md:px-6">
-        <div class="max-w-[1140px] mx-auto flex justify-center">
-            <div class="max-w-[800px] text-center md:text-left translate-y-[-2%] md:translate-y-[-5%]">
-                
-                <!-- Subtitle (same as Slide 1) -->
-                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-4 md:mb-6 leading-relaxed hero-subtitle">
-                    IUTESSA propose plus de
-                </p>
-
-                <!-- Title Block (same spacing as Slide 1) -->
-                <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-6 md:px-10 lg:px-12 py-4 md:py-5 lg:py-6 rounded mb-8 md:mb-12">
-                    <h1 class="text-white text-[40px] md:text-[56px] lg:text-[72px] font-bold leading-tight m-0 hero-title">
-                        20+ Filières
-                    </h1>
+    <!-- Slide 2 -->
+    <div class="hero-slide hero-slide-2-bg absolute inset-0">
+        <div class="absolute inset-0 bg-[#192f59]/40"></div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-[1140px] mx-auto px-6 md:px-8 lg:px-12 w-full">
+                <div class="max-w-[700px] pl-4 md:pl-0">
+                    <p class="animate-fade-in text-white text-[20px] md:text-[24px] font-light mb-5 leading-relaxed">
+                        IUTESSA propose plus de
+                    </p>
+                    <div class="animate-fade-in-up bg-[#18243b]/90 inline-block px-8 md:px-10 py-4 md:py-5 rounded mb-5">
+                        <h1 class="text-white text-[48px] md:text-[64px] font-bold leading-tight m-0">
+                            20+ Filières
+                        </h1>
+                    </div>
+                    <p class="animate-fade-in-up text-white text-[24px] md:text-[28px] font-normal mb-8 leading-relaxed">
+                        BTS, HND, Licence & Master
+                    </p>
+                    <div class="animate-fade-in-up-delay">
+                        <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-8 py-4 text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
+                            Voir les Formations
+                        </a>
+                    </div>
                 </div>
-
-                <!-- Remove extra spacing for "BTS, HND..." to keep vertical alignment -->
-                <p class="animate-fade-in text-white text-[18px] md:text-[22px] lg:text-[26px] font-light mb-0 leading-relaxed hero-subtitle">
-                    BTS, HND, Licence & Master
-                </p>
-
-                <!-- Button -->
-                <div class="animate-fade-in-up-delay mt-6">
-                    <a href="{% url 'pages:courses' %}" class="inline-block bg-white text-gray-800 px-6 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline border-l-[5px] border-[#3db166] hover:bg-gray-100 transition-all">
-                        Voir les Formations
-                    </a>
-                </div>
-
             </div>
         </div>
     </div>
-</div>
-
-
-
-
 </section>
 
 <!-- Services Bar -->
-<section class="bg-white shadow-md">
-    <div class="max-w-[1140px] mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 sm:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
-                <img src="{% static 'images/icon-1.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+<section class="bg-white shadow-sm border-t border-b border-gray-100">
+    <div class="max-w-[1140px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+            <div class="flex items-center gap-5 px-6 py-10 border-b sm:border-b-0 sm:border-r border-gray-100 hover:bg-gray-50 transition-all duration-300 cursor-pointer group">
+                <div class="w-12 h-12 flex-shrink-0 bg-[#3db166]/10 rounded-full flex items-center justify-center group-hover:bg-[#3db166] transition-colors">
+                    <svg class="w-6 h-6 text-[#3db166] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
                 <div>
-                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Vie Universitaire</h3>
-                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">L'ensemble ici</p>
+                    <h3 class="text-[15px] font-semibold text-[#192f59] mb-1 leading-tight group-hover:text-[#3db166] transition-colors">Vie Universitaire</h3>
+                    <p class="text-[13px] text-gray-500 m-0">L'ensemble ici</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 lg:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
-                <img src="{% static 'images/icon-2.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+            
+            <div class="flex items-center gap-5 px-6 py-10 border-b sm:border-b-0 lg:border-r border-gray-100 hover:bg-gray-50 transition-all duration-300 cursor-pointer group">
+                <div class="w-12 h-12 flex-shrink-0 bg-[#3db166]/10 rounded-full flex items-center justify-center group-hover:bg-[#3db166] transition-colors">
+                    <svg class="w-6 h-6 text-[#3db166] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
+                </div>
                 <div>
-                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Diplômation</h3>
-                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Obtention du Diplôme</p>
+                    <h3 class="text-[15px] font-semibold text-[#192f59] mb-1 leading-tight group-hover:text-[#3db166] transition-colors">Diplômation</h3>
+                    <p class="text-[13px] text-gray-500 m-0">Obtention du Diplôme</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 border-b sm:border-b-0 sm:border-r border-gray-200 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
-                <img src="{% static 'images/icon-3.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+            
+            <div class="flex items-center gap-5 px-6 py-10 border-b sm:border-b-0 sm:border-r border-gray-100 hover:bg-gray-50 transition-all duration-300 cursor-pointer group">
+                <div class="w-12 h-12 flex-shrink-0 bg-[#3db166]/10 rounded-full flex items-center justify-center group-hover:bg-[#3db166] transition-colors">
+                    <svg class="w-6 h-6 text-[#3db166] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
                 <div>
-                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Sports</h3>
-                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Clubs Sportifs</p>
+                    <h3 class="text-[15px] font-semibold text-[#192f59] mb-1 leading-tight group-hover:text-[#3db166] transition-colors">Sports</h3>
+                    <p class="text-[13px] text-gray-500 m-0">Clubs Sportifs</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 md:gap-5 px-6 md:px-10 py-8 md:py-12 hover:-translate-y-1 transition-transform duration-300 cursor-pointer">
-                <img src="{% static 'images/icon-4.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+            
+            <div class="flex items-center gap-5 px-6 py-10 hover:bg-gray-50 transition-all duration-300 cursor-pointer group">
+                <div class="w-12 h-12 flex-shrink-0 bg-[#3db166]/10 rounded-full flex items-center justify-center group-hover:bg-[#3db166] transition-colors">
+                    <svg class="w-6 h-6 text-[#3db166] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
                 <div>
-                    <h3 class="text-[15px] md:text-[16px] font-semibold text-[#192f59] mb-1 md:mb-2 leading-tight">Social</h3>
-                    <p class="text-[12px] md:text-[13px] text-gray-600 m-0">Vie Sociale</p>
+                    <h3 class="text-[15px] font-semibold text-[#192f59] mb-1 leading-tight group-hover:text-[#3db166] transition-colors">Social</h3>
+                    <p class="text-[13px] text-gray-500 m-0">Vie Sociale</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Apply for Admission -->
 <section class="py-16 md:py-24 lg:py-28">
     <div class="max-w-[1140px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 shadow-xl">
-            <div class="apply-bg min-h-[300px] md:min-h-[400px] lg:min-h-[500px]"></div>
-            <div class="bg-[#192f59] text-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-                <h2 class="text-[28px] md:text-[34px] lg:text-[38px] font-semibold mb-4 md:mb-6 leading-tight">Postuler aux Admissions</h2>
-                <p class="text-[#a8b5c7] text-[13px] md:text-[14px] mb-6 md:mb-8 leading-relaxed">Les candidatures pour l'année 2025 sont maintenant ouvertes</p>
-                <p class="leading-[1.8] mb-8 md:mb-10 text-[14px] md:text-[15px]">Nous ne nous contentons pas de donner aux étudiants une éducation et des expériences qui les préparent au succès dans une carrière. Nous les aidons à réussir dans leur carrière.</p>
-                <a href="{% url 'pages:apply' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-8 md:px-10 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline rounded transition-colors self-start">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 shadow-xl rounded-lg overflow-hidden">
+            <div class="apply-bg min-h-[350px] md:min-h-[450px] lg:min-h-[500px]"></div>
+            <div class="bg-[#192f59] text-white px-8 py-12 md:px-12 md:py-16 lg:px-16 lg:py-20 flex flex-col justify-center">
+                <h2 class="text-[32px] md:text-[36px] lg:text-[42px] font-semibold mb-5 md:mb-6 leading-tight">Postuler aux Admissions</h2>
+                <p class="text-[#a8b5c7] text-[14px] md:text-[15px] mb-7 md:mb-8 leading-relaxed">Les candidatures pour l'année 2025 sont maintenant ouvertes</p>
+                <p class="leading-[1.8] mb-9 md:mb-10 text-[15px] md:text-[16px]">Nous ne nous contentons pas de donner aux étudiants une éducation et des expériences qui les préparent au succès dans une carrière. Nous les aidons à réussir dans leur carrière.</p>
+                <a href="{% url 'pages:apply' %}" class="inline-block bg-[#3db166] hover:bg-[#35a05c] text-white px-10 md:px-12 py-5 md:py-[22px] text-[15px] md:text-[16px] font-semibold no-underline rounded transition-colors self-start shadow-lg">
                     Postuler Maintenant
                 </a>
             </div>
@@ -240,7 +246,7 @@
     <div class="max-w-[1140px] mx-auto px-4 md:px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 lg:gap-20 items-start">
             <div>
-                <img src="{% static 'images/logo-white.png' %}" alt="" class="h-8 md:h-10 mb-8 md:mb-12">
+                <img src="{% static 'images/logo-iutessa.svg' %}" alt="" class="h-24 w-auto md:h-28 mb-8 md:mb-12">
                 <h2 class="text-[28px] md:text-[34px] lg:text-[38px] font-semibold leading-tight m-0">À Propos de Notre Université</h2>
             </div>
             <div class="md:col-span-2">
@@ -263,28 +269,49 @@
     <div class="max-w-[1140px] mx-auto px-4 md:px-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 lg:gap-14">
             <div class="text-center">
-                <img src="{% static 'images/col-icon-1.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
-                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Services Éducatifs</h3>
-                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <div class="w-16 h-16 mx-auto mb-6 bg-[#3db166]/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-[#3db166]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 leading-tight">Services Éducatifs</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus →</a>
             </div>
+            
             <div class="text-center">
-                <img src="{% static 'images/col-icon-2.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
-                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Hubs Internationaux</h3>
-                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <div class="w-16 h-16 mx-auto mb-6 bg-[#3db166]/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-[#3db166]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 leading-tight">Hubs Internationaux</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus →</a>
             </div>
+            
             <div class="text-center">
-                <img src="{% static 'images/col-icon-3.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
-                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Licence & Master</h3>
-                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <div class="w-16 h-16 mx-auto mb-6 bg-[#3db166]/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-[#3db166]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                    </svg>
+                </div>
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 leading-tight">Licence & Master</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus →</a>
             </div>
+            
             <div class="text-center">
-                <img src="{% static 'images/col-icon-4.png' %}" alt="" class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-8 md:mb-10">
-                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Vie Universitaire</h3>
-                <p class="text-gray-600 leading-[1.8] mb-4 md:mb-6 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
-                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus</a>
+                <div class="w-16 h-16 mx-auto mb-6 bg-[#3db166]/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-[#3db166]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <h3 class="text-[18px] md:text-[20px] font-semibold text-[#192f59] mb-4 leading-tight">Vie Universitaire</h3>
+                <p class="text-gray-600 leading-[1.8] mb-4 text-[14px] md:text-[15px]">IUTESSA a été établi pour le bénéfice public et est reconnu au niveau national.</p>
+                <a href="#" class="text-[#3db166] text-[13px] md:text-[14px] font-medium no-underline hover:text-[#35a05c] transition-colors">En Savoir Plus →</a>
             </div>
         </div>
     </div>
@@ -303,7 +330,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
                     <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300">
                         <div class="overflow-hidden">
-                            <img src="{% static 'images/news-1.jpg' %}" alt="" class="w-full h-48 md:h-64 object-cover hover:scale-105 transition-transform duration-500">
+                            <img src="{% static 'images/news-1.jpeg' %}" alt="" class="w-full h-48 md:h-64 object-cover hover:scale-105 transition-transform duration-500">
                         </div>
                         <div class="p-6 md:p-8">
                             <div class="flex gap-4 md:gap-5 text-[12px] md:text-[13px] text-gray-400 mb-4 md:mb-5">
@@ -318,7 +345,7 @@
                     <div class="flex flex-col gap-5 md:gap-6">
                         <div class="flex gap-4 md:gap-6 bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
                             <div class="overflow-hidden rounded flex-shrink-0">
-                                <img src="{% static 'images/news-2.jpg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
+                                <img src="{% static 'images/news-2.jpeg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
                             </div>
                             <div class="flex flex-col justify-center">
                                 <div class="text-[11px] md:text-[12px] text-gray-400 mb-2 md:mb-3">6 Juin, 2024 • Actualités</div>
@@ -329,7 +356,7 @@
                         </div>
                         <div class="flex gap-4 md:gap-6 bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
                             <div class="overflow-hidden rounded flex-shrink-0">
-                                <img src="{% static 'images/news-3.jpg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
+                                <img src="{% static 'images/news-1.jpeg' %}" alt="" class="w-28 h-28 md:w-40 md:h-40 object-cover hover:scale-105 transition-transform duration-500">
                             </div>
                             <div class="flex flex-col justify-center">
                                 <div class="text-[11px] md:text-[12px] text-gray-400 mb-2 md:mb-3">6 Juin, 2024 • Événement</div>
@@ -396,67 +423,70 @@
 <!-- Bottom Section -->
 <section class="py-16 md:py-24 lg:py-28 bg-[#f5f5f5]">
     <div class="max-w-[1140px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 lg:gap-14">
-            <!-- Donation -->
-            <div>
-                <img src="{% static 'images/donation.jpg' %}" alt="" class="w-full h-48 md:h-56 object-cover rounded mb-8 md:mb-10 shadow-md">
-                <h3 class="text-[22px] md:text-[26px] lg:text-[28px] font-semibold text-[#192f59] mb-4 md:mb-6 leading-tight">Les Dons Nous Aident</h3>
-                <p class="text-gray-600 leading-[1.8] mb-6 md:mb-8 text-[14px] md:text-[15px]">
-                    La campagne pour l'IUTESSA est la <strong class="text-gray-800">plus grande campagne de collecte de fonds</strong> de notre histoire.
-                </p>
-                <a href="#" class="inline-flex items-center gap-3 bg-[#3db166] hover:bg-[#35a05c] text-white px-7 md:px-9 py-4 md:py-5 text-[14px] md:text-[15px] font-semibold no-underline rounded transition-colors">
-                    <i class="fas fa-heart"></i> Devenir Donateur
-                </a>
-            </div>
-
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 lg:gap-16">
+            
             <!-- Events -->
             <div>
-                <h3 class="text-[22px] md:text-[26px] lg:text-[28px] font-semibold text-[#192f59] mb-8 md:mb-12 leading-tight">Événements à Venir</h3>
-                <div class="flex flex-col gap-8 md:gap-10">
-                    <div class="flex gap-4 md:gap-6">
-                        <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 md:p-4 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
-                            <div class="text-[28px] md:text-[36px] font-bold leading-none">07</div>
-                            <div class="text-[11px] md:text-[13px] mt-1 md:mt-2">Jan</div>
+                <h3 class="text-[24px] md:text-[28px] font-semibold text-[#192f59] mb-8 md:mb-10 leading-tight">Événements à Venir</h3>
+                <div class="flex flex-col gap-6 md:gap-8">
+                    <div class="flex gap-5 bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-20 h-20 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded-lg text-white text-center flex flex-col justify-center items-center flex-shrink-0 shadow-lg shadow-[#3db166]/30">
+                            <div class="text-[32px] font-bold leading-none">07</div>
+                            <div class="text-[12px] mt-1">Jan</div>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-[15px] md:text-[17px] font-semibold mb-2 md:mb-3 leading-tight">
+                            <h4 class="text-[16px] md:text-[17px] font-semibold mb-2 leading-tight">
                                 <a href="#" class="text-gray-800 no-underline hover:text-[#3db166] transition-colors">Événement : Tour de Golf</a>
                             </h4>
-                            <p class="text-[12px] md:text-[13px] text-gray-600 mb-1 md:mb-2 flex items-center gap-2"><i class="far fa-clock"></i>7:00 am - 11:30 pm</p>
-                            <p class="text-[12px] md:text-[13px] text-gray-600 m-0 flex items-center gap-2"><i class="fas fa-map-marker-alt"></i>Grand Hall IUTESSA</p>
+                            <p class="text-[13px] text-gray-600 mb-1 flex items-center gap-2">
+                                <i class="far fa-clock text-[#3db166]"></i>7:00 am - 11:30 pm
+                            </p>
+                            <p class="text-[13px] text-gray-600 m-0 flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-[#3db166]"></i>Grand Hall IUTESSA
+                            </p>
                         </div>
                     </div>
-                    <div class="flex gap-4 md:gap-6">
-                        <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded text-white text-center p-3 md:p-4 flex-shrink-0 shadow-lg shadow-[#3db166]/30">
-                            <div class="text-[28px] md:text-[36px] font-bold leading-none">15</div>
-                            <div class="text-[11px] md:text-[13px] mt-1 md:mt-2">Jan</div>
+                    
+                    <div class="flex gap-5 bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-20 h-20 bg-gradient-to-br from-[#3db166] to-[#35a05c] rounded-lg text-white text-center flex flex-col justify-center items-center flex-shrink-0 shadow-lg shadow-[#3db166]/30">
+                            <div class="text-[32px] font-bold leading-none">15</div>
+                            <div class="text-[12px] mt-1">Jan</div>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-[15px] md:text-[17px] font-semibold mb-2 md:mb-3 leading-tight">
+                            <h4 class="text-[16px] md:text-[17px] font-semibold mb-2 leading-tight">
                                 <a href="#" class="text-gray-800 no-underline hover:text-[#3db166] transition-colors">Conférence Fintech</a>
                             </h4>
-                            <p class="text-[12px] md:text-[13px] text-gray-600 mb-1 md:mb-2 flex items-center gap-2"><i class="far fa-clock"></i>1:00 pm - 5:00 pm</p>
-                            <p class="text-[12px] md:text-[13px] text-gray-600 m-0 flex items-center gap-2"><i class="fas fa-map-marker-alt"></i>Grand Hall IUTESSA</p>
+                            <p class="text-[13px] text-gray-600 mb-1 flex items-center gap-2">
+                                <i class="far fa-clock text-[#3db166]"></i>1:00 pm - 5:00 pm
+                            </p>
+                            <p class="text-[13px] text-gray-600 m-0 flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-[#3db166]"></i>Grand Hall IUTESSA
+                            </p>
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'pages:events' %}" class="inline-flex items-center gap-3 text-[#3db166] text-[14px] md:text-[15px] font-semibold no-underline mt-6 md:mt-8 hover:text-[#35a05c] transition-colors">
-                    Voir Tous les Événements <i class="fas fa-long-arrow-right"></i>
+                <a href="{% url 'pages:events' %}" class="inline-flex items-center gap-2 text-[#3db166] text-[15px] font-semibold no-underline mt-8 hover:text-[#35a05c] transition-colors">
+                    Voir Tous les Événements <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
 
             <!-- Newsletter -->
-            <div class="bg-[#192f59] p-10 md:p-12 lg:p-14 text-center rounded text-white shadow-md">
-                <img src="{% static 'images/icon-envelope.png' %}" alt="" class="w-20 h-15 md:w-24 md:h-18 mx-auto mb-8 md:mb-10">
-                <h3 class="text-[22px] md:text-[24px] lg:text-[26px] font-semibold mb-3 md:mb-4 leading-tight">S'abonner à la Newsletter</h3>
-                <p class="text-[#a8b5c7] text-[13px] md:text-[14px] mb-8 md:mb-10">Recevez les actualités & événements</p>
-                <form class="flex flex-col gap-4 md:gap-5">
-                    <input type="email" placeholder="Votre Adresse Email" class="w-full px-5 md:px-6 py-4 md:py-5 border-0 rounded text-[13px] md:text-[14px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#3db166]">
-                    <button type="submit" class="w-full bg-[#3db166] hover:bg-[#35a05c] text-white px-5 md:px-6 py-4 md:py-5 border-0 rounded text-[14px] md:text-[15px] font-semibold cursor-pointer transition-colors">
+            <div class="bg-[#192f59] p-10 md:p-12 text-center rounded-lg text-white shadow-lg">
+                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-[24px] md:text-[26px] font-semibold mb-3 leading-tight">S'abonner à la Newsletter</h3>
+                <p class="text-[#a8b5c7] text-[14px] mb-8">Recevez les actualités & événements</p>
+                <form class="flex flex-col gap-4">
+                    <input type="email" placeholder="Votre Adresse Email" class="w-full px-5 py-4 border-0 rounded-lg text-[14px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#3db166]">
+                    <button type="submit" class="w-full bg-[#3db166] hover:bg-[#35a05c] text-white px-5 py-4 border-0 rounded-lg text-[15px] font-semibold cursor-pointer transition-colors">
                         S'abonner
                     </button>
                 </form>
             </div>
+            
         </div>
     </div>
 </section>

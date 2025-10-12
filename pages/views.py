@@ -11,31 +11,31 @@ def home_view(request):
     })
 
 def about_view(request):
-    return render(request, 'pages/home/about-us.html', {
+    return render(request, 'pages/about-us.html', {
         'title': 'À Propos d\'IUTESSA',
         'page_type': 'about'
     })
 
 def contact_view(request):
-    return render(request, 'pages/home/home.html', {
+    return render(request, 'pages/contact.html', {
         'title': 'Contact - IUTESSA',
         'page_type': 'contact'
     })
 
 def gallery_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/gallery.html', {
         'title': 'Galerie - IUTESSA',
         'page_type': 'gallery'
     })
 
 def prices_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/pension-page.html', {
         'title': 'Tarifs - IUTESSA',
         'page_type': 'prices'
     })
 
 def page_404_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/404.html', {
         'title': 'Page Non Trouvée',
         'page_type': '404'
     })
@@ -45,13 +45,13 @@ def page_404_view(request):
 # ============================================
 
 def blog_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/blog.html', {
         'title': 'Blog - IUTESSA',
         'page_type': 'blog'
     })
 
 def blog_detail_view(request, post_id):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/standard_post.html', {
         'title': f'Article {post_id} - IUTESSA',
         'page_type': 'blog_detail',
         'post_id': post_id
@@ -62,13 +62,13 @@ def blog_detail_view(request, post_id):
 # ============================================
 
 def portfolio_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/portfolio.html', {
         'title': 'Portfolio - IUTESSA',
         'page_type': 'portfolio'
     })
 
 def portfolio_detail_view(request, project_id):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/porfolio.html', {
         'title': f'Projet {project_id} - IUTESSA',
         'page_type': 'portfolio_detail',
         'project_id': project_id
@@ -79,25 +79,25 @@ def portfolio_detail_view(request, project_id):
 # ============================================
 
 def apply_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/apply-to-iutessa.html', {
         'title': 'Postuler à IUTESSA',
         'page_type': 'apply'
     })
 
 def campus_tour_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/campus-tour.html', {
         'title': 'Visite du Campus - IUTESSA',
         'page_type': 'campus_tour'
     })
 
 def event_calendar_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/event-calendar.html', {
         'title': 'Calendrier des Événements',
         'page_type': 'events'
     })
 
 def event_detail_view(request, event_id):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/event-calendar.html', {
         'title': f'Événement {event_id} - IUTESSA',
         'page_type': 'event_detail',
         'event_id': event_id
@@ -108,17 +108,21 @@ def event_detail_view(request, event_id):
 # ============================================
 
 def courses_view(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/course-list.html', {
         'title': 'Formations - IUTESSA',
         'page_type': 'courses'
     })
 
 def course_detail_view(request, course_id):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/course-list.html', {
         'title': f'Formation {course_id} - IUTESSA',
         'page_type': 'course_detail',
         'course_id': course_id
     })
+    
+    
+    # ==================
+    # From here nothign done yet we will have to go page by page 
 
 # ============================================
 # ACADEMICS - UNDERGRADUATE

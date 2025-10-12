@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # Apps tiers
     'tailwind',
     'theme',
-    'django_ckeditor_5',
+    'django_ckeditor_5',  
     'storages',
 
     # Apps locales
@@ -186,7 +186,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / "iutessa" / "static",  # global static folder (you created)
+]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -232,6 +234,10 @@ TAILWIND_APP_NAME = 'theme'
 if DEBUG:
     INTERNAL_IPS = [
         "127.0.0.1",
+    ]
+    INSTALLED_APPS += ['django_browser_reload']
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
     ]
 NPM_BIN_PATH = '/usr/bin/npm'
 # NPM_BIN_PATH = 'C:/Program Files/nodejs/npm.cmd'
