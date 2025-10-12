@@ -1,5 +1,5 @@
 # ===============================
-# Base Image
+# Base image
 # ===============================
 FROM python:3.11-slim
 
@@ -43,25 +43,28 @@ RUN mkdir -p \
     /app/media/portfolio/images \
     /app/media/events \
     /app/media/courses \
-    /app/staticfiles
+    /app/staticfiles/css/dist
 
 # ===============================
-# Donner les permissions à www-data
+# Permissions
 # ===============================
 RUN chown -R www-data:www-data /app/media /app/staticfiles
 
 # ===============================
-# Tailwind build
+# Build Tailwind directement dans staticfiles
 # ===============================
 WORKDIR /app/theme/static_src
 RUN npm install
-RUN npx tailwindcss -i ./src/styles.css -o ../static/css/dist/styles.css --minify
+RUN npx tailwindcss -i ./src/styles.css -o ../../staticfiles/css/dist/styles.css --minify
 
+# ===============================
+# Collectstatic pour s'assurer que tout est dans /staticfiles
+# ===============================
 WORKDIR /app
 RUN python manage.py collectstatic --noinput
 
 # ===============================
-# Passer à l'utilisateur web
+# Passer à l'utilisateur www-data
 # ===============================
 USER www-data
 
