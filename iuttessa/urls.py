@@ -12,14 +12,12 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('academique/', include('academique.urls')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
-
-
 ]
 
-# Servir les fichiers media et static en développement
+# MEDIA - toujours servir (même en prod Docker)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# STATIC - uniquement en dev
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += [
-        path("__reload__/", include("django_browser_reload.urls")),
-    ]
+    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
