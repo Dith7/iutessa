@@ -1,22 +1,52 @@
 FROM python:3.11-slim
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y build-essential libpq-dev curl gnupg \
+# Dépendances système
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    curl \
+    gnupg \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
+# Dépendances Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code
 COPY . .
 
-RUN mkdir -p /app/media /app/staticfiles && chmod -R 777 /app/media
+# Créer dossiers
+RUN mkdir -p \
+    /app/media/blog/featured \
+    /app/media/blog/images \
+    /app/media/blog/gallery \
+    /app/media/blog/videos \
+    /app/media/blog/documents \
+    /app/media/portfolio/images \
+    /app/media/events \
+    /app/media/courses \
+    /app/staticfiles/css/dist
 
+# Tailwind
 WORKDIR /app/theme/static_src
-RUN npm install && npx tailwindcss -i ./src/styles.css -o ../../staticfiles/css/dist/styles.css --minify
+RUN npm install
+RUN npx tailwindcss -i ./src/styles.css -o ../../staticfiles/css/dist/styles.css --minify
 
+# Collectstatic
 WORKDIR /app
 RUN python manage.py collectstatic --noinput
 
+# Copier entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+ENTRYPOINT ["/entrypoint.sh"]
