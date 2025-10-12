@@ -495,6 +495,43 @@
           </a>
         </div>
 
+        <!-- Contenu Web -->
+        <div class="nav-section">
+          <div class="nav-section-title">Contenu Web</div>
+          
+          <a 
+            href="{% url 'administration:blog_management' %}" 
+            class="nav-link {% if 'blog' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-newspaper"></i></div>
+            <span>Blog</span>
+          </a>
+
+          <a 
+            href="{% url 'administration:portfolio_management' %}" 
+            class="nav-link {% if 'portfolio' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
+            <span>Portfolio</span>
+          </a>
+
+          <a 
+            href="{% url 'administration:categories_management' %}" 
+            class="nav-link {% if 'categories' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-tags"></i></div>
+            <span>Catégories</span>
+          </a>
+
+          <a 
+            href="{% url 'administration:blog_comments' %}" 
+            class="nav-link {% if 'comment' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-comments"></i></div>
+            <span>Commentaires</span>
+          </a>
+        </div>
+
         <!-- Académique -->
         <div class="nav-section">
           <div class="nav-section-title">Académique</div>
@@ -547,6 +584,7 @@
           </a>
         </div>
       </nav>
+
     </aside>
 
     <!-- Main Content -->

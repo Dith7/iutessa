@@ -12,35 +12,36 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('gallery/', views.gallery_view, name='gallery'),
     path('prices/', views.prices_view, name='prices'),
-    path('404/', views.page_404_view, name='404'),
     
     # ============================================
     # BLOG & POSTS
     # ============================================
     path('blog/', views.blog_view, name='blog'),
-    path('blog/<int:post_id>/', views.blog_detail_view, name='blog_detail'),
-    path('posts/<int:post_id>/', views.blog_detail_view, name='post_detail'),
+    path('blog/<slug:slug>/', views.blog_detail_view, name='blog_detail'),
     
     # ============================================
     # PORTFOLIO
     # ============================================
     path('portfolio/', views.portfolio_view, name='portfolio'),
-    path('portfolio/<int:project_id>/', views.portfolio_detail_view, name='portfolio_detail'),
+    path('portfolio/<slug:slug>/', views.portfolio_detail_view, name='portfolio_detail'),
+    
+    # ============================================
+    # EVENTS
+    # ============================================
+    path('events/', views.event_calendar_view, name='events'),
+    path('events/<slug:slug>/', views.event_detail_view, name='event_detail'),
+    
+    # ============================================
+    # COURSES
+    # ============================================
+    path('courses/', views.courses_view, name='courses'),
+    path('courses/<slug:slug>/', views.course_detail_view, name='course_detail'),
     
     # ============================================
     # ADMISSIONS
     # ============================================
     path('apply/', views.apply_view, name='apply'),
     path('campus-tour/', views.campus_tour_view, name='campus-tour'),
-    path('event-calendar/', views.event_calendar_view, name='event-calendar'),
-    path('events/', views.event_calendar_view, name='events'),
-    path('events/<int:event_id>/', views.event_detail_view, name='event_detail'),
-    
-    # ============================================
-    # COURSES
-    # ============================================
-    path('courses/', views.courses_view, name='courses'),
-    path('courses/<int:course_id>/', views.course_detail_view, name='course_detail'),
     
     # ============================================
     # ACADEMICS - UNDERGRADUATE

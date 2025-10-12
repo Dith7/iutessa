@@ -244,7 +244,6 @@ if DEBUG:
         "django_browser_reload.middleware.BrowserReloadMiddleware",
     ]
 NPM_BIN_PATH = '/usr/bin/npm'
-# NPM_BIN_PATH = 'C:/Program Files/nodejs/npm.cmd'
 
 # ====================
 # CKEDITOR 5

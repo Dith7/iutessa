@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
+from django.db import models
 from django.urls import reverse_lazy
 import json
 from datetime import timedelta
@@ -20,15 +21,15 @@ def dashboard_view(request):
     from django.contrib.auth import get_user_model
     from academique.models import Filiere, EtudiantAcademique, DocumentEtudiant
     
-    User = get_user_model()
+    user_model = get_user_model()
     
     # Statistiques utilisateurs
     user_stats = {
-        'total_users': User.objects.count(),
-        'admin_count': User.objects.filter(role='ADMIN').count(),
-        'etudiant_count': User.objects.filter(role='ETUDIANT').count(),
-        'visiteur_count': User.objects.filter(role='VISITEUR').count(),
-        'active_users': User.objects.filter(is_active=True).count(),
+        'total_users': user_model.objects.count(),
+        'admin_count': user_model.objects.filter(role='ADMIN').count(),
+        'etudiant_count': user_model.objects.filter(role='ETUDIANT').count(),
+        'visiteur_count': user_model.objects.filter(role='VISITEUR').count(),
+        'active_users': user_model.objects.filter(is_active=True).count(),
     }
     
     # Statistiques académiques principales
@@ -339,3 +340,338 @@ def _calculate_validation_rate():
     
     valides = EtudiantAcademique.objects.filter(statut_validation='valide').count()
     return round((valides / total) * 100, 1)
+
+# administration/views.py - Ajouter ces views
+
+from pages.models import Post, Category, PostImage, PostDocument, Comment, Project
+from pages.forms import PostForm, PostImageFormSet, PostDocumentFormSet
+
+# ============================================
+# GESTION BLOG
+# ============================================
+
+@admin_required
+def blog_management(request):
+    """Liste des articles de blog"""
+    search = request.GET.get('search', '')
+    category = request.GET.get('category', '')
+    status = request.GET.get('status', '')
+    
+    posts = Post.objects.select_related('author', 'category').all()
+    
+    if search:
+        posts = posts.filter(
+            Q(title__icontains=search) | 
+            Q(content__icontains=search)
+        )
+    if category:
+        posts = posts.filter(category__slug=category)
+    if status:
+        posts = posts.filter(status=status)
+    
+    # Pagination
+    paginator = Paginator(posts, 20)
+    page = request.GET.get('page')
+    posts_page = paginator.get_page(page)
+    
+    # Stats
+    stats = {
+        'total': Post.objects.count(),
+        'published': Post.objects.filter(status='published').count(),
+        'draft': Post.objects.filter(status='draft').count(),
+        'total_views': Post.objects.aggregate(total=models.Sum('views_count'))['total'] or 0,
+    }
+    
+    categories = Category.objects.all()
+    
+    return render(request, 'administration/blog/list.html', {
+        'posts': posts_page,
+        'categories': categories,
+        'stats': stats,
+        'search': search,
+        'current_category': category,
+        'current_status': status,
+    })
+
+
+@admin_required
+def blog_create(request):
+    """Créer un nouvel article"""
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        image_formset = PostImageFormSet(request.POST, request.FILES)
+        document_formset = PostDocumentFormSet(request.POST, request.FILES)
+        
+        if form.is_valid() and image_formset.is_valid() and document_formset.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            
+            # Publier automatiquement si demandé
+            if post.status == 'published' and not post.published_at:
+                post.published_at = timezone.now()
+            
+            post.save()
+            
+            # Sauvegarder images
+            image_formset.instance = post
+            image_formset.save()
+            
+            # Sauvegarder documents
+            document_formset.instance = post
+            document_formset.save()
+            
+            messages.success(request, f'Article "{post.title}" créé avec succès!')
+            return redirect('administration:blog_management')
+    else:
+        form = PostForm()
+        image_formset = PostImageFormSet()
+        document_formset = PostDocumentFormSet()
+    
+    return render(request, 'administration/blog/form.html', {
+        'form': form,
+        'image_formset': image_formset,
+        'document_formset': document_formset,
+        'action': 'Créer',
+    })
+
+
+@admin_required
+def blog_edit(request, post_id):
+    """Modifier un article existant"""
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        image_formset = PostImageFormSet(request.POST, request.FILES, instance=post)
+        document_formset = PostDocumentFormSet(request.POST, request.FILES, instance=post)
+        
+        if form.is_valid() and image_formset.is_valid() and document_formset.is_valid():
+            post = form.save(commit=False)
+            
+            # Mettre à jour la date de publication
+            if post.status == 'published' and not post.published_at:
+                post.published_at = timezone.now()
+            
+            post.save()
+            image_formset.save()
+            document_formset.save()
+            
+            messages.success(request, f'Article "{post.title}" modifié avec succès!')
+            return redirect('administration:blog_management')
+    else:
+        form = PostForm(instance=post)
+        image_formset = PostImageFormSet(instance=post)
+        document_formset = PostDocumentFormSet(instance=post)
+    
+    return render(request, 'administration/blog/form.html', {
+        'form': form,
+        'image_formset': image_formset,
+        'document_formset': document_formset,
+        'post': post,
+        'action': 'Modifier',
+    })
+
+
+@admin_required
+def blog_delete(request, post_id):
+    """Supprimer un article"""
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.method == 'POST':
+        title = post.title
+        post.delete()
+        messages.success(request, f'Article "{title}" supprimé avec succès!')
+        return redirect('administration:blog_management')
+    
+    return render(request, 'administration/blog/delete_confirm.html', {'post': post})
+
+
+@admin_required
+def blog_comments(request):
+    """Gérer les commentaires"""
+    comments = Comment.objects.select_related('post').order_by('-created_at')
+    
+    # Filtres
+    status = request.GET.get('status', '')
+    if status == 'pending':
+        comments = comments.filter(is_approved=False)
+    elif status == 'approved':
+        comments = comments.filter(is_approved=True)
+    
+    paginator = Paginator(comments, 30)
+    page = request.GET.get('page')
+    comments_page = paginator.get_page(page)
+    
+    stats = {
+        'total': Comment.objects.count(),
+        'pending': Comment.objects.filter(is_approved=False).count(),
+        'approved': Comment.objects.filter(is_approved=True).count(),
+    }
+    
+    return render(request, 'administration/blog/comments.html', {
+        'comments': comments_page,
+        'stats': stats,
+        'current_status': status,
+    })
+
+
+@admin_required
+def comment_approve(request, comment_id):
+    """Approuver un commentaire"""
+    comment = get_object_or_404(Comment, id=comment_id)
+    comment.is_approved = True
+    comment.save()
+    messages.success(request, 'Commentaire approuvé!')
+    return redirect('administration:blog_comments')
+
+
+@admin_required
+def comment_delete(request, comment_id):
+    """Supprimer un commentaire"""
+    comment = get_object_or_404(Comment, id=comment_id)
+    comment.delete()
+    messages.success(request, 'Commentaire supprimé!')
+    return redirect('administration:blog_comments')
+
+
+# ============================================
+# GESTION CATÉGORIES
+# ============================================
+
+@admin_required
+def categories_management(request):
+    """Gérer les catégories"""
+    categories = Category.objects.annotate(
+        posts_count=Count('posts'),
+        projects_count=Count('projects')
+    )
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description', '')
+        
+        if name:
+            Category.objects.create(name=name, description=description)
+            messages.success(request, f'Catégorie "{name}" créée!')
+            return redirect('administration:categories_management')
+    
+    return render(request, 'administration/categories/list.html', {
+        'categories': categories,
+    })
+
+
+@admin_required
+def category_delete(request, category_id):
+    """Supprimer une catégorie"""
+    category = get_object_or_404(Category, id=category_id)
+    name = category.name
+    category.delete()
+    messages.success(request, f'Catégorie "{name}" supprimée!')
+    return redirect('administration:categories_management')
+
+
+# ============================================
+# GESTION PORTFOLIO
+# ============================================
+
+@admin_required
+def portfolio_management(request):
+    """Liste des projets portfolio"""
+    projects = Project.objects.select_related('category').all()
+    
+    search = request.GET.get('search', '')
+    if search:
+        projects = projects.filter(
+            Q(title__icontains=search) | 
+            Q(description__icontains=search)
+        )
+    
+    paginator = Paginator(projects, 20)
+    page = request.GET.get('page')
+    projects_page = paginator.get_page(page)
+    
+    stats = {
+        'total': Project.objects.count(),
+        'featured': Project.objects.filter(is_featured=True).count(),
+    }
+    
+    return render(request, 'administration/portfolio/list.html', {
+        'projects': projects_page,
+        'stats': stats,
+        'search': search,
+    })
+
+
+@admin_required
+def portfolio_create(request):
+    """Créer un nouveau projet"""
+    if request.method == 'POST':
+        # Traiter le formulaire
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        category_id = request.POST.get('category')
+        client = request.POST.get('client', '')
+        project_url = request.POST.get('project_url', '')
+        is_featured = request.POST.get('is_featured') == 'on'
+        featured_image = request.FILES.get('featured_image')
+        
+        project = Project.objects.create(
+            title=title,
+            description=description,
+            category_id=category_id if category_id else None,
+            client=client,
+            project_url=project_url,
+            is_featured=is_featured,
+            featured_image=featured_image
+        )
+        
+        messages.success(request, f'Projet "{project.title}" créé!')
+        return redirect('administration:portfolio_management')
+    
+    categories = Category.objects.all()
+    return render(request, 'administration/portfolio/form.html', {
+        'categories': categories,
+        'action': 'Créer',
+    })
+
+
+@admin_required
+def portfolio_edit(request, project_id):
+    """Modifier un projet"""
+    project = get_object_or_404(Project, id=project_id)
+    
+    if request.method == 'POST':
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        
+        category_id = request.POST.get('category')
+        project.category_id = category_id if category_id else None
+        
+        project.client = request.POST.get('client', '')
+        project.project_url = request.POST.get('project_url', '')
+        project.is_featured = request.POST.get('is_featured') == 'on'
+        
+        if 'featured_image' in request.FILES:
+            project.featured_image = request.FILES['featured_image']
+        
+        project.save()
+        
+        messages.success(request, f'Projet "{project.title}" modifié!')
+        return redirect('administration:portfolio_management')
+    
+    categories = Category.objects.all()
+    return render(request, 'administration/portfolio/form.html', {
+        'project': project,
+        'categories': categories,
+        'action': 'Modifier',
+    })
+
+
+@admin_required
+def portfolio_delete(request, project_id):
+    """Supprimer un projet"""
+    project = get_object_or_404(Project, id=project_id)
+    title = project.title
+    project.delete()
+    messages.success(request, f'Projet "{title}" supprimé!')
+    return redirect('administration:portfolio_management')

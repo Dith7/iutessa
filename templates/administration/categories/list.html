@@ -1,0 +1,61 @@
+<!-- templates/administration/categories/list.html -->
+{% extends 'administration/base.html' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-gradient-iut mb-2">Catégories</h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Formulaire création -->
+    <div class="bg-white/90 rounded-3xl p-6 shadow-xl border border-green-100">
+        <h3 class="text-lg font-bold mb-4">Nouvelle catégorie</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <input type="text" name="name" placeholder="Nom" required class="w-full px-4 py-2 border rounded-lg">
+                <textarea name="description" placeholder="Description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+                <button type="submit" class="w-full btn-gradient text-white py-2 rounded-lg">
+                    <i class="fas fa-plus mr-2"></i>Créer
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Liste -->
+    <div class="lg:col-span-2">
+        <div class="bg-white/90 rounded-3xl shadow-xl border border-green-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gradient-soft">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Catégorie</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Articles</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Projets</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for cat in categories %}
+                    <tr class="hover:bg-gray-50/50">
+                        <td class="px-6 py-4">
+                            <p class="font-semibold">{{ cat.name }}</p>
+                            <p class="text-sm text-gray-500">{{ cat.description|truncatewords:10 }}</p>
+                        </td>
+                        <td class="px-6 py-4 text-sm">{{ cat.posts_count }}</td>
+                        <td class="px-6 py-4 text-sm">{{ cat.projects_count }}</td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'administration:category_delete' cat.id %}" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

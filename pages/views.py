@@ -1,57 +1,119 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.utils import timezone
+from django.contrib import messages
+from .models import Post, Category, Comment, Project, Event, Course
 
 # ============================================
 # HOME & MAIN PAGES
 # ============================================
 
 def home_view(request):
+    # Récupérer les derniers articles pour la page d'accueil
+    recent_posts = Post.objects.filter(status='published')[:3]
+    featured_projects = Project.objects.filter(is_featured=True)[:6]
+    upcoming_events = Event.objects.filter(start_date__gte=timezone.now())[:3]
+    
     return render(request, 'pages/home.html', {
-        'title': 'IUTESSA Mokolo',
-        'page_type': 'home'
+        'recent_posts': recent_posts,
+        'featured_projects': featured_projects,
+        'upcoming_events': upcoming_events,
     })
 
 def about_view(request):
-    return render(request, 'pages/about-us.html', {
-        'title': 'À Propos d\'IUTESSA',
-        'page_type': 'about'
-    })
+    return render(request, 'pages/about-us.html')
 
 def contact_view(request):
-    return render(request, 'pages/contact.html', {
-        'title': 'Contact - IUTESSA',
-        'page_type': 'contact'
-    })
+    if request.method == 'POST':
+        # Traiter le formulaire de contact
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        # TODO: Envoyer email ou sauvegarder
+        messages.success(request, 'Votre message a été envoyé avec succès!')
+        return redirect('pages:contact')
+    return render(request, 'pages/contact.html')
 
 def gallery_view(request):
-    return render(request, 'pages/gallery.html', {
-        'title': 'Galerie - IUTESSA',
-        'page_type': 'gallery'
-    })
+    projects = Project.objects.all()[:12]
+    return render(request, 'pages/gallery.html', {'projects': projects})
 
 def prices_view(request):
-    return render(request, 'pages/pension-page.html', {
-        'title': 'Tarifs - IUTESSA',
-        'page_type': 'prices'
-    })
+    return render(request, 'pages/pension-page.html')
 
-def page_404_view(request, exception):
+def page_404_view(request, exception=None):
     return render(request, 'pages/404.html', status=404)
 
 # ============================================
-# BLOG & POSTS
+# BLOG
 # ============================================
 
 def blog_view(request):
+    search_query = request.GET.get('search', '')
+    category_slug = request.GET.get('category', '')
+    
+    posts = Post.objects.filter(status='published').order_by('-published_at')
+    
+    if search_query:
+        posts = posts.filter(
+            Q(title__icontains=search_query) | 
+            Q(excerpt__icontains=search_query) |
+            Q(content__icontains=search_query)
+        )
+    
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+    
+    paginator = Paginator(posts, 4)  # 4 articles par page
+    page_obj = paginator.get_page(request.GET.get('page'))
+    
+    categories = Category.objects.all()
+    recent_posts = Post.objects.filter(status='published').order_by('-published_at')[:3]
+    
     return render(request, 'pages/blog.html', {
-        'title': 'Blog - IUTESSA',
-        'page_type': 'blog'
+        'posts': page_obj,
+        'categories': categories,
+        'recent_posts': recent_posts,
     })
 
-def blog_detail_view(request, post_id):
+def blog_detail_view(request, slug):
+    from .forms import CommentForm
+    
+    post = get_object_or_404(Post, slug=slug, status='published')
+    
+    # Incrémenter les vues
+    post.views_count += 1
+    post.save(update_fields=['views_count'])
+    
+    # Traiter les commentaires
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            messages.success(request, 'Votre commentaire a été soumis et sera publié après modération.')
+            return redirect('pages:blog_detail', slug=slug)
+        else:
+            messages.error(request, 'Erreur dans le formulaire. Veuillez corriger les champs.')
+    else:
+        form = CommentForm()
+    
+    # Articles similaires
+    related_posts = Post.objects.filter(
+        status='published',
+        category=post.category
+    ).exclude(id=post.id)[:3]
+    
+    # Commentaires approuvés
+    comments = post.comments.filter(is_approved=True)
+    
     return render(request, 'pages/standard_post.html', {
-        'title': f'Article {post_id} - IUTESSA',
-        'page_type': 'blog_detail',
-        'post_id': post_id
+        'post': post,
+        'related_posts': related_posts,
+        'comments': comments,
+        'comment_form': form,
     })
 
 # ============================================
@@ -59,190 +121,121 @@ def blog_detail_view(request, post_id):
 # ============================================
 
 def portfolio_view(request):
+    category_slug = request.GET.get('category', '')
+    
+    projects = Project.objects.all()
+    if category_slug:
+        projects = projects.filter(category__slug=category_slug)
+    
+    categories = Category.objects.filter(projects__isnull=False).distinct()
+    
     return render(request, 'pages/portfolio.html', {
-        'title': 'Portfolio - IUTESSA',
-        'page_type': 'portfolio'
+        'projects': projects,
+        'categories': categories,
+        'current_category': category_slug,
     })
 
-def portfolio_detail_view(request, project_id):
-    return render(request, 'pages/porfolio.html', {
-        'title': f'Projet {project_id} - IUTESSA',
-        'page_type': 'portfolio_detail',
-        'project_id': project_id
+def portfolio_detail_view(request, slug):
+    project = get_object_or_404(Project, slug=slug)
+    related_projects = Project.objects.exclude(id=project.id)[:3]
+    
+    return render(request, 'pages/portfolio-detail.html', {
+        'project': project,
+        'related_projects': related_projects,
     })
 
 # ============================================
-# ADMISSIONS
+# EVENTS
 # ============================================
-
-def apply_view(request):
-    return render(request, 'pages/apply-to-iutessa.html', {
-        'title': 'Postuler à IUTESSA',
-        'page_type': 'apply'
-    })
-
-def campus_tour_view(request):
-    return render(request, 'pages/campus-tour.html', {
-        'title': 'Visite du Campus - IUTESSA',
-        'page_type': 'campus_tour'
-    })
 
 def event_calendar_view(request):
+    upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
+    past_events = Event.objects.filter(start_date__lt=timezone.now())[:10]
+    
     return render(request, 'pages/event-calendar.html', {
-        'title': 'Calendrier des Événements',
-        'page_type': 'events'
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
     })
 
-def event_detail_view(request, event_id):
-    return render(request, 'pages/event-calendar.html', {
-        'title': f'Événement {event_id} - IUTESSA',
-        'page_type': 'event_detail',
-        'event_id': event_id
-    })
+def event_detail_view(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    return render(request, 'pages/event-detail.html', {'event': event})
 
 # ============================================
 # COURSES
 # ============================================
 
 def courses_view(request):
-    return render(request, 'pages/course-list.html', {
-        'title': 'Formations - IUTESSA',
-        'page_type': 'courses'
+    courses = Course.objects.all()
+    return render(request, 'pages/courses.html', {'courses': courses})
+
+def course_detail_view(request, slug):
+    course = get_object_or_404(Course, slug=slug)
+    related_courses = Course.objects.exclude(id=course.id)[:3]
+    
+    return render(request, 'pages/course-detail.html', {
+        'course': course,
+        'related_courses': related_courses,
     })
 
-def course_detail_view(request, course_id):
-    return render(request, 'pages/course-list.html', {
-        'title': f'Formation {course_id} - IUTESSA',
-        'page_type': 'course_detail',
-        'course_id': course_id
-    })
-    
-    
-    # ==================
-    # From here nothign done yet we will have to go page by page 
-
 # ============================================
-# ACADEMICS - UNDERGRADUATE
+# AUTRES PAGES (à développer)
 # ============================================
 
+def apply_view(request):
+    return render(request, 'pages/apply.html')
+
+def campus_tour_view(request):
+    return render(request, 'pages/campus-tour.html')
+
+# Academics
 def business_administration_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Administration des Affaires - IUTESSA',
-        'page_type': 'business_admin'
-    })
+    return render(request, 'pages/academics/business-administration.html')
 
 def school_of_law_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'École de Droit - IUTESSA',
-        'page_type': 'law'
-    })
+    return render(request, 'pages/academics/school-of-law.html')
 
 def engineering_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Ingénierie - IUTESSA',
-        'page_type': 'engineering'
-    })
+    return render(request, 'pages/academics/engineering.html')
 
 def medicine_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Médecine - IUTESSA',
-        'page_type': 'medicine'
-    })
+    return render(request, 'pages/academics/medicine.html')
 
 def art_science_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Arts & Sciences - IUTESSA',
-        'page_type': 'art_science'
-    })
-
-# ============================================
-# ACADEMICS - GRADUATE
-# ============================================
+    return render(request, 'pages/academics/art-science.html')
 
 def hospitality_management_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Gestion Hôtelière - IUTESSA',
-        'page_type': 'hospitality'
-    })
+    return render(request, 'pages/academics/hospitality-management.html')
 
 def physics_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Physique - IUTESSA',
-        'page_type': 'physics'
-    })
-
-# ============================================
-# ACADEMICS - RESOURCES & FACULTY
-# ============================================
+    return render(request, 'pages/academics/physics.html')
 
 def finance_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Finance - IUTESSA',
-        'page_type': 'finance'
-    })
+    return render(request, 'pages/academics/finance.html')
 
 def finance_faculty_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Corps Enseignant Finance - IUTESSA',
-        'page_type': 'finance_faculty'
-    })
+    return render(request, 'pages/academics/finance-faculty.html')
 
 def faculty_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Corps Enseignant - IUTESSA',
-        'page_type': 'faculty'
-    })
+    return render(request, 'pages/faculty.html')
 
 def faculty_detail_view(request, faculty_id):
-    return render(request, 'pages/home.html', {
-        'title': f'Enseignant {faculty_id} - IUTESSA',
-        'page_type': 'faculty_detail',
-        'faculty_id': faculty_id
-    })
-
-# ============================================
-# DEPARTMENTS & CYCLES
-# ============================================
+    return render(request, 'pages/faculty-detail.html', {'faculty_id': faculty_id})
 
 def departments_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Départements - IUTESSA',
-        'page_type': 'departments'
-    })
+    return render(request, 'pages/departments.html')
 
 def department_detail_view(request, dept_id):
-    return render(request, 'pages/home.html', {
-        'title': f'Département {dept_id} - IUTESSA',
-        'page_type': 'department_detail',
-        'dept_id': dept_id
-    })
+    return render(request, 'pages/department-detail.html', {'dept_id': dept_id})
 
 def cycles_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Cycles d\'Études - IUTESSA',
-        'page_type': 'cycles'
-    })
+    return render(request, 'pages/cycles.html')
 
 def cycle_detail_view(request, cycle_id):
-    return render(request, 'pages/home.html', {
-        'title': f'Cycle {cycle_id} - IUTESSA',
-        'page_type': 'cycle_detail',
-        'cycle_id': cycle_id
-    })
-
-# ============================================
-# RESOURCES
-# ============================================
+    return render(request, 'pages/cycle-detail.html', {'cycle_id': cycle_id})
 
 def resources_view(request):
-    return render(request, 'pages/home.html', {
-        'title': 'Ressources - IUTESSA',
-        'page_type': 'resources'
-    })
+    return render(request, 'pages/resources.html')
 
 def resource_detail_view(request, resource_id):
-    return render(request, 'pages/home.html', {
-        'title': f'Ressource {resource_id} - IUTESSA',
-        'page_type': 'resource_detail',
-        'resource_id': resource_id
-    })
+    return render(request, 'pages/resource-detail.html', {'resource_id': resource_id})
