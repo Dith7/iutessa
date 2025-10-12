@@ -7,11 +7,11 @@ services:
     ports:
       - "8002:8000"
     volumes:
-      - .:/app:cached
+      - .:/app
       - static_volume:/app/staticfiles
-    restart: always
     env_file:
       - .env
+    restart: always
 
 volumes:
   static_volume:
