@@ -6,13 +6,16 @@ services:
     container_name: iuttessa
     ports:
       - "8002:8000"
-    # Bind mounts directs pour que Django voie immédiatement les fichiers
     volumes:
       - .:/app:cached
-      - ./staticfiles:/app/staticfiles
-      - ./media:/app/media
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     restart: always
     env_file:
       - .env
     environment:
       - DJANGO_SETTINGS_MODULE=iuttessa.settings
+
+volumes:
+  static_volume:
+  media_volume:
