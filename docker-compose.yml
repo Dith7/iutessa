@@ -8,16 +8,14 @@ services:
       - "8002:8000"
     volumes:
       - .:/app:cached
-      - /home/dav/iuttessa/staticfiles:/app/staticfiles  # bind mount
-      - /home/dav/iuttessa/media:/app/media             # bind mount
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media   # ✅ Ajout ici pour persister les images
     restart: always
     env_file:
       - .env
     environment:
       - DJANGO_SETTINGS_MODULE=iuttessa.settings
 
-# plus besoin des volumes Docker pour static/media
-# volumes:
-#   static_volume:
-
-#   media_volume:
+volumes:
+  static_volume:
+  media_volume:
