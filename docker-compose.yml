@@ -7,8 +7,9 @@ services:
     ports:
       - "8002:8000"
     volumes:
-      - .:/app:cached          # Suffit - inclut déjà media/
+      - .:/app:cached
       - static_volume:/app/staticfiles
+      - media_volume:/app/media   # ✅ Ajout ici pour persister les images
     restart: always
     env_file:
       - .env
@@ -17,3 +18,4 @@ services:
 
 volumes:
   static_volume:
+  media_volume:
