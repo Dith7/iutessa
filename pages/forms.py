@@ -117,13 +117,19 @@ class PostImageForm(forms.ModelForm):
         }
     
     def clean_image(self):
+        """Valider l'image"""
         image = self.cleaned_data.get('image')
         if image:
-            # Vérifier si c'est un upload ou un fichier existant
-            if hasattr(image, 'size'):
-                if image.size > 5 * 1024 * 1024:
-                    raise forms.ValidationError('Image trop volumineuse (max 5MB)')
+            # Taille max 5MB
+            if image.size > 5 * 1024 * 1024:
+                raise forms.ValidationError('L\'image ne doit pas dépasser 5MB')
+            # Extensions autorisées
+            allowed = ['jpg', 'jpeg', 'png', 'webp']
+            ext = image.name.split('.')[-1].lower()
+            if ext not in allowed:
+                raise forms.ValidationError(f'Format non autorisé. Utilisez: {", ".join(allowed)}')
         return image
+
 
 class PostDocumentForm(forms.ModelForm):
     """Formulaire pour joindre des documents PDF"""

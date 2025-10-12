@@ -7,8 +7,7 @@ services:
     ports:
       - "8002:8000"
     volumes:
-      - .:/app:cached
-      - ./media:/app/media
+      - .:/app:cached          # Suffit - inclut déjà media/
       - static_volume:/app/staticfiles
     restart: always
     env_file:
