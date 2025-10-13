@@ -1,17 +1,13 @@
 """
 Configuration Django - IUTESSA
-Environnement DEV/PROD avec PostgreSQL
+Fonctionne en local ET en Docker (sans nginx)
 """
 import os
 from pathlib import Path
-from google.oauth2 import service_account
 from dotenv import load_dotenv
-import dj_database_url
 
-# Charger le fichier .env
 load_dotenv()
 
-# Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ====================
@@ -20,8 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 IS_PRODUCTION = ENVIRONMENT == "production"
 
+# 🔥 Détection Docker
+RUNNING_IN_DOCKER = os.path.exists('/.dockerenv') or os.environ.get('DOCKER_CONTAINER') == 'true'
+
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "True" and not IS_PRODUCTION
+DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 # ====================
@@ -29,7 +28,6 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 # ====================
 AUTH_USER_MODEL = 'users.User'
 
-# URLs de redirection
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:dashboard'
 LOGOUT_REDIRECT_URL = 'pages:home'
@@ -48,8 +46,7 @@ INSTALLED_APPS = [
     # Apps tiers
     'tailwind',
     'theme',
-    'django_ckeditor_5',  
-    'storages',
+    'django_ckeditor_5',
 
     # Apps locales
     'pages',
@@ -101,7 +98,6 @@ WSGI_APPLICATION = 'iuttessa.wsgi.application'
 # DATABASE
 # ====================
 if IS_PRODUCTION:
-    # Configuration PostgreSQL pour la production
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -117,7 +113,6 @@ if IS_PRODUCTION:
         }
     }
 else:
-    # SQLite pour le développement
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -129,8 +124,7 @@ else:
 # SÉCURITÉ
 # ====================
 if IS_PRODUCTION:
-    # Sécurité HTTPS
-    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True") == "True"
+    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False") == "True"
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -138,16 +132,12 @@ if IS_PRODUCTION:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     
-    # CSRF
     CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    
-    # Sessions
     SESSION_COOKIE_HTTPONLY = True
     CSRF_COOKIE_HTTPONLY = True
 else:
-    # Développement
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
@@ -157,18 +147,10 @@ X_FRAME_OPTIONS = 'DENY'
 # PASSWORD VALIDATORS
 # ====================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ====================
@@ -180,25 +162,22 @@ USE_I18N = True
 USE_TZ = True
 
 # ====================
-# STATIC & MEDIA FILES
+# STATIC FILES
 # ====================
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / "theme" / "static"]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 👉 On pointe vers le bon dossier "theme/static"
-STATICFILES_DIRS = [
-    BASE_DIR / "theme" / "static",
-]
-
+# ====================
+# 🔥 MEDIA FILES - TOUJOURS LOCAL (pas de nginx)
+# ====================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# Taille maximale des fichiers
 FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
-DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024   # 50MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024
+
 # ====================
 # EMAIL
 # ====================
@@ -214,7 +193,7 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 # ====================
 # SESSIONS
 # ====================
-SESSION_COOKIE_AGE = 86400  # 24 heures
+SESSION_COOKIE_AGE = 86400
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_SAVE_EVERY_REQUEST = True
 
@@ -236,13 +215,10 @@ MESSAGE_TAGS = {
 TAILWIND_APP_NAME = 'theme'
 
 if DEBUG:
-    INTERNAL_IPS = [
-        "127.0.0.1",
-    ]
+    INTERNAL_IPS = ["127.0.0.1"]
     INSTALLED_APPS += ['django_browser_reload']
-    MIDDLEWARE += [
-        "django_browser_reload.middleware.BrowserReloadMiddleware",
-    ]
+    MIDDLEWARE += ["django_browser_reload.middleware.BrowserReloadMiddleware"]
+
 NPM_BIN_PATH = '/usr/bin/npm'
 
 # ====================

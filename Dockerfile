@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copier le code
 COPY . .
 
-# Créer dossiers
+# Créer dossiers media
 RUN mkdir -p \
     /app/media/blog/featured \
     /app/media/blog/images \
@@ -33,6 +33,9 @@ RUN mkdir -p \
     /app/media/events \
     /app/media/courses \
     /app/staticfiles/css/dist
+
+# Permissions sur les dossiers media
+RUN chmod -R 755 /app/media
 
 # Tailwind
 WORKDIR /app/theme/static_src

@@ -1,12 +1,21 @@
 #!/bin/bash
-set -e
 
-# Fix permissions des volumes montés
-chown -R www-data:www-data /app/media /app/staticfiles 2>/dev/null || true
-chmod -R 755 /app/media 2>/dev/null || true
+echo "🔄 Waiting for database..."
+while ! nc -z ${POSTGRES_HOST:-localhost} ${POSTGRES_PORT:-5432}; do
+  sleep 0.1
+done
+echo "✅ Database is ready!"
 
-# Lancer migrations si besoin (optionnel)
-python manage.py migrate --noinput || true
+echo "🔄 Running migrations..."
+python manage.py migrate --noinput
 
-# Démarrer l'application
-exec uvicorn iuttessa.asgi:application --host 0.0.0.0 --port 8000
+echo "🔄 Collecting static files..."
+python manage.py collectstatic --noinput
+
+echo "🚀 Starting Gunicorn..."
+exec gunicorn iuttessa.wsgi:application \
+    --bind 0.0.0.0:8000 \
+    --workers 4 \
+    --timeout 120 \
+    --access-logfile - \
+    --error-logfile -
