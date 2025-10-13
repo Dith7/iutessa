@@ -5,12 +5,13 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Dépendances système
+# Dépendances système (🔥 ajout de netcat-openbsd)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     curl \
     gnupg \
+    netcat-openbsd \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
