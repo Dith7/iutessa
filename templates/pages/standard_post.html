@@ -5,36 +5,135 @@
 
 {% block extra_css %}
 <style>
-    .post-hero { background-attachment: fixed; background-size: cover; background-position: center; }
-    .date-badge { background: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-    .article-content h5, .article-content h6 { margin-top: 2rem; margin-bottom: 1rem; }
-    .article-content p { margin-bottom: 1.5rem; }
-    .article-content blockquote { border-left: 4px solid #3db166; padding-left: 2rem; margin: 2rem 0; font-style: italic; color: #555; }
-    .article-content ul { list-style: disc; margin-left: 2rem; margin-bottom: 1.5rem; }
-    .article-content img { max-width: 100%; height: auto; }
+    .post-hero { 
+        background-attachment: fixed; 
+        background-size: cover; 
+        background-position: center;
+        min-height: 500px;
+    }
+    .date-badge { 
+        background: white; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    }
+    .article-content h1 { font-size: 2.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #192f59; }
+    .article-content h2 { font-size: 2rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #192f59; }
+    .article-content h3 { font-size: 1.75rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 1rem; color: #192f59; }
+    .article-content h4 { font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 1rem; color: #192f59; }
+    .article-content h5 { font-size: 1.25rem; font-weight: bold; margin-top: 1.5rem; margin-bottom: 1rem; color: #192f59; }
+    .article-content h6 { font-size: 1.1rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #192f59; }
+    .article-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #333; }
+    .article-content blockquote { 
+        border-left: 4px solid #3db166; 
+        padding-left: 2rem; 
+        margin: 2rem 0; 
+        font-style: italic; 
+        color: #555;
+        background: #f9fafb;
+        padding: 1.5rem 2rem;
+        border-radius: 0.5rem;
+    }
+    .article-content ul, .article-content ol { 
+        list-style: disc; 
+        margin-left: 2rem; 
+        margin-bottom: 1.5rem; 
+        line-height: 1.8;
+    }
+    .article-content ol { list-style: decimal; }
+    .article-content li { margin-bottom: 0.5rem; }
+    .article-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 2rem 0; }
+    .article-content a { color: #3db166; text-decoration: underline; }
+    .article-content a:hover { color: #35a05c; }
+    .article-content code { background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-family: monospace; }
+    .article-content pre { background: #1f2937; color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1.5rem 0; }
+    .article-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    .article-content th, .article-content td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+    .article-content th { background: #f3f4f6; font-weight: bold; }
+    
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
+    .gallery-item:hover { transform: scale(1.05); }
+    .gallery-item img { width: 100%; height: 250px; object-fit: cover; }
+    .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem; }
+    
+    .document-card { transition: all 0.3s; }
+    .document-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; }
+    .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    
+    .comment-avatar { 
+        background: linear-gradient(135deg, #3db166, #192f59); 
+        box-shadow: 0 4px 10px rgba(61, 177, 102, 0.3);
+    }
+    
+    .tag-badge { 
+        background: #e0f2e9; 
+        color: #3db166; 
+        padding: 0.25rem 0.75rem; 
+        border-radius: 9999px; 
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .stat-badge {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- Hero -->
+<!-- Hero Section -->
 <section class="post-hero relative bg-cover bg-center" style="background-image: url('{% if post.featured_image %}{{ post.featured_image.url }}{% else %}{% static 'images/blog/post-hero.jpg' %}{% endif %}');">
-    <div class="absolute inset-0 bg-gradient-to-b from-black/20 to-black/70"></div>
-    <div class="relative max-w-[1140px] mx-auto px-4 pt-96 pb-20">
-        <div class="flex gap-6 items-start">
-            <div class="date-badge text-center rounded-lg p-4 w-24">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/80"></div>
+    <div class="relative max-w-6xl mx-auto px-4 pt-32 pb-20">
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+            <!-- Date Badge -->
+            <div class="date-badge text-center rounded-lg p-4 w-24 flex-shrink-0">
                 <div class="text-4xl font-bold text-[#192f59]">{{ post.published_at|date:"d" }}</div>
                 <div class="text-sm text-gray-600 uppercase">{{ post.published_at|date:"M" }}</div>
+                <div class="text-xs text-gray-500">{{ post.published_at|date:"Y" }}</div>
             </div>
             
+            <!-- Title & Meta -->
             <div class="flex-1">
-                <h1 class="text-5xl font-bold text-white mb-6">{{ post.title }}</h1>
-                <div class="flex flex-wrap gap-4 text-white text-sm">
-                    <span>Par {{ post.author.get_full_name }}</span>
-                    {% if post.category %}<span>{{ post.category.name }}</span>{% endif %}
-                    {% for tag in post.get_tags_list %}<span>#{{ tag }}</span>{% endfor %}
-                    <span><i class="far fa-comments mr-1"></i>{{ comments.count }} Commentaire{{ comments.count|pluralize }}</span>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">{{ post.title }}</h1>
+                
+                <div class="flex flex-wrap gap-4 text-white text-sm items-center mb-4">
+                    <div class="stat-badge flex items-center gap-2">
+                        <i class="fas fa-user"></i>
+                        <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+                    </div>
+                    
+                    {% if post.category %}
+                    <div class="stat-badge flex items-center gap-2">
+                        <i class="fas fa-folder"></i>
+                        <span>{{ post.category.name }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="stat-badge flex items-center gap-2">
+                        <i class="far fa-eye"></i>
+                        <span>{{ post.views_count }} vue{{ post.views_count|pluralize }}</span>
+                    </div>
+                    
+                    <div class="stat-badge flex items-center gap-2">
+                        <i class="far fa-comments"></i>
+                        <span>{{ comments.count }} commentaire{{ comments.count|pluralize }}</span>
+                    </div>
                 </div>
+                
+                <!-- Tags -->
+                {% if post.tags %}
+                <div class="flex flex-wrap gap-2">
+                    {% for tag in post.get_tags_list %}
+                    <span class="tag-badge">#{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -42,92 +141,299 @@
 
 <!-- Breadcrumbs -->
 <div class="bg-white border-b border-gray-200">
-    <div class="max-w-[1140px] mx-auto px-4 py-4">
+    <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex items-center gap-2 text-sm text-gray-600">
-            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166]">Accueil</a>
+            <a href="{% url 'pages:home' %}" class="hover:text-[#3db166] transition-colors">
+                <i class="fas fa-home"></i> Accueil
+            </a>
             <i class="fas fa-chevron-right text-xs"></i>
-            <a href="{% url 'pages:blog' %}" class="hover:text-[#3db166]">Blog</a>
+            <a href="{% url 'pages:blog' %}" class="hover:text-[#3db166] transition-colors">Blog</a>
             <i class="fas fa-chevron-right text-xs"></i>
-            <span class="text-gray-800">{{ post.title|truncatewords:5 }}</span>
+            <span class="text-gray-800 font-medium">{{ post.title|truncatewords:5 }}</span>
         </div>
     </div>
 </div>
 
-<!-- Content -->
-<section class="bg-white py-16">
-    <div class="max-w-[900px] mx-auto px-4">
+<!-- Content Section -->
+<section class="bg-gray-50 py-16">
+    <div class="max-w-4xl mx-auto px-4">
         
-        <!-- Vidéo -->
-        {% if post.video_url or post.video_file %}
-        <div class="mb-8">
-            {% if post.video_url %}
-            <iframe src="{{ post.get_video_embed_url }}" class="w-full h-[500px] rounded-lg" frameborder="0" allowfullscreen></iframe>
-            {% elif post.video_file %}
-            <video controls class="w-full rounded-lg"><source src="{{ post.video_file.url }}"></video>
-            {% endif %}
+        <!-- Excerpt -->
+        {% if post.excerpt %}
+        <div class="bg-blue-50 border-l-4 border-[#3db166] p-6 rounded-r-lg mb-8">
+            <p class="text-lg text-gray-700 leading-relaxed italic">{{ post.excerpt }}</p>
         </div>
         {% endif %}
         
-        <!-- Article -->
-        <article class="article-content prose max-w-none">
-            {{ post.content|safe }}
+        <!-- Video Section -->
+        {% if post.video_url or post.video_file %}
+        <div class="mb-12 bg-white p-6 rounded-xl shadow-md">
+            <h3 class="text-2xl font-bold text-[#192f59] mb-4 flex items-center gap-3">
+                <i class="fas fa-play-circle text-[#3db166]"></i>
+                Vidéo
+            </h3>
+            <div class="video-container">
+                {% if post.video_url %}
+                <iframe src="{{ post.get_video_embed_url }}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                {% elif post.video_file %}
+                <video controls>
+                    <source src="{{ post.video_file.url }}" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Article Content -->
+        <article class="bg-white p-8 md:p-12 rounded-xl shadow-md mb-12">
+            <div class="article-content prose max-w-none">
+                {{ post.content|safe }}
+            </div>
         </article>
 
-        <!-- Galerie -->
+        <!-- Image Gallery -->
         {% if post.images.exists %}
-        <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for img in post.images.all %}
-            <img src="{{ img.image.url }}" alt="{{ img.caption }}" class="rounded-lg">
-            {% endfor %}
+        <div class="bg-white p-8 rounded-xl shadow-md mb-12">
+            <h3 class="text-2xl font-bold text-[#192f59] mb-6 flex items-center gap-3">
+                <i class="fas fa-images text-[#3db166]"></i>
+                Galerie d'images ({{ post.images.count }})
+            </h3>
+            <div class="gallery-grid">
+                {% for img in post.images.all %}
+                <div class="gallery-item">
+                    <img src="{{ img.image.url }}" alt="{{ img.caption|default:'Image' }}" loading="lazy">
+                    {% if img.caption %}
+                    <div class="gallery-caption">
+                        <p class="text-sm font-medium">{{ img.caption }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
 
-        <!-- Documents -->
+        <!-- Documents Section -->
         {% if post.documents.exists %}
-        <div class="my-12 space-y-4">
-            <h3 class="text-2xl font-bold text-[#192f59]">Documents</h3>
-            {% for doc in post.documents.all %}
-            <a href="{{ doc.file.url }}" download class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100">
-                <i class="fas fa-file-pdf text-3xl text-red-600"></i>
-                <div>
-                    <p class="font-semibold">{{ doc.title }}</p>
-                    <p class="text-sm text-gray-600">{{ doc.get_file_size }}</p>
-                </div>
-            </a>
-            {% endfor %}
+        <div class="bg-white p-8 rounded-xl shadow-md mb-12">
+            <h3 class="text-2xl font-bold text-[#192f59] mb-6 flex items-center gap-3">
+                <i class="fas fa-file-pdf text-[#3db166]"></i>
+                Documents à télécharger ({{ post.documents.count }})
+            </h3>
+            <div class="space-y-4">
+                {% for doc in post.documents.all %}
+                <a href="{{ doc.file.url }}" download class="document-card flex items-start gap-4 p-6 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200 group">
+                    <div class="flex-shrink-0">
+                        <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                            <i class="fas fa-file-pdf text-3xl text-red-600"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-lg text-[#192f59] mb-2 group-hover:text-[#3db166] transition-colors">
+                            {{ doc.title }}
+                        </h4>
+                        {% if doc.description %}
+                        <p class="text-gray-600 text-sm mb-2 line-clamp-2">{{ doc.description }}</p>
+                        {% endif %}
+                        <div class="flex items-center gap-4 text-xs text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-hdd"></i>
+                                {{ doc.get_file_size }}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-calendar"></i>
+                                {{ doc.uploaded_at|date:"d/m/Y" }}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-file"></i>
+                                {{ doc.get_file_extension|upper }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-[#3db166] rounded-full flex items-center justify-center text-white group-hover:bg-[#35a05c] transition-colors">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
 
-        <!-- Commentaires -->
-        <div class="mt-16 pt-8 border-t">
-            <h3 class="text-3xl font-bold text-[#192f59] mb-8">{{ comments.count }} Commentaire{{ comments.count|pluralize }}</h3>
-
-            {% for comment in comments %}
-            <div class="flex gap-6 mb-8">
-                <div class="w-20 h-20 bg-[#3db166] rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                    {{ comment.author_name|first|upper }}
-                </div>
-                <div class="flex-1 bg-gray-50 p-6 rounded-lg">
-                    <h5 class="font-bold text-[#192f59] text-lg">{{ comment.author_name }}</h5>
-                    <div class="text-sm text-gray-600 mb-3">{{ comment.created_at|date:"d F Y à H:i" }}</div>
-                    <p class="text-gray-700">{{ comment.content }}</p>
+        <!-- Share Section -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-12">
+            <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-[#192f59]">Partager cet article</h4>
+                <div class="flex gap-3">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}" target="_blank" class="w-10 h-10 bg-sky-500 hover:bg-sky-600 text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}" target="_blank" class="w-10 h-10 bg-blue-700 hover:bg-blue-800 text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://wa.me/?text={{ post.title }} {{ request.build_absolute_uri }}" target="_blank" class="w-10 h-10 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
                 </div>
             </div>
-            {% endfor %}
+        </div>
 
-            <!-- Formulaire -->
-            <div class="bg-white border border-gray-200 rounded-lg p-8 mt-8">
-                <h4 class="text-2xl font-bold text-[#192f59] mb-6">Laisser un Commentaire</h4>
+        <!-- Related Posts -->
+        {% if related_posts %}
+        <div class="bg-white p-8 rounded-xl shadow-md mb-12">
+            <h3 class="text-2xl font-bold text-[#192f59] mb-6 flex items-center gap-3">
+                <i class="fas fa-newspaper text-[#3db166]"></i>
+                Articles similaires
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for related in related_posts %}
+                <a href="{% url 'pages:blog_detail' related.slug %}" class="group">
+                    <div class="bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        {% if related.featured_image %}
+                        <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        {% else %}
+                        <div class="w-full h-48 bg-gradient-to-br from-[#3db166] to-[#192f59] flex items-center justify-center">
+                            <i class="fas fa-newspaper text-6xl text-white opacity-50"></i>
+                        </div>
+                        {% endif %}
+                        <div class="p-4">
+                            <h4 class="font-bold text-[#192f59] group-hover:text-[#3db166] transition-colors line-clamp-2 mb-2">
+                                {{ related.title }}
+                            </h4>
+                            <p class="text-sm text-gray-600 line-clamp-2">{{ related.excerpt }}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Comments Section -->
+        <div class="bg-white p-8 rounded-xl shadow-md">
+            <h3 class="text-3xl font-bold text-[#192f59] mb-8 flex items-center gap-3">
+                <i class="far fa-comments text-[#3db166]"></i>
+                {{ comments.count }} Commentaire{{ comments.count|pluralize }}
+            </h3>
+
+            <!-- Existing Comments -->
+            {% if comments %}
+            <div class="space-y-6 mb-12">
+                {% for comment in comments %}
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="comment-avatar w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                            {{ comment.author_name|first|upper }}
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-gray-50 p-5 rounded-lg border border-gray-200">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h5 class="font-bold text-[#192f59] text-lg">{{ comment.author_name }}</h5>
+                                <div class="text-sm text-gray-500 flex items-center gap-2">
+                                    <i class="far fa-clock"></i>
+                                    {{ comment.created_at|date:"d F Y à H:i" }}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">{{ comment.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8 mb-8">
+                <i class="far fa-comments text-6xl text-gray-300 mb-4"></i>
+                <p class="text-gray-500">Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+            </div>
+            {% endif %}
+
+            <!-- Comment Form -->
+            <div class="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-xl p-8">
+                <h4 class="text-2xl font-bold text-[#192f59] mb-6 flex items-center gap-3">
+                    <i class="fas fa-pen text-[#3db166]"></i>
+                    Laisser un commentaire
+                </h4>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-lg flex items-start gap-3 {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-red-50 border border-red-200 text-red-800{% endif %}">
+                        <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} text-xl"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
                 <form method="post" class="space-y-6">
                     {% csrf_token %}
-                    <textarea name="content" rows="6" placeholder="Votre commentaire*" required class="w-full p-4 border rounded"></textarea>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" name="name" placeholder="Nom*" required class="p-4 border rounded">
-                        <input type="email" name="email" placeholder="Email*" required class="p-4 border rounded">
+                    
+                    <!-- Afficher les erreurs générales -->
+                    {% if comment_form.non_field_errors %}
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start gap-3">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                        <div>{{ comment_form.non_field_errors }}</div>
                     </div>
-                    <button type="submit" class="bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded font-semibold">
-                        Publier
+                    {% endif %}
+                    
+                    <!-- Contenu du commentaire -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-comment-dots text-[#3db166]"></i>
+                            Votre commentaire *
+                        </label>
+                        {{ comment_form.content }}
+                        {% if comment_form.content.errors %}
+                        <p class="text-red-600 text-sm mt-2 flex items-center gap-2">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ comment_form.content.errors.0 }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Nom et Email -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-user text-[#3db166]"></i>
+                                Votre nom *
+                            </label>
+                            {{ comment_form.author_name }}
+                            {% if comment_form.author_name.errors %}
+                            <p class="text-red-600 text-sm mt-2 flex items-center gap-2">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ comment_form.author_name.errors.0 }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-envelope text-[#3db166]"></i>
+                                Votre email *
+                            </label>
+                            {{ comment_form.author_email }}
+                            {% if comment_form.author_email.errors %}
+                            <p class="text-red-600 text-sm mt-2 flex items-center gap-2">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ comment_form.author_email.errors.0 }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="bg-[#3db166] hover:bg-[#35a05c] text-white px-10 py-4 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-3">
+                        <i class="fas fa-paper-plane"></i>
+                        Publier le commentaire
                     </button>
+                    
+                    <p class="text-sm text-gray-500 italic">
+                        <i class="fas fa-info-circle text-[#3db166]"></i>
+                        Votre commentaire sera publié après modération par notre équipe.
+                    </p>
                 </form>
             </div>
         </div>
