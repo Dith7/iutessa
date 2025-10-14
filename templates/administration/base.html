@@ -516,6 +516,14 @@
           </a>
 
           <a 
+            href="{% url 'administration:courses_management' %}" 
+            class="nav-link {% if 'courses' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-book"></i></div>
+            <span>Cours</span>
+          </a>
+
+          <a 
             href="{% url 'administration:categories_management' %}" 
             class="nav-link {% if 'categories' in request.resolver_match.url_name %}active{% endif %}"
           >

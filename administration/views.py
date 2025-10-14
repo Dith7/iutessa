@@ -14,6 +14,10 @@ from django.utils import timezone
 from notifications.services import NotificationService
 from users.decorators import admin_required, role_required
 
+from pages.models import Post, Category, PostImage, PostDocument, Comment, Project
+from pages.forms import PostForm, PostImageFormSet, PostDocumentFormSet
+
+
 
 @admin_required
 def dashboard_view(request):
@@ -341,10 +345,6 @@ def _calculate_validation_rate():
     valides = EtudiantAcademique.objects.filter(statut_validation='valide').count()
     return round((valides / total) * 100, 1)
 
-# administration/views.py - Ajouter ces views
-
-from pages.models import Post, Category, PostImage, PostDocument, Comment, Project
-from pages.forms import PostForm, PostImageFormSet, PostDocumentFormSet
 
 # ============================================
 # GESTION BLOG
@@ -675,3 +675,125 @@ def portfolio_delete(request, project_id):
     project.delete()
     messages.success(request, f'Projet "{title}" supprimé!')
     return redirect('administration:portfolio_management')
+
+
+# administration/views.py
+# Ajouter ces vues à la fin du fichier
+
+from pages.models import Course
+from .forms import CourseForm  # On va créer ce form
+
+@admin_required
+def courses_management(request):
+    """Gestion des cours"""
+    search = request.GET.get('search', '')
+    filiere_filter = request.GET.get('filiere', '')
+    
+    courses = Course.objects.select_related('filiere').all()
+    
+    if search:
+        courses = courses.filter(
+            Q(title__icontains=search) | 
+            Q(code__icontains=search) |
+            Q(description__icontains=search)
+        )
+    
+    if filiere_filter:
+        courses = courses.filter(filiere_id=filiere_filter)
+    
+    # Pagination
+    paginator = Paginator(courses.order_by('-created_at'), 20)
+    page = request.GET.get('page')
+    courses_page = paginator.get_page(page)
+    
+    # Stats
+    from academique.models import Filiere
+    stats = {
+        'total': Course.objects.count(),
+        'required': Course.objects.filter(is_required=True).count(),
+        'elective': Course.objects.filter(is_required=False).count(),
+    }
+    
+    filieres = Filiere.objects.filter(statut='active').order_by('nom')
+    
+    context = {
+        'courses': courses_page,
+        'stats': stats,
+        'filieres': filieres,
+        'search': search,
+        'filiere_filter': filiere_filter,
+    }
+    
+    return render(request, 'administration/courses/list.html', context)
+
+
+@admin_required
+def course_create(request):
+    """Créer un nouveau cours"""
+    from academique.models import Filiere
+    
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            course = form.save()
+            messages.success(request, f'Cours "{course.title}" créé avec succès.')
+            return redirect('administration:courses_management')
+    else:
+        form = CourseForm()
+    
+    filieres = Filiere.objects.filter(statut='active').order_by('nom')
+    
+    context = {
+        'form': form,
+        'filieres': filieres,
+        'title': 'Nouveau Cours',
+        'action': 'create',
+    }
+    
+    return render(request, 'administration/courses/form.html', context)
+
+
+@admin_required
+def course_edit(request, course_id):
+    """Modifier un cours"""
+    course = get_object_or_404(Course, id=course_id)
+    from academique.models import Filiere
+    
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES, instance=course)
+        if form.is_valid():
+            course = form.save()
+            messages.success(request, f'Cours "{course.title}" modifié avec succès.')
+            return redirect('administration:courses_management')
+    else:
+        form = CourseForm(instance=course)
+    
+    filieres = Filiere.objects.filter(statut='active').order_by('nom')
+    
+    context = {
+        'form': form,
+        'filieres': filieres,
+        'course': course,
+        'title': 'Modifier le Cours',
+        'action': 'edit',
+    }
+    
+    return render(request, 'administration/courses/form.html', context)
+
+
+@admin_required
+def course_delete(request, course_id):
+    """Supprimer un cours"""
+    course = get_object_or_404(Course, id=course_id)
+    
+    if request.method == 'POST':
+        title = course.title
+        course.delete()
+        messages.success(request, f'Cours "{title}" supprimé avec succès.')
+        return redirect('administration:courses_management')
+    
+    context = {
+        'course': course,
+    }
+    
+    return render(request, 'administration/courses/delete.html', context)

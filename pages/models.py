@@ -273,3 +273,45 @@ class Course(models.Model):
     
     def __str__(self):
         return self.title
+    
+
+class Course(models.Model):
+    """Cours et formations"""
+    title = models.CharField(max_length=200, verbose_name="Titre")
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    description = models.TextField(verbose_name="Description")
+    duration = models.CharField(max_length=50, verbose_name="Durée")
+    level = models.CharField(max_length=50, verbose_name="Niveau")
+    instructor = models.CharField(max_length=100, verbose_name="Instructeur")
+    image = models.ImageField(upload_to='courses/', blank=True, null=True, verbose_name="Image")
+    
+    # NOUVELLE RELATION AVEC FILIERE
+    filiere = models.ForeignKey(
+        'academique.Filiere', 
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='courses',
+        verbose_name="Filière"
+    )
+    
+    # Champs optionnels supplémentaires
+    code = models.CharField(max_length=20, blank=True, verbose_name="Code du cours")
+    credits = models.PositiveIntegerField(default=0, blank=True, verbose_name="Crédits")
+    is_required = models.BooleanField(default=False, verbose_name="Cours obligatoire")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Cours"
+        verbose_name_plural = "Cours"
+        ordering = ['title']
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.title

@@ -45,4 +45,14 @@ urlpatterns = [
     path('portfolio/nouveau/', views.portfolio_create, name='portfolio_create'),
     path('portfolio/<int:project_id>/modifier/', views.portfolio_edit, name='portfolio_edit'),
     path('portfolio/<int:project_id>/supprimer/', views.portfolio_delete, name='portfolio_delete'),
+
+
+    # ============================================
+    # courses
+    # ============================================
+
+    path('courses/', views.courses_management, name='courses_management'),
+    path('courses/nouveau/', views.course_create, name='course_create'),
+    path('courses/<int:course_id>/modifier/', views.course_edit, name='course_edit'),
+    path('courses/<int:course_id>/supprimer/', views.course_delete, name='course_delete'),
 ]

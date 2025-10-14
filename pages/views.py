@@ -165,13 +165,38 @@ def event_detail_view(request, slug):
 # COURSES
 # ============================================
 
+# pages/views.py
+
 def courses_view(request):
-    courses = Course.objects.all()
-    return render(request, 'pages/courses.html', {'courses': courses})
+    """Liste des cours classés par filière"""
+    from academique.models import Filiere
+    
+    # Récupérer les filières actives avec leurs cours
+    filieres = Filiere.objects.filter(statut='active').prefetch_related('courses').order_by('nom')
+    
+    # Filtrer si recherche
+    search = request.GET.get('search', '')
+    if search:
+        filieres = filieres.filter(
+            Q(nom__icontains=search) | 
+            Q(code__icontains=search)
+        ).distinct()
+    
+    context = {
+        'filieres': filieres,
+        'search': search,
+    }
+    
+    return render(request, 'pages/courses.html', context)
 
 def course_detail_view(request, slug):
+    """Détail d'un cours"""
     course = get_object_or_404(Course, slug=slug)
-    related_courses = Course.objects.exclude(id=course.id)[:3]
+    
+    # Cours similaires de la même filière
+    related_courses = Course.objects.filter(
+        filiere=course.filiere
+    ).exclude(id=course.id)[:3] if course.filiere else Course.objects.exclude(id=course.id)[:3]
     
     return render(request, 'pages/course-detail.html', {
         'course': course,

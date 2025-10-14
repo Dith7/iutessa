@@ -1,0 +1,220 @@
+{% extends 'administration/base.html' %}
+{% load static %}
+
+{% block title %}Gestion des Cours{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Gestion des Cours</h1>
+                <p class="text-gray-600 mt-2">Gérer les cours disponibles sur la plateforme</p>
+            </div>
+            <a href="{% url 'administration:course_create' %}" 
+               class="btn-gradient text-white px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl">
+                <i class="fas fa-plus"></i>
+                Nouveau Cours
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Cours</p>
+                    <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.total }}</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-book text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Obligatoires</p>
+                    <p class="text-3xl font-bold text-red-600 mt-2">{{ stats.required }}</p>
+                </div>
+                <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-star text-red-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Électifs</p>
+                    <p class="text-3xl font-bold text-green-600 mt-2">{{ stats.elective }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+        <form method="get" class="flex flex-wrap gap-4">
+            <div class="flex-1 min-w-[300px]">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ search }}"
+                    placeholder="Rechercher un cours..." 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+            </div>
+            <div class="w-64">
+                <select 
+                    name="filiere" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                    <option value="">Toutes les filières</option>
+                    {% for filiere in filieres %}
+                    <option value="{{ filiere.id }}" {% if filiere_filter == filiere.id|stringformat:"s" %}selected{% endif %}>
+                        {{ filiere.nom }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700">
+                <i class="fas fa-search mr-2"></i>Filtrer
+            </button>
+            {% if search or filiere_filter %}
+            <a href="{% url 'administration:courses_management' %}" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300">
+                <i class="fas fa-times mr-2"></i>Réinitialiser
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Courses Table -->
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        {% if courses %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Cours</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Filière</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Durée</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Crédits</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for course in courses %}
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                {% if course.image %}
+                                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-12 h-12 rounded-lg object-cover mr-3">
+                                {% else %}
+                                <div class="w-12 h-12 bg-gradient-iut rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-book text-white"></i>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ course.title }}</p>
+                                    <p class="text-sm text-gray-500">{{ course.code|default:"—" }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if course.filiere %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {{ course.filiere.code }}
+                            </span>
+                            {% else %}
+                            <span class="text-gray-400 text-sm">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if course.is_required %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                <i class="fas fa-star mr-1"></i>Obligatoire
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Électif
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ course.duration }}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-gray-900">{{ course.credits|default:"—" }}</td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{% url 'pages:course_detail' course.slug %}" 
+                                   target="_blank"
+                                   class="text-blue-600 hover:text-blue-800 p-2"
+                                   title="Voir">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'administration:course_edit' course.id %}" 
+                                   class="text-green-600 hover:text-green-800 p-2"
+                                   title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'administration:course_delete' course.id %}" 
+                                   class="text-red-600 hover:text-red-800 p-2"
+                                   title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if courses.has_other_pages %}
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    Page {{ courses.number }} sur {{ courses.paginator.num_pages }}
+                </div>
+                <div class="flex gap-2">
+                    {% if courses.has_previous %}
+                    <a href="?page={{ courses.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if filiere_filter %}&filiere={{ filiere_filter }}{% endif %}" 
+                       class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Précédent
+                    </a>
+                    {% endif %}
+                    {% if courses.has_next %}
+                    <a href="?page={{ courses.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if filiere_filter %}&filiere={{ filiere_filter }}{% endif %}" 
+                       class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Suivant
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="p-12 text-center">
+            <div class="inline-block p-8 bg-gray-50 rounded-full mb-4">
+                <i class="fas fa-book text-gray-400 text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Aucun cours trouvé</h3>
+            <p class="text-gray-600 mb-6">Commencez par créer votre premier cours</p>
+            <a href="{% url 'administration:course_create' %}" 
+               class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700">
+                <i class="fas fa-plus"></i>
+                Créer un cours
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
