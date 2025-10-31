@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Calendrier - IUTESSA{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<section class="bg-[#f8f8f8] py-20">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <p class="text-gray-600 mb-2">Événements</p>
+        <h1 class="text-4xl font-bold text-[#192f59]">Calendrier Académique</h1>
+    </div>
+</section>
+
+<!-- Calendar Section -->
+<section class="bg-white py-16">
+    <div class="max-w-[1140px] mx-auto px-4">
+        <!-- Legend -->
+        <div class="mb-8 flex flex-wrap gap-4 justify-center">
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded" style="background: #3db166;"></div>
+                <span class="text-sm text-gray-700">Événements vedettes</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded" style="background: #192f59;"></div>
+                <span class="text-sm text-gray-700">Événements réguliers</span>
+            </div>
+        </div>
+        
+        <!-- Calendar Container -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-16">
+            <div id="calendar"></div>
+        </div>
+        
+        <!-- Upcoming Events List -->
+        {% if events %}
+        <div>
+            <h2 class="text-2xl font-bold text-[#192f59] mb-8">Événements à Venir</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for event in events|slice:":6" %}
+                <a href="{% url 'pages:event_detail' event.slug %}" 
+                   class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-[#3db166]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-calendar-alt text-[#3db166]"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-[#192f59] mb-2">{{ event.title }}</h3>
+                            <p class="text-sm text-gray-600">
+                                {{ event.start_date|date:"d M Y à H:i" }}
+                            </p>
+                            {% if event.location %}
+                            <p class="text-sm text-gray-500 mt-1">
+                                <i class="fas fa-map-marker-alt mr-1"></i>{{ event.location }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div class="text-center mt-8">
+                <a href="{% url 'pages:events' %}" 
+                   class="inline-flex items-center gap-2 bg-[#3db166] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#35a05c]">
+                    Voir tous les événements
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
+
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/fr.js'></script>
+
+<style>
+    #calendar {
+        min-height: 600px;
+    }
+    
+    .fc {
+        font-family: inherit;
+    }
+    
+    .fc-event {
+        cursor: pointer;
+        border: none;
+    }
+    
+    .fc .fc-button-primary {
+        background-color: #3db166;
+        border-color: #3db166;
+    }
+    
+    .fc .fc-button-primary:hover {
+        background-color: #35a05c;
+        border-color: #35a05c;
+    }
+    
+    .fc .fc-button-primary:not(:disabled).fc-button-active,
+    .fc .fc-button-primary:not(:disabled):active {
+        background-color: #2d8f4e;
+        border-color: #2d8f4e;
+    }
+    
+    .fc-daygrid-event {
+        white-space: normal;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    
+    if (!calendarEl) {
+        console.error('Calendar element not found');
+        return;
+    }
+    
+    var eventsData = {{ events_json|safe }};
+    console.log('Events loaded:', eventsData);
+    
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'fr',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listMonth'
+        },
+        buttonText: {
+            today: 'Aujourd\'hui',
+            month: 'Mois',
+            week: 'Semaine',
+            list: 'Liste'
+        },
+        events: eventsData,
+        eventClick: function(info) {
+            info.jsEvent.preventDefault();
+            if (info.event.url) {
+                window.location.href = info.event.url;
+            }
+        },
+        height: 'auto',
+        contentHeight: 650,
+        eventDisplay: 'block',
+        displayEventTime: true,
+    });
+    
+    calendar.render();
+    console.log('Calendar rendered');
+});
+</script>
+
+{% endblock %}

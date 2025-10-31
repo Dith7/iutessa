@@ -264,3 +264,40 @@ def resources_view(request):
 
 def resource_detail_view(request, resource_id):
     return render(request, 'pages/resource-detail.html', {'resource_id': resource_id})
+
+# pages/views.py
+# Ajouter cette vue
+
+def calendar_view(request):
+    """Calendrier des événements"""
+    from django.utils import timezone
+    import json
+    from datetime import timedelta
+    
+    # Récupérer les événements du mois en cours et suivants
+    today = timezone.now()
+    start_date = today.replace(day=1)
+    end_date = (start_date + timedelta(days=90))
+    
+    events = Event.objects.filter(
+        start_date__gte=start_date,
+        start_date__lte=end_date
+    ).order_by('start_date')
+    
+    # Formater pour le calendrier
+    events_json = []
+    for event in events:
+        events_json.append({
+            'title': event.title,
+            'start': event.start_date.isoformat(),
+            'end': event.end_date.isoformat(),
+            'url': f'/events/{event.slug}/',
+            'color': '#3db166' if event.is_featured else '#192f59'
+        })
+    
+    context = {
+        'events_json': json.dumps(events_json),
+        'events': events,
+    }
+    
+    return render(request, 'pages/calendar.html', context)

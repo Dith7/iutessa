@@ -524,6 +524,14 @@
           </a>
 
           <a 
+            href="{% url 'administration:events_management' %}" 
+            class="nav-link {% if 'events' in request.resolver_match.url_name %}active{% endif %}"
+          >
+            <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+            <span>Événements</span>
+          </a>
+
+          <a 
             href="{% url 'administration:categories_management' %}" 
             class="nav-link {% if 'categories' in request.resolver_match.url_name %}active{% endif %}"
           >

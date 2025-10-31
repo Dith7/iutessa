@@ -30,6 +30,8 @@ urlpatterns = [
     # ============================================
     path('events/', views.event_calendar_view, name='events'),
     path('events/<slug:slug>/', views.event_detail_view, name='event_detail'),
+    path('calendar/', views.calendar_view, name='calendar'),
+
     
     # ============================================
     # COURSES

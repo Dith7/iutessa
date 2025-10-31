@@ -797,3 +797,112 @@ def course_delete(request, course_id):
     }
     
     return render(request, 'administration/courses/delete.html', context)
+
+
+from pages.models import Event
+from pages.EventForm import EventForm
+
+@admin_required
+def events_management(request):
+    """Gestion des événements"""
+    from django.utils import timezone  # Ajouter cet import
+    
+    search = request.GET.get('search', '')
+    status = request.GET.get('status', '')
+    
+    events = Event.objects.all()
+    
+    if search:
+        events = events.filter(
+            Q(title__icontains=search) | 
+            Q(description__icontains=search) |
+            Q(location__icontains=search)
+        )
+    
+    if status == 'upcoming':
+        events = events.filter(start_date__gte=timezone.now())
+    elif status == 'past':
+        events = events.filter(start_date__lt=timezone.now())
+    
+    paginator = Paginator(events.order_by('-start_date'), 20)
+    page = request.GET.get('page')
+    events_page = paginator.get_page(page)
+    
+    stats = {
+        'total': Event.objects.count(),
+        'upcoming': Event.objects.filter(start_date__gte=timezone.now()).count(),
+        'past': Event.objects.filter(start_date__lt=timezone.now()).count(),
+        'featured': Event.objects.filter(is_featured=True).count(),
+    }
+    
+    context = {
+        'events': events_page,
+        'stats': stats,
+        'search': search,
+        'status': status,
+        'now': timezone.now(),  # ← AJOUTER CETTE LIGNE
+    }
+    
+    return render(request, 'administration/events/list.html', context)
+
+@admin_required
+def event_create(request):
+    """Créer un nouvel événement"""
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            event = form.save()
+            messages.success(request, f'Événement "{event.title}" créé avec succès.')
+            return redirect('administration:events_management')
+    else:
+        form = EventForm()
+    
+    context = {
+        'form': form,
+        'title': 'Nouvel Événement',
+        'action': 'create',
+    }
+    
+    return render(request, 'administration/events/form.html', context)
+
+
+@admin_required
+def event_edit(request, event_id):
+    """Modifier un événement"""
+    event = get_object_or_404(Event, id=event_id)
+    
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES, instance=event)
+        if form.is_valid():
+            event = form.save()
+            messages.success(request, f'Événement "{event.title}" modifié avec succès.')
+            return redirect('administration:events_management')
+    else:
+        form = EventForm(instance=event)
+    
+    context = {
+        'form': form,
+        'event': event,
+        'title': 'Modifier l\'Événement',
+        'action': 'edit',
+    }
+    
+    return render(request, 'administration/events/form.html', context)
+
+
+@admin_required
+def event_delete(request, event_id):
+    """Supprimer un événement"""
+    event = get_object_or_404(Event, id=event_id)
+    
+    if request.method == 'POST':
+        title = event.title
+        event.delete()
+        messages.success(request, f'Événement "{title}" supprimé avec succès.')
+        return redirect('administration:events_management')
+    
+    context = {
+        'event': event,
+    }
+    
+    return render(request, 'administration/events/delete.html', context)

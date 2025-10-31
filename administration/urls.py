@@ -55,4 +55,14 @@ urlpatterns = [
     path('courses/nouveau/', views.course_create, name='course_create'),
     path('courses/<int:course_id>/modifier/', views.course_edit, name='course_edit'),
     path('courses/<int:course_id>/supprimer/', views.course_delete, name='course_delete'),
+
+
+    # ============================================
+    # EVENTS
+    # ============================================
+    path('events/', views.events_management, name='events_management'),
+    path('events/nouveau/', views.event_create, name='event_create'),
+    path('events/<int:event_id>/modifier/', views.event_edit, name='event_edit'),
+    path('events/<int:event_id>/supprimer/', views.event_delete, name='event_delete'),
+ 
 ]
