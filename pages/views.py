@@ -208,7 +208,7 @@ def course_detail_view(request, slug):
 # ============================================
 
 def apply_view(request):
-    return render(request, 'pages/apply.html')
+    return render(request, 'pages/apply-to-iutessa.html')
 
 def campus_tour_view(request):
     return render(request, 'pages/campus-tour.html')
